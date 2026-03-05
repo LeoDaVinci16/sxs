@@ -78,24 +78,28 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
         font=dict(size=12)
     )
     return fig
-
-def main_sankey(df, magnitude_col, title="", file_path=None):
-    validate_sankey_df(df, "source", "target", magnitude_col)
-    df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
-    link_colors = generate_link_colors(len(df_prepared))
-    fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
-    fig.show()  # Or fig.write_html("output.html")
-   
+    
 def load_file(file_path):
+    """Load CSV or Excel file and validate numeric columns."""
+
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
+
     ext = os.path.splitext(file_path)[1].lower()
+
     if ext == ".csv":
-        return pd.read_csv(file_path)
+        df = pd.read_csv(file_path)
     elif ext in [".xls", ".xlsx"]:
-        return pd.read_excel(file_path)
+        df = pd.read_excel(file_path)
     else:
         raise ValueError(f"Unsupported file type: {ext}")
+
+    # Validate numeric columns
+    numeric_cols = df.select_dtypes(include="number").columns.tolist()
+    if not numeric_cols:
+        raise RuntimeError(f"No numeric columns found in file: {file_path}")
+
+    return df, file_path, numeric_cols
     
 def choose_magnitude_column(df, default="cabal"):
     print("Columnes disponibles:", ", ".join(df.columns))
@@ -108,6 +112,13 @@ def choose_magnitude_column(df, default="cabal"):
             print(f"[WARNING] '{user_input}' no existeix en el DataFrame. S'utilitza la columna per defecte: '{default}'")
         return default
 
+def main_sankey(df, magnitude_col, title="", file_path=None):
+    validate_sankey_df(df, "source", "target", magnitude_col)
+    df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
+    link_colors = generate_link_colors(len(df_prepared))
+    fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
+    fig.show()  # Or fig.write_html("output.html")
+
 if __name__ == "__main__":
     import sys, pandas as pd
     if len(sys.argv) < 2:
@@ -115,7 +126,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     file_path = sys.argv[1]
-    df = load_file(file_path)
+    df, file_path, numeric_cols = load_file(file_path)
     magnitude_col=choose_magnitude_column(df)
     main_sankey(df, magnitude_col=magnitude_col, title="Estudi dels cabals", file_path=file_path)
 
