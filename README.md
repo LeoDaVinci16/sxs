@@ -1,112 +1,99 @@
-# SXS Measurement Visualization Project
+# Projecte de Visualització de Mesures SXS
 
-This project is designed to automate and visualize measurement data from the factory, generate plots, and fill Excel templates with the collected data. The workflow is modular and flexible so it can accommodate updates and new data easily.
+Aquest projecte està dissenyat per automatitzar i visualitzar dades de mesurament de la fàbrica, generar gràfics i omplir plantilles Excel amb les dades recollides. El flux de treball és modular i flexible, de manera que pot adaptar-se a noves dades i actualitzacions fàcilment.
 
-## Directory Structure
+## Estructura de Carpetes
 
-The recommended structure for the project:
-
-
+L’estructura recomanada per al projecte:
 
 ```
-
 sxs/
 ├─ data/
-│ ├─ raw/ # Original Excel files (AT, STE, Impulsio)
-│ ├─ processed/ # Cleaned or generated Excel files
-│ └─ templates/ # Excel templates for drawings
+│ ├─ raw/ # Fitxers Excel originals (AT, STE, Impulsio)
+│ ├─ processed/ # Fitxers Excel nets o generats
+│ └─ templates/ # Plantilles Excel per dibuixos
 ├─ outputs/
-│ ├─ plots/ # Automatically generated plots
-│ ├─ images/ # Factory visualization snapshots
-│ └─ diagrams/ # SCADA-style diagrams
+│ ├─ plots/ # Gràfics generats automàticament
+│ ├─ images/ # Visualitzacions de la fàbrica
+│ └─ diagrams/ # Diagrames tipus SCADA
 ├─ src/
-│ ├─ main.py # Main workflow script
-│ ├─ utils.py # Helper functions
-│ └─ plot\_factory.py
-├─ docs/ # Documentation and workflow notes
-├─ notebooks/ # Optional notebooks for prototyping
+│ ├─ main.py # Script principal del flux de treball
+│ ├─ utils.py # Funcions auxiliars
+│ └─ plot_factory.py
+├─ docs/ # Documentació i notes del projecte
+├─ notebooks/ # Notebooks opcionals per prototips
 └─ README.md
-
 ```
 
+## Resum del Flux de Treball
 
+El programa automatitza el processament de dades de mesura i la seva visualització:
 
-## Workflow Overview
+### 1. Entrades de Dades
 
-The program automates the processing of measurement data and visualization:
+Excel per dibuixos (data/templates/) – plantilla per plotar punts de mesura
 
-### 1\. Data Inputs
+Excel amb mesures de cabal (data/raw/) – conté les dades recollides de la fàbrica
 
-Excel for drawings (data/templates/) – template to plot measurement points
+Excel “Aub Sauley” (data/raw/) – informació addicional de referència
 
-Excel with flow measurements (data/raw/) – contains the measurement data collected from the factory
+Els fitxers Excel 1 i 3 són plantilles, mentre que Excel 2 és dinàmic i s’actualitza amb noves mesures.
 
-Excel “Aub Sauley” (data/raw/) – additional reference information
+### 2. Passos del Processament
 
-Excel 1 and 3 are templates, while Excel 2 is dynamic and updated from measurement sessions.
+Descarregar i normalitzar dades
 
-### 2\. Processing Steps
+Carregar les noves dades de mesura (Excel 2)
 
-Download and normalize data
+Netejar i validar els valors si cal
 
-Load new measurement data (Excel 2)
+Generar gràfics
 
-Clean and validate values if needed
+Visualitzar les mesures de cabal de cada punt
 
-Generate plots
+Desar els gràfics a outputs/plots/
 
-Visualize flow measurements at each point
+### 3. Omplir Plantilles Excel
 
-Save plots in outputs/plots/
+Utilitzar les mesures d’Excel 2 per omplir la plantilla de dibuixos (Excel 1)
 
-### 3\. Fill Excel templates
+Desar els fitxers actualitzats a data/processed/
 
-Use Excel 2 measurements to populate the drawing template (Excel 1)
+### 4. Visualització de la Fàbrica
 
-Save updated templates in data/processed/
+Generar diagrames tipus SCADA amb els punts de mesura
 
-### 4\. Factory visualization
+Desar les visualitzacions a outputs/images/ i outputs/diagrams/
 
-Generate SCADA-style diagrams showing measurement points
+### 5. Actualitzar Excel “Sanley”
 
-Save visualizations in outputs/images/ and outputs/diagrams/
+Omplir Excel 3 amb la informació processada per a informes
 
-### 5\. Update “Sanley” Excel
+### 6. Diagrames Sankey opcionals
 
-Populate Excel 3 with processed information for reporting
+Visualitzar els fluxos de manera flexible segons les dades processades
 
-### 6\. Optional Sankey diagrams
+## Com Utilitzar-ho
 
-Visualize flows flexibly based on processed data
+Col·loca tots els nous fitxers Excel de mesurament a data/raw/
 
-## How to Use
+Assegura’t que les plantilles estiguin a data/templates/
 
-Place all new measurement Excel files in `data/raw/`
-
-Ensure template files are in `data/templates/`
-
-Run the main script:
-
-
+Executa l’script principal:
 ```
-
 cd src
 python main.py
-
 ```
+Revisa outputs/ per als gràfics, imatges i diagrames generats
 
-
-Check outputs/ for generated plots, images, and diagrams.
-
-Updated Excel templates are saved in data/processed/.
+Les plantilles Excel actualitzades es desaran a data/processed/
 
 ## Notes
 
-The workflow is modular; new data can be added anytime without modifying the code.
+El flux de treball és modular; es poden afegir noves dades en qualsevol moment sense modificar el codi
 
-Excel templates must follow the correct format for automated filling.
+Les plantilles Excel han de seguir el format correcte per omplir-se automàticament
 
-The program separates data inputs, processing, and outputs for clarity and reproducibility.
+El programa separa les entrades de dades, el processament i les sortides per mantenir claredat i reproducibilitat
 
-Git tracks only scripts and templates; outputs/ and processed files can be ignored in .gitignore.
-
+Git només fa seguiment dels scripts i plantilles; outputs/ i data/processed/ poden ignorar-se amb .gitignore
