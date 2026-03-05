@@ -6,7 +6,7 @@ Aquest projecte automatitza la gestió, processament i visualització de dades d
 
 ## Estructura de Carpetes
 
-
+```
 sxs/
 ├─ data/
 │ ├─ raw/ # Fitxers Excel originals amb mesures
@@ -28,7 +28,7 @@ sxs/
 ├─ docs/ # Documentació, plànols, notes
 ├─ notebooks/ # Prototips i anàlisi interactiva (opcional)
 └─ README.md
-
+```
 
 ---
 
