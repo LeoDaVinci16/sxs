@@ -1,149 +1,97 @@
-# 📊 CSV Plotting Tool
+# SXS Measurement Visualization Project
 
-This Python project allows you to generate plots from CSV files. It supports both **batch plotting** of all CSVs in a folder and **previewing individual files** before saving plots.
+This project is designed to automate and visualize measurement data from the factory, generate plots, and fill Excel templates with the collected data. The workflow is modular and flexible so it can accommodate updates and new data easily.
 
-The plotting logic is centralized in `plot_helper.py`, and a points dictionary is provided in `points_dict.py` for user-friendly plot titles.
+## Directory Structure
 
----
+The recommended structure for the project:
 
-## Folder Structure
+sxs/
+├─ data/
+│ ├─ raw/ # Original Excel files (AT, STE, Impulsio)
+│ ├─ processed/ # Cleaned or generated Excel files
+│ └─ templates/ # Excel templates for drawings
+├─ outputs/
+│ ├─ plots/ # Automatically generated plots
+│ ├─ images/ # Factory visualization snapshots
+│ └─ diagrams/ # SCADA-style diagrams
+├─ src/
+│ ├─ main.py # Main workflow script
+│ ├─ utils.py # Helper functions
+│ └─ plot_factory.py
+├─ docs/ # Documentation and workflow notes
+├─ notebooks/ # Optional notebooks for prototyping
+└─ README.md
 
-```
-supersonic-at/
-│
-├─ data/          	    	# Carpeta amb les dades del flexim
-    ├─ raw/          		# Carpeta amb els arxius CSV
-    ├─ plots/          		# Carpeta on es guarden les gràfiques quan s'executa el programa
-    └─ configurations.zip       # Carpeta ZIP que conté els arxius originals de flexim
-├─ src/     			# Programes de python
-    ├─ main.py         		# Programa principal
-    ├─ plot_helper.py           # Funcions per fer els gràfics
-    └─ points_dict.py           # Diccionari per guardar els noms dels punts de mesura
-├─ outputs     			# Carpeta en construcció
-├─ .gitignore          		# Documents que no es guarden amb git.
-└─ README.md           		# El document que esteu llegint
-```
+## Workflow Overview
 
----
+The program automates the processing of measurement data and visualization:
 
-## Requirements
+### 1. Data Inputs
 
-- Python 3.8+
-- Libraries: `pandas`, `matplotlib`
+Excel for drawings (data/templates/) – template to plot measurement points
 
-Install dependencies with:
+Excel with flow measurements (data/raw/) – contains the measurement data collected from the factory
 
-```
-pip install pandas matplotlib
-```
+Excel “Aub Sauley” (data/raw/) – additional reference information
 
----
+Excel 1 and 3 are templates, while Excel 2 is dynamic and updated from measurement sessions.
 
-## Usage
+### 2. Processing Steps
 
-Run the main program:
+Download and normalize data
 
-```
+Load new measurement data (Excel 2)
+
+Clean and validate values if needed
+
+Generate plots
+
+Visualize flow measurements at each point
+
+Save plots in outputs/plots/
+
+### 3. Fill Excel templates
+
+Use Excel 2 measurements to populate the drawing template (Excel 1)
+
+Save updated templates in data/processed/
+
+### 4. Factory visualization
+
+Generate SCADA-style diagrams showing measurement points
+
+Save visualizations in outputs/images/ and outputs/diagrams/
+
+### 5. Update “Sanley” Excel
+
+Populate Excel 3 with processed information for reporting
+
+### 6. Optional Sankey diagrams
+
+Visualize flows flexibly based on processed data
+
+## How to Use
+
+Place all new measurement Excel files in data/raw/.
+
+Ensure template files are in data/templates/.
+
+Run the main script:
+
+cd src
 python main.py
-```
 
-You will be prompted to choose an option:
+Check outputs/ for generated plots, images, and diagrams.
 
-```
-1: Batch plot all CSVs
-2: Preview and plot one CSV
-```
+Updated Excel templates are saved in data/processed/.
 
-### 1️⃣ Batch Plot
+## Notes
 
-- Generates plots for all CSV files in the folder.
-- Only numeric columns specified in `variables_to_plot` will be plotted.
-- Plots are automatically saved in the `plots` folder.
+The workflow is modular; new data can be added anytime without modifying the code.
 
-### 2️⃣ Preview Plot
+Excel templates must follow the correct format for automated filling.
 
-- Choose a CSV file by index.
-- Select a numeric variable to plot.
-- View the plot interactively.
-- Optionally save the plot.
+The program separates data inputs, processing, and outputs for clarity and reproducibility.
 
----
-
-## Configuration
-
-You can customize the following in `main.py`:
-
-```
-folder_path = r"path\to\csv\folder"
-plot_folder = r"path\to\save\plots"
-variables_to_plot = [
-    'A Volumetric flow rate [m³/h]',
-    'A Flow velocity [m/s]',
-    'A Mass flow rate [kg/h]',
-]
-```
-
-- **folder_path**: Location of CSV files.  
-- **plot_folder**: Where plots will be saved.  
-- **variables_to_plot**: Numeric columns to include in batch plots.
-
----
-
-## Points Dictionary
-
-- Friendly names for codes are stored in `points_dict.py`.
-- Used to generate descriptive titles for plots.
-- Example entry:
-
-```
-points_dict = {
-    "PM-V-1": "E800",
-    "PM-V-2": "Secadores",
-    "PM-V-3": "PEC",
-    # ...
-}
-```
-
-You can update or extend the dictionary to include your own codes.
-
----
-
-## CSV Requirements
-
-- CSV files must have a header row with column names.
-- A `Date` column is recommended for time-based plots.
-- Delimiter should be a tab (`\t`).
-- Numeric columns will be automatically converted and cleaned.
-
----
-
-## Output
-
-- PNG plots saved in the `plots` folder.
-- Filename format: `{csv_filename}_{variable_name}.png`.
-- Last date of the data is displayed in the plot footer.
-
----
-
-## Example
-
-```
-Found 3 CSV files:
-0: PM-V-7_P400.csv
-1: PM-V-8_Atomitzador.csv
-2: PM-V-10_S600.csv
-
-Enter file number: 0
-Available numeric columns:
-0: A Volumetric flow rate [m³/h]
-1: A Flow velocity [m/s]
-2: A Mass flow rate [kg/h]
-Enter variable number: 0
-✅ Selected variable: A Volumetric flow rate [m³/h]
-```
-
----
-
-## License
-
-This project is open-source and free to use.# sxs-impulsio
+Git tracks only scripts and templates; outputs/ and processed files can be ignored in .gitignore.
