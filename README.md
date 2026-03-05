@@ -1,99 +1,96 @@
-# Projecte de Visualització de Mesures SXS
+# Projecte de Visualització i Processament de Mesures SXS
 
-Aquest projecte està dissenyat per automatitzar i visualitzar dades de mesurament de la fàbrica, generar gràfics i omplir plantilles Excel amb les dades recollides. El flux de treball és modular i flexible, de manera que pot adaptar-se a noves dades i actualitzacions fàcilment.
+Aquest projecte automatitza la gestió, processament i visualització de dades de mesurament de la fàbrica, generant gràfics, mapes, i diagrames Sankey de manera modular i flexible.  
+
+---
 
 ## Estructura de Carpetes
 
-L’estructura recomanada per al projecte:
 
-```
 sxs/
 ├─ data/
-│ ├─ raw/ # Fitxers Excel originals (AT, STE, Impulsio)
-│ ├─ processed/ # Fitxers Excel nets o generats
-│ └─ templates/ # Plantilles Excel per dibuixos
+│ ├─ raw/ # Fitxers Excel originals amb mesures
+│ ├─ processed/ # Fitxers Excel processats o generats
+│ └─ templates/ # Plantilles Excel per dibuixos i plots
 ├─ outputs/
 │ ├─ plots/ # Gràfics generats automàticament
 │ ├─ images/ # Visualitzacions de la fàbrica
-│ └─ diagrams/ # Diagrames tipus SCADA
+│ └─ diagrams/ # Diagrames tipus SCADA i Sankey
 ├─ src/
-│ ├─ main.py # Script principal del flux de treball
-│ ├─ utils.py # Funcions auxiliars
-│ └─ plot_factory.py
-├─ docs/ # Documentació i notes del projecte
-├─ notebooks/ # Notebooks opcionals per prototips
+│ ├─ create_map.py # Visualització de punts sobre plànol
+│ ├─ create_sankey.py # Generació de diagrames Sankey
+│ ├─ create_plots.py # Generació de gràfics de variables
+│ ├─ add_date.py # Processament i afegit de dates a CSV/Excel
+│ ├─ excel2csv.py # Conversió automàtica de fitxers Excel a CSV
+│ ├─ paths.py # Rutes constants del projecte
+│ ├─ points_dict.py # Mapeig ID punts → noms humans
+│ └─ utils.py # Funcions auxiliars generals
+├─ docs/ # Documentació, plànols, notes
+├─ notebooks/ # Prototips i anàlisi interactiva (opcional)
 └─ README.md
-```
 
-## Resum del Flux de Treball
 
-El programa automatitza el processament de dades de mesura i la seva visualització:
+---
 
-### 1. Entrades de Dades
+## Flux de Treball
 
-Excel per dibuixos (data/templates/) – plantilla per plotar punts de mesura
+1. **Entrades de Dades**
+   - Excel amb punts de mesura (`data/templates/`) – plantilla per dibuixar els punts.
+   - Excel amb mesures recollides (`data/raw/`) – dades actuals de la fàbrica.
+   - Excel de referència/addicional (`data/raw/`) – informació complementària.
 
-Excel amb mesures de cabal (data/raw/) – conté les dades recollides de la fàbrica
+2. **Processament de Dades**
+   - Normalització i neteja de les dades.
+   - Validació de columnes numèriques.
+   - Conversió de fitxers Excel a CSV si cal (`excel2csv.py`).
+   - Afegir dates i metadades a fitxers (`add_date.py`).
 
-Excel “Aub Sauley” (data/raw/) – informació addicional de referència
+3. **Generació de Gràfics i Mapes**
+   - Gràfics de variables per punts de mesura (`create_plots.py`).
+   - Mapes interactius amb punts sobre el plànol de la fàbrica (`create_map.py`).
+     - Permet clicar sobre punts per veure dades.
+     - Opció de mostrar/amagar tots els valors amb un botó.
+   - Desar els gràfics a `outputs/plots/` i imatges a `outputs/images/`.
 
-Els fitxers Excel 1 i 3 són plantilles, mentre que Excel 2 és dinàmic i s’actualitza amb noves mesures.
+4. **Diagrames Sankey**
+   - Visualització de fluxos i cabals entre punts (`create_sankey.py`).
+   - Accepta fitxers CSV o Excel.
+   - Permet seleccionar la columna de magnitud.
 
-### 2. Passos del Processament
+5. **Plantilles Excel**
+   - Omplir plantilles amb les dades processades.
+   - Desa resultats a `data/processed/`.
 
-Descarregar i normalitzar dades
+---
 
-Carregar les noves dades de mesura (Excel 2)
+## Com Utilitzar el Projecte
 
-Netejar i validar els valors si cal
+1. Col·loca els nous fitxers Excel de mesurament a `data/raw/`.  
+2. Assegura’t que les plantilles estan a `data/templates/`.  
+3. Executa els scripts des de `src/` segons la funcionalitat:
 
-Generar gràfics
+   ```bash
+   # Generar gràfics de variables
+   python create_plots.py
 
-Visualitzar les mesures de cabal de cada punt
+   # Visualitzar punts sobre el plànol
+   python create_map.py
 
-Desar els gràfics a outputs/plots/
+   # Generar Sankey diagrams
+   python create_sankey.py <fitxer_excel_o_csv>
 
-### 3. Omplir Plantilles Excel
+Revisa outputs/ per als gràfics, imatges i diagrames generats.
 
-Utilitzar les mesures d’Excel 2 per omplir la plantilla de dibuixos (Excel 1)
-
-Desar els fitxers actualitzats a data/processed/
-
-### 4. Visualització de la Fàbrica
-
-Generar diagrames tipus SCADA amb els punts de mesura
-
-Desar les visualitzacions a outputs/images/ i outputs/diagrams/
-
-### 5. Actualitzar Excel “Sanley”
-
-Omplir Excel 3 amb la informació processada per a informes
-
-### 6. Diagrames Sankey opcionals
-
-Visualitzar els fluxos de manera flexible segons les dades processades
-
-## Com Utilitzar-ho
-
-Col·loca tots els nous fitxers Excel de mesurament a data/raw/
-
-Assegura’t que les plantilles estiguin a data/templates/
-
-Executa l’script principal:
-```
-cd src
-python main.py
-```
-Revisa outputs/ per als gràfics, imatges i diagrames generats
-
-Les plantilles Excel actualitzades es desaran a data/processed/
+Les plantilles Excel actualitzades es desaran a data/processed/.
 
 ## Notes
 
-El flux de treball és modular; es poden afegir noves dades en qualsevol moment sense modificar el codi
+El flux de treball és modular: es poden afegir noves dades sense modificar el codi.
 
-Les plantilles Excel han de seguir el format correcte per omplir-se automàticament
+Les plantilles Excel han de seguir el format correcte per omplir-se automàticament.
 
-El programa separa les entrades de dades, el processament i les sortides per mantenir claredat i reproducibilitat
+Es recomana mantenir separades les entrades (data/raw/), plantilles (data/templates/) i sortides (outputs/) per claredat i reproducibilitat.
 
-Git només fa seguiment dels scripts i plantilles; outputs/ i data/processed/ poden ignorar-se amb .gitignore
+Git només fa seguiment dels scripts i plantilles; outputs/ i data/processed/ estan ignorats via .gitignore.
+
+Es recomana usar create_map.py i create_sankey.py per a visualitzacions interactives i diagrames de flux respectivament.
