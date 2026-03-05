@@ -10,12 +10,38 @@ def get_numeric_columns(df):
     """Return list of numeric columns in a dataframe."""
     return df.select_dtypes(include='number').columns.tolist()
 
+def load_csv(csv_path):
+    df = pd.read_csv(csv_path, sep="\t")
+    # ---- Robust date column detection ----
+    date_col = next(
+        (c for c in df.columns
+         if any(p in c.lower() for p in ["date", "data", "fecha"])),
+        None
+    )
+    if date_col is None:
+        print(f"[WARNING] No date column found in {csv_path}")
+        return None
+    # Convert to datetime
+    df[date_col] = pd.to_datetime(df[date_col], format="%m/%d/%Y %I:%M:%S %p", errors="coerce")
+    # Drop invalid dates
+    df = df.dropna(subset=[date_col])
+    if df.empty:
+        print(f"[WARNING] No valid dates in {csv_path}")
+        return None
+    df.set_index(date_col, inplace=True)
+    return df
+
 def create_plot(df, variable, csv_path, points_dict=None, show_date=True):
 
     filename = os.path.basename(csv_path)
     name_no_ext = filename.rsplit(".csv", 1)[0]
     parts = name_no_ext.split("_")
     point_id = "_".join(parts[2:])  # everything after second underscore
+
+    if points_dict and point_id in points_dict:
+        point_name = points_dict[point_id]
+    else:
+        point_name = point_id  # fallback to raw ID
 
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.plot(df.index, df[variable], linewidth=1)
@@ -24,7 +50,7 @@ def create_plot(df, variable, csv_path, points_dict=None, show_date=True):
     ax.set_title(f"{variable}", fontsize=16, pad=20)
 
     # Subtitle: Punt de mesura
-    fig.suptitle(f"Punt de mesura: {point_id}", fontsize=12, y=0.92)
+    fig.suptitle(f"Punt de mesura: {point_name}", fontsize=12, y=0.92)
 
     # Axes labels and formatting
     ax.set_xlabel("Time", fontsize=12)
@@ -53,27 +79,6 @@ def save_plot(fig, plot_folder, csv_file, variable):
     fig.savefig(plot_path, dpi=300)
     plt.close(fig)  # Free memory
     return plot_path
-
-def load_csv(csv_path):
-    df = pd.read_csv(csv_path, sep="\t")
-    # ---- Robust date column detection ----
-    date_col = next(
-        (c for c in df.columns
-         if any(p in c.lower() for p in ["date", "data", "fecha"])),
-        None
-    )
-    if date_col is None:
-        print(f"[WARNING] No date column found in {csv_path}")
-        return None
-    # Convert to datetime
-    df[date_col] = pd.to_datetime(df[date_col], format="%m/%d/%Y %I:%M:%S %p", errors="coerce")
-    # Drop invalid dates
-    df = df.dropna(subset=[date_col])
-    if df.empty:
-        print(f"[WARNING] No valid dates in {csv_path}")
-        return None
-    df.set_index(date_col, inplace=True)
-    return df
 
 def batch_plot(folder_path, plot_folder, variables_to_plot):
     os.makedirs(plot_folder, exist_ok=True)
