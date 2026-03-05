@@ -4,7 +4,7 @@ import plotly.express as px
 import itertools
 import os
 from datetime import datetime
-
+import tabula
 
 def validate_sankey_df(df, source_col, target_col, magnitude_col):
     required_cols = {source_col, target_col, magnitude_col}
@@ -77,7 +77,6 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
         ),
         font=dict(size=12)
     )
-
     return fig
 
 def main_sankey(df, magnitude_col, title="", file_path=None):
@@ -86,7 +85,28 @@ def main_sankey(df, magnitude_col, title="", file_path=None):
     link_colors = generate_link_colors(len(df_prepared))
     fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
     fig.show()  # Or fig.write_html("output.html")
-
+   
+def load_file(file_path):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    ext = os.path.splitext(file_path)[1].lower()
+    if ext == ".csv":
+        return pd.read_csv(file_path)
+    elif ext in [".xls", ".xlsx"]:
+        return pd.read_excel(file_path)
+    else:
+        raise ValueError(f"Unsupported file type: {ext}")
+    
+def choose_magnitude_column(df, default="cabal"):
+    print("Columnes disponibles:", ", ".join(df.columns))
+    user_input = input(f"Escriu el nom de la columna de magnitud (enter per defecte '{default}'): ").strip()
+    
+    if user_input and user_input in df.columns:
+        return user_input
+    else:
+        if user_input and user_input not in df.columns:
+            print(f"[WARNING] '{user_input}' no existeix en el DataFrame. S'utilitza la columna per defecte: '{default}'")
+        return default
 
 if __name__ == "__main__":
     import sys, pandas as pd
@@ -95,6 +115,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     file_path = sys.argv[1]
-    df = pd.read_excel(file_path)
-    main_sankey(df, magnitude_col="OD", title="Estudi dels cabals", file_path=file_path)
+    df = load_file(file_path)
+    magnitude_col=choose_magnitude_column(df)
+    main_sankey(df, magnitude_col=magnitude_col, title="Estudi dels cabals", file_path=file_path)
 
