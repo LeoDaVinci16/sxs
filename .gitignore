@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Data files
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.zip
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# VSCode / IDE
+.vscode/
+*.code-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
