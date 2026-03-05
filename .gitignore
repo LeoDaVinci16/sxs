@@ -5,9 +5,8 @@ __pycache__/
 # Data files
 *.xlsx
 *.xls
-*.csv
 *.pdf
-*.zip
+# *.zip
 
 # Images
 *.png
