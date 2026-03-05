@@ -81,12 +81,11 @@ Visualize flows flexibly based on processed data
 
 ## How to Use
 
-Place all new measurement Excel files in data/raw/.
+Place all new measurement Excel files in `data/raw/`
 
-Ensure template files are in data/templates/.
+Ensure template files are in `data/templates/`
 
 Run the main script:
-
 
 
 ```
@@ -95,7 +94,6 @@ cd src
 python main.py
 
 ```
-
 
 
 Check outputs/ for generated plots, images, and diagrams.
