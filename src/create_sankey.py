@@ -6,53 +6,52 @@ import os
 from datetime import datetime
 
 
-def create_sankey(
-    df,
-    magnitude_col,
-    title="",
-    source_col="source",
-    target_col="target",
-    file_path=None
-):
-    # --- 0️⃣ Validation ---
+def validate_sankey_df(df, source_col, target_col, magnitude_col):
     required_cols = {source_col, target_col, magnitude_col}
     missing = required_cols - set(df.columns)
     if missing:
         raise ValueError(f"Missing columns in dataframe: {missing}")
-
-    # --- 1️⃣ Prepare nodes ---
+    
+def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
     all_nodes = list(pd.unique(df[[source_col, target_col]].values.ravel()))
     node_indices = {name: i for i, name in enumerate(all_nodes)}
 
-    df = df.copy()
-    df["source_idx"] = df[source_col].map(node_indices)
-    df["target_idx"] = df[target_col].map(node_indices)
+    df_copy = df.copy()
+    df_copy["source_idx"] = df_copy[source_col].map(node_indices)
+    df_copy["target_idx"] = df_copy[target_col].map(node_indices)
 
-    # --- 2️⃣ Colors ---
-    palette = px.colors.qualitative.Plotly
-    colors = list(itertools.islice(itertools.cycle(palette), len(df)))
+    # Compute max flow for node labels
+    node_labels_max = []
+    for i, label in enumerate(all_nodes):
+        incoming = df_copy.loc[df_copy["target_idx"] == i, magnitude_col].sum()
+        outgoing = df_copy.loc[df_copy["source_idx"] == i, magnitude_col].sum()
+        max_flow = max(incoming, outgoing)
+        node_labels_max.append(f"{label} ({max_flow:.2f})")
 
-    def hex_to_rgba(hex_color, alpha=0.4):
-        hex_color = hex_color.lstrip('#')
+    return df_copy, all_nodes, node_labels_max
+
+def generate_link_colors(n_links, palette=None, alpha=0.4):
+    import itertools, plotly.express as px
+    palette = palette or px.colors.qualitative.Plotly
+    colors = list(itertools.islice(itertools.cycle(palette), n_links))
+
+    def hex_to_rgba(hex_color, alpha):
+        hex_color = hex_color.lstrip("#")
         r = int(hex_color[0:2], 16)
         g = int(hex_color[2:4], 16)
         b = int(hex_color[4:6], 16)
         return f"rgba({r},{g},{b},{alpha})"
 
-    link_colors = [hex_to_rgba(c, 0.4) for c in colors]
+    return [hex_to_rgba(c, alpha) for c in colors]
 
-    # --- 3️⃣ Node labels with max flow ---
-    node_labels_max = []
-    for i, label in enumerate(all_nodes):
-        incoming = df.loc[df["target_idx"] == i, magnitude_col].sum()
-        outgoing = df.loc[df["source_idx"] == i, magnitude_col].sum()
-        max_flow = max(incoming, outgoing)
-        node_labels_max.append(f"{label} ({max_flow:.2f})")
+def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, magnitude_col="value"):
+    import plotly.graph_objects as go
+    from datetime import datetime
+    import os
 
-    # --- 4️⃣ Build figure ---
     fig = go.Figure(go.Sankey(
         node=dict(
-            label=node_labels_max,
+            label=node_labels,
             color="#8aa512",
             pad=20,
             thickness=25
@@ -66,13 +65,9 @@ def create_sankey(
         )
     ))
 
-    # --- 5️⃣ Layout ---
     creation_date = datetime.now().strftime("%Y-%m-%d %H:%M")
     file_name = os.path.basename(file_path) if file_path else "Unknown file"
-
-    subtitle = (
-        f"Source: {file_name} | Generated: {creation_date} | Magnitude: {magnitude_col}"
-    )
+    subtitle = f"Source: {file_name} | Generated: {creation_date} | Magnitude: {magnitude_col}"
 
     fig.update_layout(
         title=dict(
@@ -84,3 +79,22 @@ def create_sankey(
     )
 
     return fig
+
+def main_sankey(df, magnitude_col, title="", file_path=None):
+    validate_sankey_df(df, "source", "target", magnitude_col)
+    df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
+    link_colors = generate_link_colors(len(df_prepared))
+    fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
+    fig.show()  # Or fig.write_html("output.html")
+
+
+if __name__ == "__main__":
+    import sys, pandas as pd
+    if len(sys.argv) < 2:
+        print("Usage: python create_sankey.py <excel_file>")
+        sys.exit(1)
+    
+    file_path = sys.argv[1]
+    df = pd.read_excel(file_path)
+    main_sankey(df, magnitude_col="OD", title="Estudi dels cabals", file_path=file_path)
+
