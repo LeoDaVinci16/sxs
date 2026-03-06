@@ -2,6 +2,8 @@
 
 Aquest projecte automatitza la gestió, processament i visualització de dades de mesurament de la fàbrica, generant gràfics, mapes, i diagrames Sankey de manera modular i flexible.  
 
+Amb la darrera actualització es pot fer obrir l'arxiu run_sxs.bat i s'obre la GUI del programa.
+
 ---
 
 ## Estructura de Carpetes
@@ -90,6 +92,16 @@ sxs/
 Revisa outputs/ per als gràfics, imatges i diagrames generats.
 
 Les plantilles Excel actualitzades es desaran a data/processed/.
+
+4. Fes servir la GUI executant `python gui.py` o fent clic al run_sxs.bat
+   - Amb la GUI pots executar directament els tres programes:
+      - Generador de gràfics (Plots)
+      - El plànol dels punts de mesura (Euromed map)
+      - El generador de diagrames de sankey (Sankey diagram)
+   - També pots utilitzar les eines per:
+    - Afegir la data als arxius de csv
+    - Convertir els excels a CSV
+    - Obrir la carpeta on hi ha les plantilles per omplir els excels amb les dades.
 
 ## Notes
 

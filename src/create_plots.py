@@ -1,10 +1,13 @@
-# main.py
+# create_plots.py
+
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from points_dict import points_dict
 import re
 import matplotlib.ticker as ticker
+
+DEFAULT_FILE = "plots_data.csv"
 
 def get_numeric_columns(df):
     """Return list of numeric columns in a dataframe."""
