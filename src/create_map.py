@@ -43,8 +43,18 @@ def load_background_image(img_filename):
 def load_measure_points(csv_filename):
     csv_path = os.path.join(RAW_FOLDER, "csv", csv_filename)
     if not os.path.exists(csv_path):
-        raise FileNotFoundError(f"Excel file not found: {csv_path}")
-    df = pd.read_csv(csv_path, encoding="cp1252")
+        raise FileNotFoundError(f"CSV file not found: {csv_path}")
+
+    # Try common encodings
+    for enc in ["utf-8", "cp1252", "latin1"]:
+        try:
+            df = pd.read_csv(csv_path, encoding=enc, on_bad_lines='skip')
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        raise UnicodeDecodeError(f"Failed to decode {csv_path} with utf-8, cp1252, or latin1.")
+
     df = df.dropna(subset=["x", "y"])  # Only keep rows with coordinates
     return df
 
@@ -126,6 +136,27 @@ def choose_magnitude_column(df, default=DEFAULT_MAGNITUDE):
         if user_input and user_input not in df.columns:
             print(f"[WARNING] '{user_input}' no existeix. S'utilitza la columna per defecte: '{default}'")
         return default
+    
+def main_file(file_path, magnitude_col=DEFAULT_MAGNITUDE):
+    """
+    GUI-friendly version of main(), allows passing CSV path and magnitude column.
+    """
+    img_file = DEFAULT_IMG_FILE  # keep default map image
+    df = load_measure_points(file_path)  # load CSV
+    fig, ax = setup_plot(load_background_image(img_file))
+    plot_points(ax, df)
+
+    # Use magnitude_col directly
+    text_boxes = {}
+    click_handler = create_click_handler(ax, df, magnitude_col, text_boxes)
+    fig.canvas.mpl_connect("button_press_event", click_handler)
+
+    # Toggle button
+    ax_toggle = plt.axes([0.81, 0.01, 0.1, 0.05])
+    btn_toggle = Button(ax_toggle, "Show/Hide All")
+    btn_toggle.on_clicked(lambda event: toggle_all(ax, df, magnitude_col, text_boxes, fig))
+
+    plt.show()
 
 # ==============================
 # 6️⃣ MAIN

@@ -87,16 +87,37 @@ class SXS_GUI(tk.Tk):
     # Tasks
     # -----------------------------
     def run_map(self):
-        excel_file = self.ask_file(DEFAULT_MAP_EXCEL, [("Excel files", "*.xlsx *.xls")])
+        # Ask for file (CSV or Excel)
+        excel_file = self.ask_file(DEFAULT_MAP_EXCEL, [("CSV or Excel", "*.csv *.xlsx *.xls")])
         if not excel_file:
             return
+
         try:
-            import create_map  # must be in src
-            df = create_map.load_measure_points(excel_file)
-            magnitude_col = self.ask_magnitude_column(df.columns, default="DN")
-            create_map.main_file(excel_file, magnitude_col)  # main_file is a refactored main() with args
+            import create_map
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror("Import Error", f"Failed to import create_map:\n{e}")
+            return
+
+        # Load the data (CSV or Excel)
+        try:
+            if excel_file.lower().endswith(".csv"):
+                import pandas as pd
+                df = pd.read_csv(excel_file)
+            else:
+                df = create_map.load_measure_points(excel_file)  # existing Excel loader
+        except Exception as e:
+            messagebox.showerror("Load Error", f"Failed to load data:\n{e}")
+            return
+
+        # Ask for magnitude column
+        magnitude_col = self.ask_magnitude_column(df.columns, default="DN")
+
+        # Run the main function
+        try:
+            create_map.main_file(excel_file, magnitude_col)
+        except Exception as e:
+            messagebox.showerror("Processing Error", f"Failed in main_file:\n{e}")
+
 
     def run_plots(self):
         folder_path = filedialog.askdirectory(initialdir=DEFAULT_PLOT_FOLDER)
