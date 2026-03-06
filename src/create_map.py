@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import pandas as pd
 from matplotlib.widgets import Button
+import sys
 
 # ==============================
 # 0️⃣ CONFIG
@@ -11,12 +12,25 @@ from matplotlib.widgets import Button
 ROOT_FOLDER = Path(__file__).parents[1]
 RAW_FOLDER = os.path.join(ROOT_FOLDER, "docs")
 
-IMG_FILE = "planol.png"
-EXCEL_FILE = "punts-mesura.xlsx"
-MAGNITUDE_COL = "DN"
+DEFAULT_IMG_FILE = "planol.png"
+DEFAULT_EXCEL_FILE = "punts-mesura.xlsx"
+DEFAULT_MAGNITUDE = "DN"
 
 # ==============================
-# 1️⃣ LOAD DATA
+# 1️⃣ INPUT FILE HANDLER
+# ==============================
+def get_input_file(default_file):
+    """Return file path: sys.argv[1] if provided, else default_file."""
+    if len(sys.argv) >= 2:
+        file_path = sys.argv[1]
+        print(f"Using file from command line: {file_path}")
+    else:
+        file_path = default_file
+        print(f"No file provided. Using default: {file_path}")
+    return file_path
+
+# ==============================
+# 2️⃣ LOAD DATA
 # ==============================
 def load_background_image(img_filename):
     img_path = os.path.join(RAW_FOLDER, img_filename)
@@ -24,20 +38,16 @@ def load_background_image(img_filename):
         raise FileNotFoundError(f"Image not found: {img_path}")
     return Image.open(img_path)
 
-
 def load_measure_points(excel_filename):
     excel_path = os.path.join(RAW_FOLDER, excel_filename)
     if not os.path.exists(excel_path):
         raise FileNotFoundError(f"Excel file not found: {excel_path}")
-    
     df = pd.read_excel(excel_path)
-    # Keep only rows that have coordinates
-    df = df.dropna(subset=["x", "y"])
-    
+    df = df.dropna(subset=["x", "y"])  # Only keep rows with coordinates
     return df
 
 # ==============================
-# 2️⃣ PLOT SETUP
+# 3️⃣ PLOT SETUP
 # ==============================
 def setup_plot(background_image):
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -51,7 +61,7 @@ def plot_points(ax, df):
         ax.plot(row["x"], row["y"], "ro")
 
 # ==============================
-# 3️⃣ CLICK HANDLER
+# 4️⃣ CLICK HANDLER
 # ==============================
 def create_click_handler(ax, df, magnitude_col, text_boxes):
     def on_click(event):
@@ -100,8 +110,11 @@ def toggle_all(ax, df, magnitude_col, text_boxes, fig):
         text_boxes[label].set_visible(not any_visible)
 
     fig.canvas.draw()   
-    
-def choose_magnitude_column(df, default="DN"):
+
+# ==============================
+# 5️⃣ MAGNITUDE SELECTION
+# ==============================
+def choose_magnitude_column(df, default=DEFAULT_MAGNITUDE):
     print("Columnes disponibles:", ", ".join(df.columns))
     user_input = input(f"Escriu el nom de la columna de magnitud (enter per defecte '{default}'): ").strip()
     
@@ -113,18 +126,20 @@ def choose_magnitude_column(df, default="DN"):
         return default
 
 # ==============================
-# 4️⃣ MAIN
+# 6️⃣ MAIN
 # ==============================
 def main():
-    img = load_background_image(IMG_FILE)
-    df = load_measure_points(EXCEL_FILE)  # load without specifying magnitude
-    magnitude_col = choose_magnitude_column(df, default="DN")
+    img_file = get_input_file(DEFAULT_IMG_FILE)
+    excel_file = get_input_file(DEFAULT_EXCEL_FILE)
+
+    img = load_background_image(img_file)
+    df = load_measure_points(excel_file)
+    magnitude_col = choose_magnitude_column(df, DEFAULT_MAGNITUDE)
 
     fig, ax = setup_plot(img)
     plot_points(ax, df)
 
-    text_boxes = {}  # define here in main
-
+    text_boxes = {}
     click_handler = create_click_handler(ax, df, magnitude_col, text_boxes)
     fig.canvas.mpl_connect("button_press_event", click_handler)
 
