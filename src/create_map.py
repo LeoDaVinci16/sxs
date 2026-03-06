@@ -1,3 +1,5 @@
+# create_map.py
+
 from pathlib import Path
 import os
 import matplotlib.pyplot as plt
@@ -10,10 +12,10 @@ import sys
 # 0️⃣ CONFIG
 # ==============================
 ROOT_FOLDER = Path(__file__).parents[1]
-RAW_FOLDER = os.path.join(ROOT_FOLDER, "docs")
+RAW_FOLDER = os.path.join(ROOT_FOLDER, "data")
 
 DEFAULT_IMG_FILE = "planol.png"
-DEFAULT_EXCEL_FILE = "punts-mesura.xlsx"
+DEFAULT_EXCEL_FILE = "punts-mesura.csv"
 DEFAULT_MAGNITUDE = "DN"
 
 # ==============================
@@ -38,11 +40,11 @@ def load_background_image(img_filename):
         raise FileNotFoundError(f"Image not found: {img_path}")
     return Image.open(img_path)
 
-def load_measure_points(excel_filename):
-    excel_path = os.path.join(RAW_FOLDER, excel_filename)
-    if not os.path.exists(excel_path):
-        raise FileNotFoundError(f"Excel file not found: {excel_path}")
-    df = pd.read_excel(excel_path)
+def load_measure_points(csv_filename):
+    csv_path = os.path.join(RAW_FOLDER, "csv", csv_filename)
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Excel file not found: {csv_path}")
+    df = pd.read_csv(csv_path, encoding="cp1252")
     df = df.dropna(subset=["x", "y"])  # Only keep rows with coordinates
     return df
 
