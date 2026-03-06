@@ -39,9 +39,10 @@ sxs/
 ## Flux de Treball
 
 1. **Entrades de Dades**
-   - Excel amb punts de mesura (`data/docs/`) – diàmetres i altres dades sobre cada punt.
+   - Excel amb punts de mesura (`docs/`) – diàmetres i altres dades sobre cada punt.
    - CSV amb mesures recollides (`data/raw/`) – dades actuals dels cabals de la fàbrica.
-   - Excel de referència/addicional (`data/raw/`) – informació complementària.
+   - CSV generats automaticament dels excels (`data/csv/`) - dades manuals dels cabals i caracteristiques de la fabrica
+   - altres Excel de referència/addicional (`docs/`) – informació complementària.
 
 2. **Processament de Dades**
    - Validació de columnes numèriques.
