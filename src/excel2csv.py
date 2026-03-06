@@ -1,43 +1,68 @@
-# excel2csv.py
+# update_docs.py
 
 from pathlib import Path
-import pandas as pd
 import os
+import pandas as pd
 
+# ==============================
+# 0️⃣ CONFIG
+# ==============================
+ROOT_FOLDER = Path(__file__).parents[1]
+DOCS_FOLDER = os.path.join(ROOT_FOLDER, "docs")
+CSV_FOLDER = os.path.join(ROOT_FOLDER, "data", "csv")  # CSVs updated here
 
-def convert_excel_to_csv(excel_path, output_folder):
-    """
-    Convert a single Excel file to CSV.
-    """
-    df = pd.read_excel(excel_path)
+# Make sure CSV_FOLDER exists
+os.makedirs(CSV_FOLDER, exist_ok=True)
 
-    csv_filename = Path(excel_path).stem + ".csv"
-    csv_path = os.path.join(output_folder, csv_filename)
+# ==============================
+# 1️⃣ LIST FILES
+# ==============================
+def list_excel_files(folder):
+    files = [f for f in os.listdir(folder) if f.lower().endswith((".xls", ".xlsx"))]
+    return files
 
+# ==============================
+# 2️⃣ LOAD AND CLEAN EXCEL
+# ==============================
+def load_excel(file_path):
+    """Load Excel file into DataFrame"""
+    df = pd.read_excel(file_path)
+    # Optional: drop completely empty rows
+    df = df.dropna(how="all")
+    # Optional: drop completely empty columns
+    df = df.dropna(axis=1, how="all")
+    return df
+
+# ==============================
+# 3️⃣ SAVE AS CSV
+# ==============================
+def save_csv(df, csv_path):
     df.to_csv(csv_path, index=False)
+    print(f"✅ Updated CSV: {csv_path}")
 
-    print(f"Converted {Path(excel_path).name} -> {csv_filename}")
+# ==============================
+# 4️⃣ UPDATE ALL FILES
+# ==============================
+def update_docs():
+    excel_files = list_excel_files(DOCS_FOLDER)
+    if not excel_files:
+        print("No Excel files found in docs/")
+        return
 
+    for excel_file in excel_files:
+        excel_path = os.path.join(DOCS_FOLDER, excel_file)
+        df = load_excel(excel_path)
+        csv_name = os.path.splitext(excel_file)[0] + ".csv"
+        csv_path = os.path.join(CSV_FOLDER, csv_name)
+        save_csv(df, csv_path)
 
-def process_folder(folder_path):
-    """
-    Convert all Excel files in a folder to CSV.
-    """
-    for filename in os.listdir(folder_path):
-
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-
-            excel_path = os.path.join(folder_path, filename)
-
-            convert_excel_to_csv(excel_path, folder_path)
-
-
+# ==============================
+# 5️⃣ MAIN
+# ==============================
 def main():
-    root_folder = Path(__file__).parents[1]
-    docs_folder = os.path.join(root_folder, "docs")
-    process_folder(docs_folder)
-    print("All Excel files converted to CSV!")
-
+    print("Updating CSV files from Excel docs...")
+    update_docs()
+    print("All CSVs are updated!")
 
 if __name__ == "__main__":
     main()

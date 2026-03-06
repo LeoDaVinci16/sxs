@@ -8,6 +8,7 @@ import sys
 # Paths
 ROOT_FOLDER = Path(__file__).parents[1]
 DOCS_FOLDER = os.path.join(ROOT_FOLDER, "docs")
+CSV_FOLDER = os.path.join(ROOT_FOLDER, "data", "csv")
 DATA_FOLDER = os.path.join(ROOT_FOLDER, "data", "raw")
 
 # Defaults
@@ -21,32 +22,31 @@ class SXS_GUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("SXS Tools GUI")
-        self.geometry("450x300")
+        self.geometry("450x400")
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="SXS Visualització", font=("Arial", 16)).pack(pady=10)
+        tk.Label(self, text="Projecte SuperSònic", font=("Inter", 20)).pack(pady=10)
 
         # Task selection
         tk.Label(self, text="Tria què vols crear:").pack()
-        tk.Button(self, text="Map", width=20, command=self.run_map).pack(pady=5)
         tk.Button(self, text="Plots", width=20, command=self.run_plots).pack(pady=5)
-        tk.Button(self, text="Sankey", width=20, command=self.run_sankey).pack(pady=5)
+        tk.Button(self, text="Euromed map", width=20, command=self.run_map).pack(pady=5)
+        tk.Button(self, text="Sankey diagram", width=20, command=self.run_sankey).pack(pady=5)
 
         # Tools section
         tk.Label(self, text="Eines addicionals:").pack(pady=10)
         tk.Button(self, text="add_date", width=20, command=self.run_add_date).pack(pady=2)
         tk.Button(self, text="excel2csv", width=20, command=self.run_excel2csv).pack(pady=2)
-        tk.Button(self, text="update_docs", width=20, command=self.run_update_docs).pack(pady=2)
-        tk.Button(self, text="Obre carpeta docs", width=20, command=self.open_docs_folder).pack(pady=5)
+        tk.Button(self, text="Obre carpeta als docs", width=20, command=self.open_docs_folder).pack(pady=5)
 
     # -----------------------------
     # Utility methods
     # -----------------------------
     def ask_file(self, default_file=None, file_types=[("All files", "*.*")]):
-        file_path = filedialog.askopenfilename(initialdir=DOCS_FOLDER, filetypes=file_types)
+        file_path = filedialog.askopenfilename(initialdir=CSV_FOLDER, filetypes=file_types)
         if not file_path and default_file:
-            file_path = os.path.join(DOCS_FOLDER, default_file)
+            file_path = os.path.join(CSV_FOLDER, default_file)
             if not os.path.exists(file_path):
                 messagebox.showerror("Error", f"Fitxer per defecte no trobat: {file_path}")
                 return None
@@ -145,9 +145,6 @@ class SXS_GUI(tk.Tk):
 
     def run_excel2csv(self):
         self.run_script("excel2csv.py")
-
-    def run_update_docs(self):
-        self.run_script("update_docs.py")
 
     def open_docs_folder(self):
         os.startfile(DOCS_FOLDER)
