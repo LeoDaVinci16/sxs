@@ -6,7 +6,6 @@ __pycache__/
 *.xlsx
 *.xls
 *.pdf
-# *.zip
 
 # Images
 *.png
