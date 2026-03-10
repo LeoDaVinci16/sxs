@@ -1,44 +1,69 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 import os
 import subprocess
 from pathlib import Path
 import sys
 
-# Paths
+# -----------------------------
+# Paths & defaults
+# -----------------------------
 ROOT_FOLDER = Path(__file__).parents[1]
 DOCS_FOLDER = os.path.join(ROOT_FOLDER, "docs")
 CSV_FOLDER = os.path.join(ROOT_FOLDER, "data", "csv")
 DATA_FOLDER = os.path.join(ROOT_FOLDER, "data", "raw")
 
-# Defaults
 DEFAULT_MAP_IMG = "planol.png"
 DEFAULT_MAP_EXCEL = "punts-mesura.xlsx"
 DEFAULT_PLOT_FOLDER = os.path.join(ROOT_FOLDER, "data", "raw")
 DEFAULT_SANKEY_FILE = "sankey_nodes.csv"
 
 
+# -----------------------------
+# Main GUI
+# -----------------------------
 class SXS_GUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("SXS Tools GUI")
-        self.geometry("450x400")
+        self.title("Supersonic Tools")
+        self.geometry("500x600")
+        self.resizable(False, False)
+        self.configure(bg="#F5F5F5")
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="Projecte SuperSònic", font=("Inter", 20)).pack(pady=10)
+        # Title
+        tk.Label(self, text="Projecte SuperSònic", font=("Inter", 24, "bold"), bg="#F5F5F5", fg="#0B5394").pack(pady=15)
 
-        # Task selection
-        tk.Label(self, text="Tria què vols crear:").pack()
-        tk.Button(self, text="Plots", width=20, command=self.run_plots).pack(pady=5)
-        tk.Button(self, text="Euromed map", width=20, command=self.run_map).pack(pady=5)
-        tk.Button(self, text="Sankey diagram", width=20, command=self.run_sankey).pack(pady=5)
+        # -----------------------------
+        # Tasks frame
+        # -----------------------------
+        tasks_frame = tk.LabelFrame(self, text="Tasques", font=("Inter", 14, "bold"), fg="#0B5394", padx=15, pady=10)
+        tasks_frame.pack(fill="x", padx=20, pady=(0,10))
 
-        # Tools section
-        tk.Label(self, text="Eines addicionals:").pack(pady=10)
-        tk.Button(self, text="add_date", width=20, command=self.run_add_date).pack(pady=2)
-        tk.Button(self, text="excel2csv", width=20, command=self.run_excel2csv).pack(pady=2)
-        tk.Button(self, text="Obre carpeta als docs", width=20, command=self.open_docs_folder).pack(pady=5)
+        btn_style = {"width": 25, "height": 2, "bg": "#4CAF50", "fg": "white", "font": ("Inter", 11, "bold")}
+
+        tk.Button(tasks_frame, text="Plots", command=self.run_plots, **btn_style).pack(pady=5)
+        tk.Button(tasks_frame, text="Euromed Map", command=self.run_map, **btn_style).pack(pady=5)
+        tk.Button(tasks_frame, text="Sankey Diagram", command=self.run_sankey, **btn_style).pack(pady=5)
+
+        # -----------------------------
+        # Tools frame
+        # -----------------------------
+        tools_frame = tk.LabelFrame(self, text="Eines addicionals", font=("Inter", 14, "bold"), fg="#0B5394", padx=15, pady=10)
+        tools_frame.pack(fill="x", padx=20, pady=(0,10))
+
+        tool_btn_style = {"width": 25, "height": 2, "bg": "#2196F3", "fg": "white", "font": ("Inter", 11, "bold")}
+
+        tk.Button(tools_frame, text="Add Date", command=self.run_add_date, **tool_btn_style).pack(pady=5)
+        tk.Button(tools_frame, text="Excel → CSV", command=self.run_excel2csv, **tool_btn_style).pack(pady=5)
+        tk.Button(tools_frame, text="Obre carpeta docs", command=self.open_docs_folder, **tool_btn_style).pack(pady=5)
+
+        # -----------------------------
+        # Status bar
+        # -----------------------------
+        self.status_var = tk.StringVar(value="Ready")
+        tk.Label(self, textvariable=self.status_var, relief="sunken", anchor="w", bg="#E0E0E0").pack(side="bottom", fill="x")
 
     # -----------------------------
     # Utility methods
@@ -55,11 +80,12 @@ class SXS_GUI(tk.Tk):
     def ask_magnitude_column(self, columns, default="DN"):
         top = tk.Toplevel(self)
         top.title("Select Magnitude Column")
-        tk.Label(top, text="Select magnitude column:").pack(pady=5)
+        top.geometry("300x200")
+        tk.Label(top, text="Select magnitude column:", font=("Inter", 12)).pack(pady=5)
 
         col_var = tk.StringVar(value=default)
         for col in columns:
-            tk.Radiobutton(top, text=col, variable=col_var, value=col).pack(anchor="w")
+            tk.Radiobutton(top, text=col, variable=col_var, value=col, font=("Inter", 11)).pack(anchor="w", padx=20)
 
         result = {}
 
@@ -67,7 +93,7 @@ class SXS_GUI(tk.Tk):
             result["column"] = col_var.get()
             top.destroy()
 
-        tk.Button(top, text="OK", command=submit).pack(pady=5)
+        tk.Button(top, text="OK", command=submit, font=("Inter", 11, "bold"), bg="#4CAF50", fg="white").pack(pady=10)
         top.grab_set()
         top.wait_window()
         return result.get("column", default)
@@ -79,15 +105,18 @@ class SXS_GUI(tk.Tk):
             messagebox.showerror("Error", f"Script no trobat: {script_path}")
             return
         try:
+            self.status_var.set(f"Running {script_name}...")
+            self.update()
             subprocess.run([sys.executable, script_path, *args], check=True)
+            self.status_var.set(f"Finished {script_name}")
         except subprocess.CalledProcessError as e:
             messagebox.showerror("Error", f"Error executant {script_name}:\n{e}")
+            self.status_var.set("Error occurred")
 
     # -----------------------------
     # Tasks
     # -----------------------------
     def run_map(self):
-        # Ask for file (CSV or Excel)
         excel_file = self.ask_file(DEFAULT_MAP_EXCEL, [("CSV or Excel", "*.csv *.xlsx *.xls")])
         if not excel_file:
             return
@@ -98,26 +127,22 @@ class SXS_GUI(tk.Tk):
             messagebox.showerror("Import Error", f"Failed to import create_map:\n{e}")
             return
 
-        # Load the data (CSV or Excel)
         try:
             if excel_file.lower().endswith(".csv"):
                 import pandas as pd
                 df = pd.read_csv(excel_file)
             else:
-                df = create_map.load_measure_points(excel_file)  # existing Excel loader
+                df = create_map.load_measure_points(excel_file)
         except Exception as e:
             messagebox.showerror("Load Error", f"Failed to load data:\n{e}")
             return
 
-        # Ask for magnitude column
         magnitude_col = self.ask_magnitude_column(df.columns, default="DN")
 
-        # Run the main function
         try:
             create_map.main_file(excel_file, magnitude_col)
         except Exception as e:
             messagebox.showerror("Processing Error", f"Failed in main_file:\n{e}")
-
 
     def run_plots(self):
         folder_path = filedialog.askdirectory(initialdir=DEFAULT_PLOT_FOLDER)
