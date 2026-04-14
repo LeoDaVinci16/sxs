@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename
+import math
 
 # ==============================
 # CONFIG
@@ -28,6 +29,15 @@ def load_measure_points(csv_filename):
     df = df.dropna(subset=["x", "y"])
     return df
     
+def get_color(val):
+    if val is None:
+        return "#6C6C6C"
+    try:
+        if math.isnan(float(val)) or float(val) == 0:
+            return "#6C6C6C"
+        return "#00F128"
+    except:
+        return "#FF2F00"
 
 def format_value(val):
     try:
@@ -107,8 +117,10 @@ class Visualizer:
         for _, row in self.df.iterrows():
             x = row["x"] * self.scale_x
             y = row["y"] * self.scale_y
-            r = 5
-            dot = self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="red", outline="")
+            r = 6
+            value = row[self.magnitude_col]
+            color = get_color(value)
+            dot = self.canvas.create_oval(x-r, y-r, x+r, y+r, fill=color, outline="")
             label_id = str(row["id"])
             self.dot_ids[dot] = label_id
             self.canvas.tag_bind(dot, "<Button-1>", self.on_dot_click)
