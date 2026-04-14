@@ -1,15 +1,19 @@
-# supersonic-vapor
+# Projecte SuperSonic (sxs)
 
-## Automated Steam Measurement Report
+## Informe automatitzat de mesures de cabal
 
 Aquest repositori conté un sistema completament automatitzat per generar informes de mesura per a les canonades de vapor d’Euromed. El flux de treball utilitza Python per processar dades CSV, Plotly per a gràfics interactius i Quarto per a la generació d’informes. El sistema admet tant informes HTML interactius per a l’anàlisi com informes estàtics preparats per a PDF per a la impressió.
 
 ## 📂 Estructura del repositori
 
 ```Bash
-vapor/
+sxs/
 │
-├─ data                     # 
+├─ data_ste                 # 
+│  ├─ docs_csv              # Fitxers editables en Excel en format CSV
+│  ├─ docs                  # Fitxers editables en Excel  
+│  └─ raw                   # Fitxers CSV en brut de campanyes de mesura
+├─ data_at                  # 
 │  ├─ docs_csv              # Fitxers editables en Excel en format CSV
 │  ├─ docs                  # Fitxers editables en Excel  
 │  └─ raw                   # Fitxers CSV en brut de campanyes de mesura
@@ -25,9 +29,11 @@ vapor/
 │  ├─ gui.py                # Codi que crea la interfície gràfica (GUI) que utilitza totes les funcions
 │  └─ points_dict.py        # Diccionari amb els noms dels punts i el seu identificador
 ├─ outputs/                 # Carpeta opcional per a PNGs o figures exportades
-├─ report_vapor.qmd         # Informe principal de Quarto (HTML + PDF opcional)
-├─ report_generated.qmd     # QMD generat dinàmicament des de Python
+├─ requirements.txt         # Per crear un enviroment amb conda o descarregar les dependencies amb git
+├─ .gitignore               # per git
+├─ run_sxs.bat              # Per obrir la gui amb windows com una apicació
 └─ README.md                # Aquest fitxer
+
 ```
 
 ## ⚡ Característiques
@@ -62,7 +68,7 @@ vapor/
 ## 🛠️ Flux de treball 
 0. Instal·lar dependències
 
-Millor instalar el "enviroment" `requirements.yml`
+Millor instalar el "enviroment" a través de l'arxiu `requirements.txt`
 
 ```bash
 pip install pandas plotly kaleido quarto
@@ -76,7 +82,7 @@ Disclaimer: No se si només kalideo i quarto son suficients!
 
 Generar csv > generar grafiques > generar informe > editar excel punts_mesura > generar i visualitzar mapa > editar excel sankey_nodes > generar i visualitzar diagrama
 
-## 🧩 Personaliotzació
+## 🧩 Personalització
 - Variables to plot: Edit the variables_to_plot list in create_report.py
 - Figure size: Adjust in create_plotly_plot() or write_image()
 - Measurement point detection: Modify the regex in point_sort_key() for custom naming schemes
