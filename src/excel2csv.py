@@ -43,7 +43,7 @@ def save_csv(df, csv_path):
 # ==============================
 # 4️⃣ UPDATE ALL FILES
 # ==============================
-def update_docs():
+def update_docs(docs_folder, csv_folder):
     excel_files = list_excel_files(DOCS_FOLDER)
     if not excel_files:
         print("No Excel files found in docs/")
@@ -56,12 +56,14 @@ def update_docs():
         csv_path = os.path.join(CSV_FOLDER, csv_name)
         save_csv(df, csv_path)
 
+
+    
 # ==============================
 # 5️⃣ MAIN
 # ==============================
 def main():
     print("Updating CSV files from Excel docs...")
-    update_docs()
+    update_docs(DOCS_FOLDER, CSV_FOLDER)
     print("All CSVs are updated!")
 
 if __name__ == "__main__":

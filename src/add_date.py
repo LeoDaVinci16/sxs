@@ -5,9 +5,8 @@ import pandas as pd
 import re
 from pathlib import Path
 
-ROOT_FOLDER = Path(__file__).parents[1]  # go up 2 levels from script
-RAW_FOLDER = os.path.join(ROOT_FOLDER, "data", "raw")
-DRY_RUN = False  # set False to actually rename files
+DEFAULT_ROOT_FOLDER = Path(__file__).parents[1]  # go up 2 levels from script
+DEFAULT_RAW_FOLDER = os.path.join(DEFAULT_ROOT_FOLDER, "data", "raw")
 
 # Regex to detect if filename is already in the correct format
 pattern_correct_name = re.compile(r"^\d{8}_\d{6}_.+\.csv$")
@@ -92,10 +91,13 @@ def process_csv_file(folder, filename, dry_run=True):
         rename_file(path, new_path)
 
 
-def main():
-    csv_files = list_csv_files(RAW_FOLDER)
+def main(folder=None, dry_run=False):
+    folder = folder or DEFAULT_RAW_FOLDER
+
+    csv_files = list_csv_files(folder)
     for f in csv_files:
-        process_csv_file(RAW_FOLDER, f, dry_run=DRY_RUN)
+        process_csv_file(folder, f, dry_run=dry_run)
+
 
 
 if __name__ == "__main__":

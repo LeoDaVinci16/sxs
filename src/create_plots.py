@@ -1,273 +1,149 @@
-# create_plots.py
-
-import os
+from pathlib import Path
 import pandas as pd
+from pandas import to_datetime
 import matplotlib.pyplot as plt
-import re
 import matplotlib.ticker as ticker
-import plotly.express as px
+import re
 
-DEFAULT_FILE = "plots_data.csv"
+# =========================
+# PATHS
+# =========================
+ROOT = Path(__file__).parents[1]
+DEFAULT_RAW_FOLDER = ROOT / "data" / "raw"
+DEFAULT_PLOT_FOLDER = ROOT / "outputs" / "plots"
 
-def get_numeric_columns(df):
-    """Return list of numeric columns in a dataframe."""
-    return df.select_dtypes(include='number').columns.tolist()
 
-def load_csv(csv_path):
-    df = pd.read_csv(csv_path, sep="\t")
-    # ---- Robust date column detection ----
+# =========================
+# UTIL
+# =========================
+def safe_filename(text: str) -> str:
+    text = re.sub(r"[^\w\-_. ]", "", text)
+    return text.replace(" ", "_")
+
+
+def parse_datetime_series(series):
+    known_formats = [
+        "%m/%d/%Y %I:%M:%S %p",  # English / US format
+        "%d/%m/%Y %H:%M:%S",     # European format
+        "%Y-%m-%d %H:%M:%S",     # ISO-like
+        ]
+    for fmt in known_formats:
+        try:
+            parsed = to_datetime(series, format=fmt, errors="raise")
+            return parsed
+        except Exception:
+            continue
+    # fallback (slower but flexible)
+    return to_datetime(series, errors="coerce", infer_datetime_format=True)
+
+
+# =========================
+# LOAD DATA
+# =========================
+def load_csv(csv_path: Path):
+    df = pd.read_csv(csv_path, sep=None, engine="python")
     date_col = next(
-        (c for c in df.columns
-         if any(p in c.lower() for p in ["date", "data", "fecha"])),
+        (c for c in df.columns if any(x in c.lower() for x in ["date", "data", "fecha"])),
         None
     )
+
     if date_col is None:
-        print(f"[WARNING] No date column found in {csv_path}")
+        print(f"[SKIP] No date column in {csv_path.name}")
         return None
-    # Convert to datetime
-    df[date_col] = pd.to_datetime(df[date_col], format="%m/%d/%Y %I:%M:%S %p", errors="coerce")
-    # Drop invalid dates
+
+    #df[date_col] = pd.to_datetime(df[date_col], errors="coerce") #old way
+    df[date_col] = parse_datetime_series(df[date_col])
     df = df.dropna(subset=[date_col])
+
     if df.empty:
-        print(f"[WARNING] No valid dates in {csv_path}")
+        print(f"[SKIP] No valid dates in {csv_path.name}")
         return None
-    df.set_index(date_col, inplace=True)
+
+    df = df.set_index(date_col)
     return df
 
-def get_point_name_from_file(csv_path):
-    filename = os.path.basename(csv_path)
-    name_no_ext = filename.rsplit(".csv", 1)[0]
-    parts = name_no_ext.split("_")
-    point_id = "_".join(parts[2:])  # everything after second underscore
-    return point_id
 
-def format_axes(ax, variable):
-    ax.set_title(f"{variable}", fontsize=16, pad=20)
-    ax.set_xlabel("Time", fontsize=12)
-    ax.set_ylabel(variable, fontsize=12)
+# =========================
+# PLOT
+# =========================
+def create_plot(df, variable, title=""):
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.plot(df.index, df[variable], linewidth=1)
+
+    ax.set_title(title or variable)
+    ax.set_xlabel("Time")
+    ax.set_ylabel(variable)
+
     ax.grid(True, linestyle="--", linewidth=0.5)
     ax.yaxis.set_major_locator(ticker.MaxNLocator(8))
-    ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M'))
-
-def add_last_date(fig, df, show_date=True):
-    if show_date and not df.empty:
-        last_day_str = df.index[-1].strftime("%d %b %Y")
-        fig.text(0.99, 0.01, last_day_str, ha="right", va="bottom", fontsize=10, color="gray")
-
-def create_plotly_plot(df, variable, csv_path):
-    """Create an interactive Plotly line plot."""
-    # Extract point name from filename
-    filename = os.path.basename(csv_path)
-    point_name = filename.rsplit(".csv",1)[0].split("_",2)[-1]
-
-    # Plotly figure
-    fig = px.line(
-        df,
-        x=df.index,
-        y=variable,
-        title=f"Punt de mesura: {point_name}",
-        labels={variable: variable, "index": "Time"}
-    )
-
-    # Optional: improve layout
-    fig.update_layout(
-        title_x=0.5,
-        height=400,   # height in pixels
-        autosize=True,    # width in pixels, adjust as needed
-        margin=dict(l=50, r=50, t=50, b=50)
-    )
 
     return fig
 
-def create_plot(df, variable, csv_path, show_date=True):
-    point_name = get_point_name_from_file(csv_path)
-    fig, ax = plt.subplots(figsize=(12, 6))
-    ax.plot(df.index, df[variable], linewidth=1)
 
-    # Titles and formatting
-    format_axes(ax, variable)
-    fig.suptitle(f"Punt de mesura: {point_name}", fontsize=12, y=0.92)
-    fig.tight_layout(rect=[0, 0.05, 1, 0.95])
-    add_last_date(fig, df, show_date)
-
-    return fig, ax
-
-def save_plot(fig, plot_folder, csv_file, variable):
-    os.makedirs(plot_folder, exist_ok=True)
-    csv_name_only = os.path.splitext(os.path.basename(csv_file))[0]
-    variable_clean = re.sub(r"[^\w\-_\. ]", "", variable).replace(" ", "_")
-    plot_name = f"{csv_name_only}_{variable_clean}.png"
-    plot_path = os.path.join(plot_folder, plot_name)
+# =========================
+# SAVE (CLEAN DESIGN)
+# =========================
+def save_plot(fig, plot_path: Path):
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(plot_path, dpi=300)
-    plt.close(fig)  # Free memory
-    return plot_path
+    plt.close(fig)
 
-""" def batch_plot(folder_path, plot_folder, variables_to_plot):
-    os.makedirs(plot_folder, exist_ok=True)
-    csv_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".csv")]
-    print(f"Found {len(csv_files)} CSV files.")
-    
-    for csv_file in csv_files:
-        csv_path = os.path.join(folder_path, csv_file)
-        print(f"\n📂 Processing: {csv_file}")
-        df = load_csv(csv_path)
-        numeric_cols = get_numeric_columns(df)
-        if not numeric_cols:
-            print("⚠️ No numeric columns. Skipping.")
-            continue
-        for variable in numeric_cols:
-            if variable not in variables_to_plot:
-                continue
-            df[variable] = pd.to_numeric(df[variable], errors="coerce").abs()
-            df_clean = df.dropna(subset=[variable])
-            fig, ax = create_plot(df_clean, variable, csv_path)
-            path = save_plot(fig, plot_folder, csv_path, variable)
-            plt.close(fig)
-            print(f"✅ Saved: {path}")
-    print("\n🎉 Batch plotting finished!") """
 
-def batch_plot(folder_path, plot_folder, variables_to_plot):
-    os.makedirs(plot_folder, exist_ok=True)
-    csv_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".csv")]
-    print(f"Found {len(csv_files)} CSV files.")
-    
+# =========================
+# BATCH PROCESS
+# =========================
+def batch_plot(folder, output_folder, variables):
+    folder = Path(folder)
+    output_folder = Path(output_folder)
+
+    csv_files = list(folder.glob("*.csv"))
+
+    print(f"CSV folder: {folder}")
+    print(f"Files found: {len(csv_files)}")
+
     for csv_file in csv_files:
-        csv_path = os.path.join(folder_path, csv_file)
-        print(f"\n📂 Processing: {csv_file}")
-        df = load_csv(csv_path)
+        print(f"\nProcessing: {csv_file.name}")
+
+        df = load_csv(csv_file)
         if df is None:
             continue
 
-        numeric_cols = get_numeric_columns(df)
-        if not numeric_cols:
-            print("⚠️ No numeric columns. Skipping.")
-            continue
+        for var in variables:
 
-        for variable in numeric_cols:
-            if variable not in variables_to_plot:
+            if var not in df.columns:
+                print(f"Missing variable: {var}")
                 continue
 
-            # Generate the filename as save_plot would do
-            csv_name_only = os.path.splitext(os.path.basename(csv_file))[0]
-            variable_clean = re.sub(r"[^\w\-_\. ]", "", variable).replace(" ", "_")
-            plot_name = f"{csv_name_only}_{variable_clean}.png"
-            plot_path = os.path.join(plot_folder, plot_name)
-
-            if os.path.exists(plot_path):
-                print(f"✅ Plot already exists, skipping: {plot_name}")
-                continue
-
-            # Convert to numeric and drop NaNs
-            df[variable] = pd.to_numeric(df[variable], errors="coerce").abs()
-            df_clean = df.dropna(subset=[variable])
-
+            df_clean = df[[var]].dropna()
             if df_clean.empty:
-                print(f"⚠️ No valid data for {variable}. Skipping.")
+                print(f"No data: {var}")
+                continue
+            filename = f"{csv_file.stem}_{safe_filename(var)}.png"
+            plot_path = output_folder / filename
+
+            if plot_path.exists():
+                print(f"Skipping (already exists): {filename}")
                 continue
 
-            # Create and save the plot
-            fig, ax = create_plot(df_clean, variable, csv_path)
-            save_plot(fig, plot_folder, csv_path, variable)
-            print(f"✅ Saved: {plot_name}")
+            fig = create_plot(df_clean, var, title=csv_file.stem)
+            save_plot(fig, plot_path)
 
-    print("\n🎉 Batch plotting finished!")
+            print(f"Saved: {filename}")
 
-""" def preview_plot(folder_path, plot_folder):
-    csv_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".csv")]
-    for i, f in enumerate(csv_files):
-        print(f"{i}: {f}")
-    file_number = int(input("\nEnter file number: "))
-    csv_path = os.path.join(folder_path, csv_files[file_number])
-    df = load_csv(csv_path)
-    numeric_cols = get_numeric_columns(df)
-    for i, col in enumerate(numeric_cols):
-        print(f"{i}: {col}")
-    var_number = int(input("\nEnter variable number: "))
-    variable = numeric_cols[var_number] 
-    df[variable] = pd.to_numeric(df[variable], errors="coerce").abs()
-    fig, ax = create_plot(df, variable, csv_path)
-    plt.show()
-    save = input("Save plot? (y/n): ").lower()
-    if save == "y":
-        path = save_plot(fig, plot_folder, csv_path, variable)
-        print(f"✅ Plot saved: {path}") """
 
-def preview_plot(csv_path, variables=None, plot_folder=None, gui=False):
-    """
-    Preview a single plot from a CSV.
-    - csv_path: full path to CSV file
-    - variables: list of variables to plot
-    - plot_folder: folder to save plots
-    - gui: if True, use GUI dialogs; if False, use CLI prompts
-    """
-
-    df = load_csv(csv_path)
-
-    # Determine variable
-    if variables is None:
-        if gui:
-            # GUI mode
-            from tkinter import simpledialog, messagebox
-            numeric_cols = get_numeric_columns(df)
-            variable = simpledialog.askstring(
-                "Select Variable",
-                "Choose variable to plot:\n" + "\n".join(numeric_cols)
-            )
-            if variable not in numeric_cols:
-                messagebox.showerror("Error", "Invalid variable selected")
-                return
-        else:
-            # CLI mode
-            numeric_cols = get_numeric_columns(df)
-            for i, col in enumerate(numeric_cols):
-                print(f"{i}: {col}")
-            var_number = int(input("\nEnter variable number: "))
-            variable = numeric_cols[var_number]
-    else:
-        variable = variables[0]
-
-    df[variable] = pd.to_numeric(df[variable], errors="coerce").abs()
-
-    # Create and show plot
-    fig, ax = create_plot(df, variable, csv_path)
-    plt.show()
-
-    # Handle saving
-    if plot_folder is not None:
-        if gui:
-            from tkinter import messagebox
-            if messagebox.askyesno("Anomena i desa", "Vols guardar aquest gràfic?"):
-                path = save_plot(fig, plot_folder, csv_path, variable)
-                messagebox.showinfo("Desat", f"✅ Gràfic guardat a: {path}")
-        else:
-            save = input("Save plot? (y/n): ").lower()
-            if save == "y":
-                path = save_plot(fig, plot_folder, csv_path, variable)
-                print(f"✅ Plot saved: {path}")
-
+# =========================
+# MAIN (CLI)
+# =========================
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    folder_path = os.path.abspath(os.path.join(script_dir, "..", "data", "raw"))
-    plot_folder = os.path.abspath(os.path.join(script_dir, "..", "outputs", "plots"))
-    os.makedirs(plot_folder, exist_ok=True)
+    variables = ["A Flow velocity [m/s]", "A Volumetric flow rate [m³/h]", "A Mass flow rate [kg/h]"]
 
-    # folder_path = r"C:\Users\ArnauCoronado\Documents_local\supersonic-at\data\raw" original path on creator computer
-    # plot_folder = r"C:\Users\ArnauCoronado\Documents_local\supersonic-at\data\plots"
+    batch_plot(
+        DEFAULT_RAW_FOLDER,
+        DEFAULT_PLOT_FOLDER,
+        variables
+    )
 
-    variables_to_plot = [
-        #'A Volumetric flow rate [m³/h]',
-        'A Flow velocity [m/s]',
-        #'A Mass flow rate [kg/h]',
-    ]
-    print("1: Batch plot all CSVs")
-    print("2: Preview and plot one CSV")
-    choice = input("Choose an option: ")
-    if choice == "1":
-        batch_plot(folder_path, plot_folder, variables_to_plot)
-    elif choice == "2":
-        preview_plot(folder_path, plot_folder)
-    else:
-        print("Invalid choice.")
 
 if __name__ == "__main__":
     main()
