@@ -1,9 +1,11 @@
 # create_tkinter.py
 
 import tkinter as tk
+from tkinter import filedialog
 from pathlib import Path
 import pandas as pd
 from PIL import Image, ImageTk
+from tkinter.filedialog import askopenfilename
 
 # ==============================
 # CONFIG
@@ -11,8 +13,7 @@ from PIL import Image, ImageTk
 ROOT_FOLDER = Path(__file__).parents[1]
 RAW_FOLDER = ROOT_FOLDER / "data"
 CSV_FOLDER = RAW_FOLDER / "docs_csv"
-
-DEFAULT_IMG_FILE = "planol.png"
+DEFAULT_IMG_FILE ="planol.png"
 DEFAULT_EXCEL_FILE = "punts-mesura.csv"
 DEFAULT_MAGNITUDE = "DN"
 
@@ -26,6 +27,7 @@ def load_measure_points(csv_filename):
     df = pd.read_csv(csv_path, on_bad_lines='skip')
     df = df.dropna(subset=["x", "y"])
     return df
+    
 
 def format_value(val):
     try:
@@ -62,9 +64,12 @@ class Visualizer:
         self.labels = {}
         self.dot_ids = {}
         self.visible = {}
-
         # Load original image
-        self.orig_image = Image.open(RAW_FOLDER / img_file)
+        path = askopenfilename(
+            title="Selecciona una imatge",
+            filetypes=[("Images", "*.png *.jpg *.jpeg *.pdf")])
+        self.orig_image = Image.open(path)
+        #self.orig_image = Image.open(RAW_FOLDER / img_file) # old version without askopenfilename
         self.orig_width, self.orig_height = self.orig_image.size
 
         # Canvas fills window
@@ -151,6 +156,7 @@ class Visualizer:
 # TEST RUN
 # ==============================
 if __name__ == "__main__":
+
     root = tk.Tk()
     root.geometry("1000x800")
     visualizer = Visualizer(root)

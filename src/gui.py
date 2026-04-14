@@ -195,7 +195,6 @@ class SXS_GUI(tk.Tk):
         except Exception as e:
             messagebox.showerror("Import Error", f"Failed to import create_tkinter:\n{e}")
             return
-
         # Load the data
         try:
             if excel_file.lower().endswith(".csv"):
@@ -206,11 +205,9 @@ class SXS_GUI(tk.Tk):
         except Exception as e:
             messagebox.showerror("Load Error", f"Failed to load data:\n{e}")
             return
-
         # Ask for magnitude column
         columns = df.columns.tolist()
         magnitude_col = getattr(self, "ask_magnitude_column", lambda cols, default="DN": default)(columns, default="DN")
-
         # Open Visualizer in a Toplevel window
         try:
             top = tk.Toplevel(self)  # use Toplevel instead of Tk
