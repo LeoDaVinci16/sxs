@@ -1,0 +1,57 @@
+# Quarto caches
+*.quarto_ipynb*
+_quarto_cache/
+_quarto_cache_html/
+
+# Quarto / Jupyter generated files
+report_generated.quarto_ipynb_*
+report_generated_files/
+report_vapor.quarto_ipynb_*
+report_vapor_files/
+
+
+# Quarto-generated HTML
+*_files/
+#*.html
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# LaTeX generated files
+*.aux
+*.log
+*.synctex.gz
+*.tex
+
+# PDFs
+*.pdf
+
+# Excel files
+#*.xlsx
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+
+# Other common caches
+*.ipynb_checkpoints/
+
+# Jupyter / Quarto cache
+.jupyter_cache/
+_quarto_cache/
+
+# HTML/PDF outputs
+#*.html
+*_files/
+pdf/report_generated_pdf.qmd
+
+# Python cache
+__pycache__/
+*.pyc
+/.quarto/
+**/*.quarto_ipynb
