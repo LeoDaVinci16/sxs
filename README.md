@@ -9,17 +9,14 @@ Aquest repositori conté un sistema completament automatitzat per generar inform
 ```Bash
 sxs/
 │
-├─ data_ste                 # 
-│  ├─ docs_csv              # Fitxers editables en Excel en format CSV
-│  ├─ docs                  # Fitxers editables en Excel  
-│  └─ raw                   # Fitxers CSV en brut de campanyes de mesura
-├─ data_at                  # 
-│  ├─ docs_csv              # Fitxers editables en Excel en format CSV
-│  ├─ docs                  # Fitxers editables en Excel  
+├─ data                     # Dades de l'usuari 
+│  ├─ planol                # Planol de la fabrica
+│  ├─ punts                 # Punts de mesura 
+│  ├─ sankey                # Nodes del diagrama de sankey  
 │  └─ raw                   # Fitxers CSV en brut de campanyes de mesura
 ├─ src/                     # Scripts de Python
 │  ├─ add_date.py           # Funcions per afegir dates als noms dels fitxers en brut
-│  ├─ create_map.py         # Funcions per crear el mapa d’Euromed
+│  ├─ config.py             # Distribució de les carpetes de "data"
 │  ├─ create_plots.py       # Funcions per carregar CSVs i generar gràfics interactius/estàtics
 │  ├─ create_report_html.py # Funcions per crear l’informe en format HTML
 │  ├─ create_report_pdf.py  # Funcions per crear l’informe en format PDF
