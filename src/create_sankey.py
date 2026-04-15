@@ -7,18 +7,7 @@ import itertools
 import os
 from datetime import datetime
 import sys
-
-# ==============================
-# 0️⃣ FILE INPUT HANDLER
-# ==============================
-def get_input_file(default_file):
-    """Return file path: sys.argv[1] if exists, otherwise default_file."""
-    if len(sys.argv) >= 2:
-        file_path = sys.argv[1]
-    else:
-        file_path = default_file
-        print(f"No file provided. Using default: {file_path}")
-    return file_path
+from config import DATA_PLANOL, DATA_PUNTS, DATA_RAW, DATA_SANKEY, OUTPUT_PLOTS, sankey_at, sankey_ste
 
 # ==============================
 # 1️⃣ LOAD DATA
@@ -29,24 +18,19 @@ def load_file(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
 
     ext = os.path.splitext(file_path)[1].lower()
+    print(ext)
     if ext == ".csv":
         df = pd.read_csv(file_path)
     elif ext in [".xls", ".xlsx"]:
         df = pd.read_excel(file_path)
     else:
         raise ValueError(f"Unsupported file type: {ext}")
-
-    numeric_cols = df.select_dtypes(include="number").columns.tolist()
-    if not numeric_cols:
-        raise RuntimeError(f"No numeric columns found in file: {file_path}")
-
-    return df, file_path, numeric_cols
+    return df
 
 def choose_magnitude_column(df, default="cabal"):
     """Prompt user to select magnitude column, default if empty or invalid."""
     print("Columnes disponibles:", ", ".join(df.columns))
     user_input = input(f"Escriu el nom de la columna de magnitud (enter per defecte '{default}'): ").strip()
-    
     if user_input and user_input in df.columns:
         return user_input
     else:
@@ -127,19 +111,27 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
 # ==============================
 # 3️⃣ MAIN SANKEY FUNCTION
 # ==============================
-def main_sankey(df, magnitude_col, title="", file_path=None):
+def main_sankey(magnitude_col, title="", file_path=None):
+    df = load_file(file_path)
     validate_sankey_df(df, "source", "target", magnitude_col)
     df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
     link_colors = generate_link_colors(len(df_prepared))
     fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
     fig.show()
 
+def columnes_disponibles(df):
+    print("Columnes disponibles:", ", ".join(df.columns))
+    return df.columns
+
+
+def main():
+    main_sankey(magnitude_col="cabal m3h", 
+                title="Estudi dels cabals", 
+                file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-at.csv"
+    )
+
 # ==============================
 # 4️⃣ ENTRY POINT
 # ==============================
 if __name__ == "__main__":
-    DEFAULT_FILE = os.path.join("data", "docs_csv", "sankey_nodes.csv")
-    file_path = get_input_file(DEFAULT_FILE)
-    df, file_path, numeric_cols = load_file(file_path)
-    magnitude_col = choose_magnitude_column(df)
-    main_sankey(df, magnitude_col=magnitude_col, title="Estudi dels cabals", file_path=file_path)
+    main()

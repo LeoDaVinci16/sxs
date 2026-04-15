@@ -4,12 +4,13 @@ import os
 import subprocess
 from create_plots import batch_plot
 import re
+from pathlib import Path
 
+ROOT = Path(__file__).parents[1]
 
-# Configuration
-csv_folder = "data/raw"
-plot_folder = "outputs/plots"
-qmd_file = "report_generated_pdf.qmd"
+csv_folder = ROOT / "data" / "raw"
+plot_folder = ROOT / "outputs" / "plots"
+qmd_file = ROOT / "outputs" / "report_generated_pdf.qmd"
 variables_to_plot = ["A Flow velocity [m/s]"]
 
 # Ensure output folder exists

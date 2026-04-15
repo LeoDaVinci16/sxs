@@ -4,9 +4,7 @@ import os
 import pandas as pd
 import re
 from pathlib import Path
-
-DEFAULT_ROOT_FOLDER = Path(__file__).parents[1]  # go up 2 levels from script
-DEFAULT_RAW_FOLDER = os.path.join(DEFAULT_ROOT_FOLDER, "data", "raw")
+from config import DATA_RAW
 
 # Regex to detect if filename is already in the correct format
 pattern_correct_name = re.compile(r"^\d{8}_\d{6}_.+\.csv$")
@@ -92,13 +90,11 @@ def process_csv_file(folder, filename, dry_run=True):
 
 
 def main(folder=None, dry_run=False):
-    folder = folder or DEFAULT_RAW_FOLDER
+    folder = folder or DATA_RAW
 
     csv_files = list_csv_files(folder)
     for f in csv_files:
         process_csv_file(folder, f, dry_run=dry_run)
-
-
 
 if __name__ == "__main__":
     main()

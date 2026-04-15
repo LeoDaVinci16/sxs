@@ -3,16 +3,7 @@
 from pathlib import Path
 import os
 import pandas as pd
-
-# ==============================
-# 0️⃣ CONFIG
-# ==============================
-ROOT_FOLDER = Path(__file__).parents[1]
-DOCS_FOLDER = os.path.join(ROOT_FOLDER, "data", "docs")
-CSV_FOLDER = os.path.join(ROOT_FOLDER, "data", "docs_csv")  # CSVs updated here
-
-# Make sure CSV_FOLDER exists
-os.makedirs(CSV_FOLDER, exist_ok=True)
+from config import DATA_PLANOL, DATA_PUNTS, DATA_RAW, DATA_SANKEY, OUTPUT_PLOTS
 
 # ==============================
 # 1️⃣ LIST FILES
@@ -25,12 +16,9 @@ def list_excel_files(folder):
 # 2️⃣ LOAD AND CLEAN EXCEL
 # ==============================
 def load_excel(file_path):
-    """Load Excel file into DataFrame"""
     df = pd.read_excel(file_path)
-    # Optional: drop completely empty rows
-    df = df.dropna(how="all")
-    # Optional: drop completely empty columns
-    df = df.dropna(axis=1, how="all")
+    df = df.dropna(how="all")           # Optional: drop completely empty rows
+    df = df.dropna(axis=1, how="all")   # Optional: drop completely empty columns
     return df
 
 # ==============================
@@ -38,22 +26,22 @@ def load_excel(file_path):
 # ==============================
 def save_csv(df, csv_path):
     df.to_csv(csv_path, index=False)
-    print(f"✅ Updated CSV: {csv_path}")
+    print(f"✅ CSVs actualitzats: {csv_path}")
 
 # ==============================
 # 4️⃣ UPDATE ALL FILES
 # ==============================
 def update_docs(docs_folder, csv_folder):
-    excel_files = list_excel_files(DOCS_FOLDER)
+    excel_files = list_excel_files(docs_folder)
     if not excel_files:
-        print("No Excel files found in docs/")
+        print("No s'han trobat documents d'excel (xlsx)")  
         return
-
+    
     for excel_file in excel_files:
-        excel_path = os.path.join(DOCS_FOLDER, excel_file)
+        excel_path = os.path.join(docs_folder, excel_file)
         df = load_excel(excel_path)
         csv_name = os.path.splitext(excel_file)[0] + ".csv"
-        csv_path = os.path.join(CSV_FOLDER, csv_name)
+        csv_path = os.path.join(csv_folder, csv_name)
         save_csv(df, csv_path)
 
 
@@ -61,10 +49,26 @@ def update_docs(docs_folder, csv_folder):
 # ==============================
 # 5️⃣ MAIN
 # ==============================
-def main():
+def main(folder=None):
     print("Updating CSV files from Excel docs...")
-    update_docs(DOCS_FOLDER, CSV_FOLDER)
+    folder = folder or docs_folder
+    update_docs(docs_folder, csv_folder)
     print("All CSVs are updated!")
+
+
+# ==============================
+# 5️⃣ MAIN
+# ==============================
+def main(docs_folder=None, csv_folder=None):
+    docs_folder = docs_folder or DATA_PUNTS
+    csv_folder = csv_folder or DATA_RAW
+
+    print(f"📂 Docs folder: {docs_folder}")
+    print(f"📂 Output CSV folder: {csv_folder}\n")
+
+    update_docs(docs_folder, csv_folder)
+
+    print("\n✅ All CSVs updated!")
 
 if __name__ == "__main__":
     main()

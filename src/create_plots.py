@@ -4,13 +4,8 @@ from pandas import to_datetime
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import re
+from config import DATA_RAW, OUTPUT_PLOTS
 
-# =========================
-# PATHS
-# =========================
-ROOT = Path(__file__).parents[1]
-DEFAULT_RAW_FOLDER = ROOT / "data" / "raw"
-DEFAULT_PLOT_FOLDER = ROOT / "outputs" / "plots"
 
 
 # =========================
@@ -135,12 +130,12 @@ def batch_plot(folder, output_folder, variables):
 # =========================
 # MAIN (CLI)
 # =========================
-def main():
-    variables = ["A Flow velocity [m/s]", "A Volumetric flow rate [m³/h]", "A Mass flow rate [kg/h]"]
+def main(variables=None):
+    variables = ["A Flow velocity [m/s]"]
 
     batch_plot(
-        DEFAULT_RAW_FOLDER,
-        DEFAULT_PLOT_FOLDER,
+        DATA_RAW,
+        OUTPUT_PLOTS,
         variables
     )
 
