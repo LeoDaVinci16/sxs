@@ -13,11 +13,9 @@ def list_csv_files(folder):
     """List all CSV files in a folder."""
     return [f for f in os.listdir(folder) if f.endswith(".csv")]
 
-
 def is_correct_format(filename):
     """Check if the filename matches the correct pattern."""
     return pattern_correct_name.match(filename)
-
 
 def read_csv_safe(filepath):
     """Read CSV with tab separator, return None on error."""
@@ -27,7 +25,6 @@ def read_csv_safe(filepath):
         print(f"Failed to read {os.path.basename(filepath)}: {e}")
         return None
 
-
 def detect_date_column(df):
     """Find a column that looks like a date, return None if not found."""
     for c in df.columns:
@@ -36,12 +33,10 @@ def detect_date_column(df):
                 return c
     return None
 
-
 def extract_datetime(df, date_col):
     """Get the first datetime from the date column and return date_str and time_str."""
     first_date = pd.to_datetime(df[date_col].dropna().iloc[0])
     return first_date.strftime("%Y%m%d"), first_date.strftime("%H%M%S")
-
 
 def extract_point_id(filename):
     """Extract the point ID from the filename using regex or fallback to basename."""
@@ -52,7 +47,6 @@ def build_new_filename(date_str, time_str, point_id):
     """Build new filename in the format: YYYYMMDD_HHMMSS_pointID.csv"""
     return f"{date_str}_{time_str}_{point_id}.csv"
 
-
 def rename_file(old_path, new_path):
     """Rename a file if it doesn’t exist yet."""
     if os.path.exists(new_path):
@@ -60,7 +54,6 @@ def rename_file(old_path, new_path):
         return
     os.rename(old_path, new_path)
     print(f"Renamed {os.path.basename(old_path)} -> {os.path.basename(new_path)}")
-
 
 def process_csv_file(folder, filename, dry_run=True):
     """Process a single CSV file: read, detect date, generate new name, rename."""
@@ -88,10 +81,8 @@ def process_csv_file(folder, filename, dry_run=True):
     else:
         rename_file(path, new_path)
 
-
 def main(folder=None, dry_run=False):
     folder = folder or DATA_RAW
-
     csv_files = list_csv_files(folder)
     for f in csv_files:
         process_csv_file(folder, f, dry_run=dry_run)

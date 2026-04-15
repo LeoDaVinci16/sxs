@@ -7,22 +7,14 @@ import pandas as pd
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename
 import math
+from config import DATA_PUNTS, planol_at, planol_ste, punts_at, punts_ste
 
-# ==============================
-# CONFIG
-# ==============================
-ROOT_FOLDER = Path(__file__).parents[1]
-RAW_FOLDER = ROOT_FOLDER / "data"
-CSV_FOLDER = RAW_FOLDER / "docs_csv"
-DEFAULT_IMG_FILE ="planol.png"
-DEFAULT_EXCEL_FILE = "punts-mesura.csv"
-DEFAULT_MAGNITUDE = "DN"
 
 # ==============================
 # HELPER FUNCTIONS
 # ==============================
 def load_measure_points(csv_filename):
-    csv_path = CSV_FOLDER / csv_filename
+    csv_path = csv_filename
     if not csv_path.exists():
         raise FileNotFoundError(f"CSV file not found: {csv_path}")
     df = pd.read_csv(csv_path, on_bad_lines='skip')
@@ -67,19 +59,25 @@ class DraggableLabel:
 # VISUALIZER
 # ==============================
 class Visualizer:
-    def __init__(self, root, img_file=DEFAULT_IMG_FILE, csv_file=DEFAULT_EXCEL_FILE, magnitude_col=DEFAULT_MAGNITUDE):
+    def __init__(self, root, img_file=planol_at, csv_file=punts_at, magnitude_cols=["OD mm", "mass flow rate m3h", "Flow velocity ms"]):
         self.root = root
-        self.magnitude_col = magnitude_col
+        self.magnitude_cols = magnitude_cols
+        
         self.df = load_measure_points(csv_file)
+
+        missing = [c for c in self.magnitude_cols if c not in self.df.columns]
+        if missing:
+            raise ValueError(f"Aquesta magnitud no existeix: {missing}")
+        
         self.labels = {}
         self.dot_ids = {}
         self.visible = {}
         # Load original image
-        path = askopenfilename(
-            title="Selecciona una imatge",
-            filetypes=[("Images", "*.png *.jpg *.jpeg *.pdf")])
-        self.orig_image = Image.open(path)
-        #self.orig_image = Image.open(RAW_FOLDER / img_file) # old version without askopenfilename
+        #path = askopenfilename(
+        #    title="Selecciona una imatge",
+        #    filetypes=[("Images", "*.png *.jpg *.jpeg *.pdf")])
+        #self.orig_image = Image.open(path)
+        self.orig_image = Image.open(img_file) # old version without askopenfilename
         self.orig_width, self.orig_height = self.orig_image.size
 
         # Canvas fills window
@@ -87,12 +85,36 @@ class Visualizer:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.bind("<Configure>", self.on_resize)
 
-        # Create labels
+        """# Create labels
         for _, row in self.df.iterrows():
             label_id = str(row["id"])
             value = format_value(row[self.magnitude_col])
             lbl = tk.Label(root, text=f"{label_id}\n{self.magnitude_col}={value}",
                            bg="white", font=("Arial", 10), bd=1, relief="solid")
+            DraggableLabel(lbl)
+            self.labels[label_id] = lbl
+            self.visible[label_id] = False """
+        
+        for _, row in self.df.iterrows():
+            label_id = str(row["id"])
+
+            values_text = "\n".join(
+                f"{col}: {format_value(row[col])}"
+                for col in self.magnitude_cols
+            )
+
+            lbl = tk.Label(
+                root,
+                text=f"{label_id}\n{values_text}",
+                bg="white",
+                font=("Arial", 9),
+                bd=1,
+                relief="solid",
+                justify="left",
+                padx=5,
+                pady=3
+            )
+
             DraggableLabel(lbl)
             self.labels[label_id] = lbl
             self.visible[label_id] = False
@@ -118,7 +140,7 @@ class Visualizer:
             x = row["x"] * self.scale_x
             y = row["y"] * self.scale_y
             r = 6
-            value = row[self.magnitude_col]
+            value = row[self.magnitude_cols]
             color = get_color(value)
             dot = self.canvas.create_oval(x-r, y-r, x+r, y+r, fill=color, outline="")
             label_id = str(row["id"])
@@ -164,11 +186,11 @@ class Visualizer:
                         lbl.place(x=x, y=y)
                         self.visible[label_id] = True
 
+
 # ==============================
 # TEST RUN
 # ==============================
 if __name__ == "__main__":
-
     root = tk.Tk()
     root.geometry("1000x800")
     visualizer = Visualizer(root)

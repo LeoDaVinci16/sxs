@@ -26,12 +26,12 @@ def load_excel(file_path):
 # ==============================
 def save_csv(df, csv_path):
     df.to_csv(csv_path, index=False)
-    print(f"✅ CSVs actualitzats: {csv_path}")
+    print(f"CSVs actualitzats: {csv_path}")
 
 # ==============================
 # 4️⃣ UPDATE ALL FILES
 # ==============================
-def update_docs(docs_folder, csv_folder):
+def update_docs(docs_folder):
     excel_files = list_excel_files(docs_folder)
     if not excel_files:
         print("No s'han trobat documents d'excel (xlsx)")  
@@ -41,34 +41,20 @@ def update_docs(docs_folder, csv_folder):
         excel_path = os.path.join(docs_folder, excel_file)
         df = load_excel(excel_path)
         csv_name = os.path.splitext(excel_file)[0] + ".csv"
-        csv_path = os.path.join(csv_folder, csv_name)
+        csv_path = os.path.join(docs_folder, csv_name)
         save_csv(df, csv_path)
 
 
-    
-# ==============================
-# 5️⃣ MAIN
-# ==============================
-def main(folder=None):
-    print("Updating CSV files from Excel docs...")
-    folder = folder or docs_folder
-    update_docs(docs_folder, csv_folder)
-    print("All CSVs are updated!")
-
 
 # ==============================
-# 5️⃣ MAIN
+# 5️⃣ MAIN default
 # ==============================
-def main(docs_folder=None, csv_folder=None):
-    docs_folder = docs_folder or DATA_PUNTS
-    csv_folder = csv_folder or DATA_RAW
+def main(docs_folder_path):
+    print(f"📂 Convertint arxius de la carpeta: {docs_folder_path}")
+    update_docs(docs_folder_path)
+    print("✅ Tots els CSV s'han actualitzat!\n")
 
-    print(f"📂 Docs folder: {docs_folder}")
-    print(f"📂 Output CSV folder: {csv_folder}\n")
-
-    update_docs(docs_folder, csv_folder)
-
-    print("\n✅ All CSVs updated!")
 
 if __name__ == "__main__":
-    main()
+    main(docs_folder_path=DATA_PUNTS)
+    main(docs_folder_path=DATA_SANKEY)
