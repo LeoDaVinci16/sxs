@@ -7,7 +7,7 @@ class SimpleGUI(tk.Tk):
         super().__init__()
 
         self.title("SXS Tools")
-        self.geometry("300x200")
+        self.geometry("300x240")
         self.resizable(False, False)
 
         self._build_ui()
@@ -33,11 +33,20 @@ class SimpleGUI(tk.Tk):
             command=lambda: controller.run_map(self)
         ).pack(pady=5)
 
+        # NEW: Preview plot button
         tk.Button(
             self,
-            text="Batch Plots",
+            text="Preview Plot",
             width=25,
-            command=lambda: controller.run_plots(self)
+            command=lambda: controller.run_preview_plot(self)
+        ).pack(pady=5)
+
+        # RENAMED: Batch plots
+        tk.Button(
+            self,
+            text="Batch Plots (Folder)",
+            width=25,
+            command=lambda: controller.run_batch_plots_folder(self)
         ).pack(pady=5)
 
 

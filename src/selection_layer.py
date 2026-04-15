@@ -7,7 +7,12 @@ import create_sankey
 import create_tkinter
 import create_plots
 
-from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS
 
 
 # =========================================================
@@ -26,6 +31,34 @@ def ask_folder(initial_dir, title="Select folder"):
         initialdir=initial_dir,
         title=title
     )
+
+def ask_file_from_list(root, files, title="Select file"):
+    top = tk.Toplevel(root)
+    top.title(title)
+    top.geometry("300x400")
+
+    tk.Label(top, text="Select a CSV file:").pack(pady=5)
+
+    var = tk.StringVar(value=files[0])
+
+    lb = tk.Listbox(top)
+    lb.pack(fill="both", expand=True)
+
+    for f in files:
+        lb.insert(tk.END, f)
+
+    def submit():
+        selection = lb.curselection()
+        if selection:
+            var.set(files[selection[0]])
+        top.destroy()
+
+    tk.Button(top, text="OK", command=submit).pack(pady=5)
+
+    top.grab_set()
+    root.wait_window(top)
+
+    return var.get()
 
 
 # =========================================================
@@ -141,7 +174,7 @@ def run_map(root):
 # =========================================================
 # PLOTS
 # =========================================================
-def run_plots(root):
+def run_preview_plot(root):
     folder = ask_folder(DATA_RAW, "Select folder with CSVs")
 
     if not folder:
@@ -150,14 +183,79 @@ def run_plots(root):
     files = [f for f in os.listdir(folder) if f.endswith(".csv")]
 
     if not files:
-        messagebox.showerror("Error", "No CSV files found")
+        messagebox.showerror("Error", "No CSVs found")
         return
 
-    sample_df = pd.read_csv(os.path.join(folder, files[0]))
+    file = ask_file_from_list(root, files, title="Select CSV to plot")
+
+    if not file:
+        return
+
+    file_path = os.path.join(folder, file)
+
+    df = create_plots.load_csv(file_path)
+
+    if df is None:
+        messagebox.showerror("Error", "Could not load file")
+        return
+
+    cols = ask_magnitude_columns(root, df.columns, "Select magnitudes")
+
+    if not cols:
+        return
+
+    # ONE AT A TIME PREVIEW
+    for col in cols:
+        fig = create_plots.plot_preview_plot(file_path, col)
+
+        if fig is not None:
+            show_preview_window(root, fig, file_path, col)
+
+def show_preview_window(root, fig, csv_path, variable):
+    win = tk.Toplevel(root)
+    win.title(f"Preview: {variable}")
+
+    canvas = FigureCanvasTkAgg(fig, master=win)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
+
+    def save():
+        filename = f"{Path(csv_path).stem}_{variable}.png"
+        output_path = Path(OUTPUT_PLOTS) / filename
+        fig.savefig(output_path, dpi=300)
+        messagebox.showinfo("Saved", f"Saved to:\n{output_path}")
+
+    def discard():
+        win.destroy()
+
+    btn_frame = tk.Frame(win)
+    btn_frame.pack(pady=10)
+
+    tk.Button(btn_frame, text="Save", command=save).pack(side="left", padx=5)
+    tk.Button(btn_frame, text="Discard", command=discard).pack(side="left", padx=5)
+
+def run_batch_plots_folder(root):
+    folder = ask_folder(DATA_RAW, "Select folder with CSVs")
+
+    if not folder:
+        return
+
+    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+
+    if not files:
+        messagebox.showerror("Error", "No s'han trobat CSVs")
+        return
+
+    sample_path = os.path.join(folder, files[0])
+    sample_df = create_plots.load_csv(sample_path)
+
+    if sample_df is None:
+        messagebox.showerror("Error", "Could not load sample file")
+        return
 
     cols = ask_magnitude_columns(root, sample_df.columns, "Plot magnitudes")
 
     if not cols:
         return
 
-    create_plots.batch_plot(folder, variables=cols)
+    create_plots.batch_plot(folder, OUTPUT_PLOTS, variables=cols)

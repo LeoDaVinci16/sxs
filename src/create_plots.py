@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import re
 from config import DATA_RAW, OUTPUT_PLOTS
+file = DATA_RAW / "20260316_134917_STE-05.csv"
 
 
 
@@ -29,14 +30,21 @@ def parse_datetime_series(series):
         except Exception:
             continue
     # fallback (slower but flexible)
-    return to_datetime(series, errors="coerce", infer_datetime_format=True)
+    return to_datetime(series, errors="coerce")
 
 
 # =========================
 # LOAD DATA
 # =========================
-def load_csv(csv_path: Path):
-    df = pd.read_csv(csv_path, sep=None, engine="python")
+def load_csv(csv_path):
+    csv_path = Path(csv_path)
+    # df = pd.read_csv(csv_path, sep="\t", engine="python")
+    df = pd.read_csv(
+        csv_path,
+        sep="\t",
+        engine="python"
+    )
+    df.columns = df.columns.astype(str).str.strip()
     date_col = next(
         (c for c in df.columns if any(x in c.lower() for x in ["date", "data", "fecha"])),
         None
@@ -84,6 +92,26 @@ def save_plot(fig, plot_path: Path):
     fig.savefig(plot_path, dpi=300)
     plt.close(fig)
 
+# =========================
+# Previsualitza plot
+# =========================
+def plot_preview_plot(csv_path, variable: str):
+    csv_path = Path(csv_path)
+
+    df = load_csv(csv_path)
+    if df is None:
+        return None
+
+    if variable not in df.columns:
+        return None
+
+    df_clean = df[[variable]].dropna()
+    if df_clean.empty:
+        return None
+
+    fig = create_plot(df_clean, variable, title=csv_path.stem)
+
+    return fig
 
 # =========================
 # BATCH PROCESS
