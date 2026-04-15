@@ -111,7 +111,7 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
 # ==============================
 # 3️⃣ MAIN SANKEY FUNCTION
 # ==============================
-def main_sankey(magnitude_col, title="", file_path=None):
+def main_sankey(file_path=None, magnitude_col=None, title=""):
     df = load_file(file_path)
     validate_sankey_df(df, "source", "target", magnitude_col)
     df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
@@ -125,9 +125,10 @@ def columnes_disponibles(df):
 
 
 def main():
-    main_sankey(magnitude_col="cabal m3h", 
+    main_sankey(file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-at.csv", 
+                magnitude_col="cabal m3h", 
                 title="Estudi dels cabals", 
-                file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-at.csv"
+
     )
 
 # ==============================

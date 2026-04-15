@@ -14,7 +14,7 @@ from config import DATA_PUNTS, planol_at, planol_ste, punts_at, punts_ste
 # HELPER FUNCTIONS
 # ==============================
 def load_measure_points(csv_filename):
-    csv_path = csv_filename
+    csv_path = Path(csv_filename)
     if not csv_path.exists():
         raise FileNotFoundError(f"CSV file not found: {csv_path}")
     df = pd.read_csv(csv_path, on_bad_lines='skip')
@@ -140,7 +140,7 @@ class Visualizer:
             x = row["x"] * self.scale_x
             y = row["y"] * self.scale_y
             r = 6
-            value = row[self.magnitude_cols]
+            value = row[self.magnitude_cols[0]]
             color = get_color(value)
             dot = self.canvas.create_oval(x-r, y-r, x+r, y+r, fill=color, outline="")
             label_id = str(row["id"])
