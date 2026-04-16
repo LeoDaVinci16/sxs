@@ -1,6 +1,6 @@
 <p align="center">
-  <svg width="650" height="270" viewBox="0 0 650 270" xmlns="http://www.w3.org/2000/svg">
-    <text x="50%" y="0" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF" style="white-space: pre;">
+  <svg width="650" height="280" viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+    <text x="50%" y="0" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF">
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠟⢫⡿⠋⠀⡀⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
