@@ -2,18 +2,13 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import pandas as pd
 import os
-
 import create_sankey
 import create_tkinter
 import create_plots
-
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS
-
+from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, DATA_PLANOL
 
 # =========================================================
 # FILE / FOLDER HELPERS
@@ -59,7 +54,6 @@ def ask_file_from_list(root, files, title="Select file"):
     root.wait_window(top)
 
     return var.get()
-
 
 # =========================================================
 # MULTI COLUMN SELECTOR (CHECKBOXES)
@@ -109,15 +103,15 @@ def ask_magnitude_columns(root, columns, title="Select columns"):
 
     return result["cols"]
 
-
 # =========================================================
 # SANKEY
 # =========================================================
 def run_sankey(root):
+    run_excel2csv()
     file_path = ask_file(
         DATA_SANKEY,
         "Select Sankey file",
-        [("CSV/Excel", "*.csv *.xlsx *.xls")]
+        [("All files", "*.*")]
     )
 
     if not file_path:
@@ -137,15 +131,24 @@ def run_sankey(root):
         magnitude_col=cols[0]
     )
 
-
 # =========================================================
 # MAP (MULTI MAGNITUDE SUPPORT)
 # =========================================================
 def run_map(root):
+    map_file = ask_file(
+        DATA_PLANOL,
+        "Tria una imatge de fons",
+        [("All files", "*.*")]
+    )
+
+    if not map_file:
+        return
+    
+
     file_path = ask_file(
         DATA_PUNTS,
-        "Select Map file",
-        [("CSV/Excel", "*.csv *.xlsx *.xls")]
+        "Arxiu dels punts de mesura",
+        [("All files", "*.*")]
     )
 
     if not file_path:
@@ -166,10 +169,10 @@ def run_map(root):
 
     create_tkinter.Visualizer(
         top,
+        img_file=map_file,
         csv_file=file_path,
         magnitude_cols=cols
     )
-
 
 # =========================================================
 # PLOTS
@@ -224,9 +227,11 @@ def show_preview_window(root, fig, csv_path, variable):
         output_path = Path(OUTPUT_PLOTS) / filename
         fig.savefig(output_path, dpi=300)
         messagebox.showinfo("Saved", f"Saved to:\n{output_path}")
+        plt.close(fig)
 
     def discard():
         win.destroy()
+        plt.close(fig)
 
     btn_frame = tk.Frame(win)
     btn_frame.pack(pady=10)
@@ -259,3 +264,21 @@ def run_batch_plots_folder(root):
         return
 
     create_plots.batch_plot(folder, OUTPUT_PLOTS, variables=cols)
+
+def run_excel2csv():
+        import subprocess       
+        subprocess.run(["python", "excel2csv.py"])
+
+def main(func):
+    root = tk.Tk()
+    root.withdraw()
+    root.protocol("WM_DELETE_WINDOW", root.destroy)
+    root.after(0, lambda: func(root))
+    root.mainloop()
+    plt.close('all')
+    print("GUI done, script exiting")   # <- add this line
+
+if __name__ == "__main__":
+    main(run_preview_plot)
+
+### functions: run_sankey, run_map, run_preview_plot, run_batch_plots_folder

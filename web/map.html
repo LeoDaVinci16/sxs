@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Factory Measurement Map</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f0f0f0;
+    }
+    .map-container {
+      position: relative;
+      display: inline-block;
+    }
+    #factory-map {
+      width: 100%;
+      max-width: 1600px;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    .point {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #00F128;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      border: 1px solid #008000;
+    }
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      max-width: 300px;
+      font-size: 12px;
+      display: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Factory measurement map (click points)</h2>
+  <p>Image: <strong>planol-at.png</strong></p>
+
+  <div class="map-container">
+    <img id="factory-map" src="planol-at.png" alt="Factory layout">
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <script src="js/points.js"></script>
+
+  <script>
+    // Debug: show points and basic interaction
+    window.addEventListener("load", () => {
+      const map = document.getElementById("factory-map");
+      const mapRect = map.getBoundingClientRect();
+
+      console.log("Image size:", map.naturalWidth, "x", map.naturalHeight);
+      console.log("points array:", points);
+
+      // Just for testing, draw a DIV in the top‑right
+      const test = document.createElement("div");
+      test.style.position = "fixed";
+      test.style.top = "10px";
+      test.style.right = "10px";
+      test.style.background = "red";
+      test.style.color = "white";
+      test.style.padding = "10px";
+      test.style.zIndex = "1000";
+      test.textContent = "JS loaded";
+      document.body.appendChild(test);
+
+      // If points are undefined, stop
+      if (!points || points.length === 0) {
+        alert("No points! Check punts-mesura-at.csv and snippet.py");
+        return;
+      }
+
+      points.forEach(point => {
+        console.log("Point:", point);
+
+        const x = mapRect.left + (point.x * mapRect.width  / map.naturalWidth);
+        const y = mapRect.top  + (point.y * mapRect.height / map.naturalHeight);
+
+        const dot = document.createElement("div");
+        dot.className = "point";
+        dot.style.left = x + "px";
+        dot.style.top  = y + "px";
+        dot.style.background = "red";   // make it obvious
+
+        // show ID on click
+        dot.addEventListener("click", (e) => {
+          const t = document.getElementById("tooltip");
+          t.innerHTML = `<b>ID: ${point.id}</b><br>` +
+                        `<b>planta: ${point.planta}</b><br>` +
+                        "OD mm: " + point["OD mm"] + "<br>" +
+                        "Flow velocity ms: " + point["Flow velocity ms"];
+          t.style.left = (e.clientX + 10) + "px";
+          t.style.top  = (e.clientY + 10) + "px";
+          t.style.display = "block";
+          e.stopPropagation();
+        });
+
+        document.body.appendChild(dot);
+      });
+
+      document.addEventListener("click", (e) => {
+        const t = document.getElementById("tooltip");
+        if (!t.contains(e.target) && !e.target.classList.contains("point")) {
+          t.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+
+    window.addEventListener("load", updatePoints);
+    window.addEventListener("resize", updatePoints);
+  </script>
+
+</body>
+</html>

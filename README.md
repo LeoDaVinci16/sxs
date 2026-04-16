@@ -25,7 +25,7 @@ sxs/
 │  ├─ excel2csv.py          # Funcions per carregar CSVs i generar gràfics interactius/estàtics
 │  ├─ gui.py                # Codi que crea la interfície gràfica (GUI) que utilitza totes les funcions
 │  └─ points_dict.py        # Diccionari amb els noms dels punts i el seu identificador
-├─ outputs/                 # Carpeta opcional per a PNGs o figures exportades
+├─ outputs/                 # Carpeta opcional per a PNGs o figures exportades (es crea automaticament)
 ├─ requirements.txt         # Per crear un enviroment amb conda o descarregar les dependencies amb git
 ├─ .gitignore               # per git
 ├─ run_sxs.bat              # Per obrir la gui amb windows com una apicació
