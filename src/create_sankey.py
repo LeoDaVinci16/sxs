@@ -117,6 +117,20 @@ def main_sankey(file_path=None, magnitude_col=None, title=""):
     df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
     link_colors = generate_link_colors(len(df_prepared))
     fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
+
+    # 1️⃣ Guardar el sankey com a fitxer HTML
+    from os.path import join
+    output_dir = r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\outputs\html\sankey"  # o usa OUTPUT_PLOTS des del config
+    os.makedirs(output_dir, exist_ok=True)
+
+    # nom del fitxer: p.ex. sankey_at_20241001.html
+    base_name = os.path.splitext(os.path.basename(file_path))[0]
+    now = datetime.now().strftime("%Y%m%d_%H%M")
+    html_path = join(output_dir, f"sankey_{base_name}_{now}.html")
+
+    fig.write_html(html_path, auto_open=False)  # no obre el navegador, només guarda
+    print(f"Sankey guardat a: {html_path}")
+
     fig.show()
 
 def columnes_disponibles(df):
@@ -125,8 +139,8 @@ def columnes_disponibles(df):
 
 
 def main():
-    main_sankey(file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-at.csv", 
-                magnitude_col="cabal m3h", 
+    main_sankey(file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-ste.csv", 
+                magnitude_col="cabal", 
                 title="Estudi dels cabals", 
 
     )

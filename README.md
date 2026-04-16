@@ -1,6 +1,6 @@
 # Projecte SuperSonic (sxs)
 
-## 🌐 Pàgina principal: [Mapa de mesures de vapor](https://leodavinci16.github.io/sxs/)
+🌐 Pàgina principal: [Mapa de mesures de vapor](https://leodavinci16.github.io/sxs/)
 
 ## Informe mesures de cabal Euromed
 
