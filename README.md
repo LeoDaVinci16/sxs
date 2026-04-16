@@ -19,7 +19,7 @@ Sistema automatitzat que processa CSVs amb Python, genera gràfics Plotly intera
 
 Els mapes mostren punts de mesura sobre el plànol de la fàbrica amb velocitats de cabal interactives.
 
-[**Mapa de mesures de vapor**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html)
+[**Mapa de mesures de vapor**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html)  
 [**Mapa de mesures aigua de torres**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/map.html)
 
 ### Diagrama Sankey
