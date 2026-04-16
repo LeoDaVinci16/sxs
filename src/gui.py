@@ -141,7 +141,7 @@ class SXS_GUI(tk.Tk):
     # Tasks
     # -----------------------------
     def run_map(self):
-        self.run_excel2csv
+        self.run_excel2csv()
         excel_file = self.ask_file(DEFAULT_MAP_EXCEL, [("CSV or Excel", "*.csv *.xlsx *.xls")])
         if not excel_file:
             return

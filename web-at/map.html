@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Punts de mesura Euromed</title>
+  <!-- load external CSS -->
+  <link rel="stylesheet" href="map.css" />
+</head>
+
+<body>
+
+  <!-- Very thin title bar -->
+  <header class="thin-header">
+    <div class=""title-block">
+      <h2>Punts de mesura Euromed</h2>
+      <div class="subtitle">
+        Mesura d'aigua: CDP2NH1 - 186242
+      </div>
+    </div>
+  </header>
+
+  <!-- Map row (takes almost all height) -->
+  <div class="map-row">
+    <div class="map-container">
+      <img id="factory-map" src="planol-at.png" alt="Factory layout">
+    </div>
+  </div>
+
+  <!-- Top‑right floating info box (overlaps map) -->
+  <div class="top-right-panel">
+    <div id="info-panel" class="info-panel">
+      Click a point or use the arrows to navigate.
+    </div>
+    <div class="nav-buttons">
+      <button id="prev-btn" class="nav-btn">« Prev</button>
+      <button id="next-btn" class="nav-btn">Next »</button>
+    </div>
+  </div>
+
+  <script src="js/points.js"></script>
+  <script src="map.js"></script>
+
+</body>
+
+</html>

@@ -52,8 +52,8 @@ sxs/
     - Títols, dates i seccions s’afegeixen automàticament segons els CSV
     - Els blocs de codi es poden ocultar per a un informe més net
     - Els arxius de quarto estan preparats per exportar directament a html per visualitzar els gràfics interactivament o en pdf per imprimir.
-4. Creació de planol amb els punts analitzats (create_map.py)
-    - A partir de les dades es poden recopilar en un excel (punts_mesura) les velocitats en els diferents punts
+4. Creació de planol amb els punts analitzats (create_map.py (legacy), create_tkinter.py)
+    - A partir de les dades es poden recopilar en un excel (punts_mesura) les velocitats en els diferents punts.
     - El programa crea un mapa per visualitzar de forma interactiva aquestes dades recopilades sobre el terreny.
 5. Creació de diagrama sankey (crate_sankey.py)
     - A partir de les dades es pot omplir l'excel de sankey_nodes

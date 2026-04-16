@@ -279,6 +279,6 @@ def main(func):
     print("GUI done, script exiting")   # <- add this line
 
 if __name__ == "__main__":
-    main(run_preview_plot)
+    main(run_map)
 
 ### functions: run_sankey, run_map, run_preview_plot, run_batch_plots_folder
