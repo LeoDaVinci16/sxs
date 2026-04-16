@@ -1,4 +1,4 @@
-# Projecte SuperSonic (sxs) 
+# Projecte SuperSonic (sxs)
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -17,7 +17,7 @@
 ⠀⠀⠀⠀⠀⠀⠘⢻⣿⡌⢣⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠸⡽⣾⡿⠀⣼⠟⠛⠛⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⠈⢷⣾⣄⠀⢀⡟⠀⠀⠀⠀⠀⠙⢽⣃⠟⠁⠠⣦⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⡈⢝⢾⣟⣩⠤⠶⠶⠦⠤⠤⠴⠚⠁⠀⠀⣰⠃⠀⣸⡥⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠿⠿⠷⣷⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⣠⣾⣿⣶⣶⣶⣦⣤⣤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠿⠿⠷⣷⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⣠⣾⣿⣶⣶⣶⣦⣤⣤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣄⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣶⣶⣾⣿⣿⣄⡀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣴⡿⠟⠉⠀⠀⠀⠉⠉⠉⠉⠛⠛⠻⠿⢿⣶⣦⣤⣀⡀⠀⠀⠀⠀⠻⣿⣆⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠛⠻⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣤⣀⠀⢹⣿⡄⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⣷⣦⣿⣷⠀⠀⠀⠀⠀
@@ -27,101 +27,90 @@
 
 ## Informe mesures de cabal Euromed
 
-En aquest projecte s'han recollit els resultats del treball realitzat per mesurar cabals en diferents punts de la fàbrica d'Euromed. S'ha utilitzat el cabalímetre supersònic Flexim (Fluxus G608), d'aquí el nom **Projecte SuperSònic (sxs)**.
-
-Posteriorment a la recollida de dades a camp, s'han automatitzat processos amb Python per generar informes, mapes i diagrames.
+Aquest projecte recull els resultats del treball realitzat per mesurar cabals en diferents punts de la fàbrica d'Euromed mitjançant el cabalímetre supersònic **Flexim (Fluxus G608)**. L'objectiu és automatitzar el processament de dades, la generació d'informes i la visualització geoespacial i de fluxos.
 
 ### 📑 Informes automatitzats
 
-[**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_at.html)  
-[**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_vapor.html)
-
-Sistema automatitzat que processa CSVs amb Python, genera gràfics Plotly interactius i informes Quarto (\*exportables a format HTML/PDF).
+[**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_at.html) | [**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_vapor.html)
 
 ### 🗺️ Mapes de punts de mesura
 
-Els mapes mostren punts de mesura sobre el plànol de la fàbrica amb velocitats de cabal interactives.
+[**Mapa mesures vapor**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html) | [**Mapa mesures aigua torres**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/map.html)
 
-[**Mapa de mesures de vapor**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html)  
-[**Mapa de mesures aigua de torres**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/map.html)
+### 📊 Diagrama Sankey (Balanç de fluxos)
 
-### 📊 Diagrama Sankey
+[**Sankey AT**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-at_20260416_1343.html) | [**Sankey STE**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
 
-Representació gràfica dels fluxos d'aigua i vapor: des del subministrament (torres de refrigeració/caldera) fins al consum final (intercanviadors/reactors).
+\---
 
-[**Sankey AT**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-at_20260416_1343.html)  
-[**Sankey STE**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
-
-## 📂 Estructura del repositori (actualitzada)
+## 📂 Estructura del repositori
 
 ```bash
 sxs/
 │
-├─ data/ 			# Dades d'usuari
-│ ├─ planol/ 			# Planols fàbrica
-│ ├─ punts/ 			# punts\\\_mesura-\\\*.xlsx
-│ ├─ sankey/ 			# sankey\\\_nodes-\\\*.xlsx
-│ └─ raw/ 			# CSVs bruts de campanyes
-├─ src/ 			# Scripts Python
-│ ├─ add\\\_date.py
-│ ├─ config.py
-│ ├─ create\\\_plots.py
-│ ├─ create\\\_report\\\_html.py
-│ ├─ create\\\_report\\\_pdf.py
-│ ├─ create\\\_sankey.py 		# Actualitzat
-│ ├─ create\\\_tkinter.py
-│ ├─ excel2csv.py
-│ ├─ gui.py
-│ └─ points\\\_dict.py
-├─ outputs/ 			# Sortides automàtiques
-│ ├─ html/
-│ │ ├─ mapa/
-│ │ │ ├─ mapa-at/ 		# Mapa aigua torres
-│ │ │ └─ mapa-ste/ 		# Mapa vapor
-│ │ └─ sankey/ 			# Diagrames Sankey HTML
-│ └─ plots/ 			# PNGs de gràfics (opcional)
-├─ requirements.txt
-├─ .gitignore
-├─ run\\\_sxs.bat			 # Actualitzat
-└─ README.md
+├─ data/                # Dades d'entrada i configuració
+│  ├─ raw/              # CSVs bruts descarregats del cabalímetre
+│  ├─ punts/            # Coordenades i metadades dels punts (.xlsx/.csv)
+│  ├─ sankey/           # Definicions de nodes per al diagrama Sankey
+│  └─ planol/           # Imatges dels plànols de la fàbrica
+├─ src/                 # Scripts de processament en Python
+│  ├─ gui.py            # Interfície principal d'usuari
+│  ├─ config.py         # Gestió centralitzada de rutes
+│  ├─ add\_date.py       # Estandardització de fitxers raw
+│  ├─ create\_plots.py   # Generació de gràfics temporals
+│  ├─ create\_sankey.py  # Generació de diagrames de flux interactius
+│  └─ create\_report\_\*.py# Generació d'informes Quarto (HTML/PDF)
+├─ outputs/             # Resultats generats automàticament
+│  ├─ html/             # Mapes, Sankeys i Informes interactius
+│  └─ plots/            # Gràfics en format imatge
+├─ requirements.txt     # Dependències del projecte
+└─ README3.md           # Documentació completa
 ```
 
-**Canvis recents:**
+\---
 
-* `web-at/` i `web-ste/` movits a `outputs/html/mapa/mapa-at/` i `mapa-ste/`.
-* Eliminats PNGs innecessaris de `outputs/plots/`.
-* Actualitzats `data/punts/punts-mesura-ste.xlsx`, `data/sankey/sankey\\\_nodes-ste.xlsx`, `src/create\\\_sankey.py`, `run\\\_sxs.bat`.
+## 🛠️ Implementació Tècnica i Arquitectura
 
-## ⚡ Característiques principals
+El sistema s'ha dissenyat com una **suite modular de processament de dades** que segueix una arquitectura de pipeline lineal:
 
-1. **Processament CSV automàtic** (`add\\\_date.py`): Agrupa per punts (STE‑01, AT‑E800, etc.) i extreu dates.
-2. **Gràfics interactius** (`create\\\_plots.py`): Crea imatges de cadascun dels csv amb les dades descarregades
-3. **Informes dinàmics** (`create\\\_report\\\_html.py`/`create\\\_report\\\_pdf.py`): Quarto `.qmd` amb títols/dates automàtics.
-4. **Mapes interactius** (`create\\\_tkinter.py`): Visualitza velocitats sobre el plànol de la fabrica.
-5. **Diagrama Sankey** (`create\\\_sankey.py`): Balanços de cabal.
-6. **GUI** (`gui.py`): Navegació per totes funcions.
+### 1\. Arquitectura d'Alt Nivell
 
-## 🛠️ Flux de treball
+1. **Ingesta:** Recollida de fitxers CSV del cabalímetre Flexim G608.
+2. **Estandardització:** Extracció de metadades i dates per a l'organització automàtica.
+3. **Transformació:** Sincronització de configuracions en Excel amb el backend de Python.
+4. **Visualització:** Creació de gràfics de sèries temporals, diagrames Sankey i mapes interactius.
+5. **Generació d'Informes:** Consolidació de resultats mitjançant **Quarto**.
 
-Generar CSV → Gràfics → Informe → Excel: punts\_mesura → Mapa → Excel: sankey\_nodes → Diagrama
+### 2\. Detall dels Mòduls Principal (`src/`)
 
+* **`gui.py`**: El panell de control principal basat en Tkinter que permet executar totes les tasques sense línia de comandes.
+* **`add\_date.py`**: Crucial per a l'organització; llegeix el contingut dels CSV bruts, extreu la data d'inici i canvia el nom dels fitxers a un format ordenable: `AAAAMMDD\_HHMMSS\_Punt.csv`.
+* **`create\_sankey.py`**: Utilitza `plotly.graph\_objects` per calcular balanços de cabal entre nodes d'origen i destí definits en la configuració.
+* **`create\_tkinter.py` \& `selection\_layer.py`**: Visualitzador de mapes interactiu que superposa punts de mesura sobre els plànols `.png`, permetent veure velocitats de cabal de forma espacial.
+* **`config.py`**: Centralitza totes les rutes del projecte utilitzant `pathlib` per garantir la portabilitat entre sistemes.
 
+### 3\. Flux de Treball i Processament
 
-### Instal·lació
+El flux recomanat per a l'usuari és:
 
-```bash
-pip install -r requirements.txt
-```
+1. Copiar els CSV nous a `data/raw/`.
+2. Executar **"Add Date"** des de la GUI per estandarditzar els fitxers.
+3. Si s'han modificat els punts o nodes a l'Excel, executar **"Excel → CSV"**.
+4. Generar els gràfics (**"Batch plot"**) i els diagrames (**"Sankey"**).
+5. Generar l'informe final per consolidar les dades.
 
-## ⚙️ Notes
+### 4\. Requisits Tècnics
 
-* Noms CSV: Inclouen punt i data (ex: `20251202\\\_095142\\\_AT-EI906-RT.csv`).
-* Números amb zero inicial (STE‑01) per ordre correcte.
-* HTML interactiu per anàlisi; PDF per impressió.
+* **Python 3.10+**
+* **Biblioteques clau:**
 
-## 👤 Autor
+  * `pandas`: Processament de dades.
+  * `plotly` \& `matplotlib`: Visualització interactiva i estàtica.
+  * `tkinter`: Interfície gràfica i mapes.
+  * **Quarto:** Cal tenir-lo instal·lat al sistema per generar els informes `.html` i `.pdf`.
 
-**Arnau Coronado Nadal**  
-Estudi de cabals Euromed  
-Barcelona, abril 2026
+\---
+
+**Autor:** Arnau Coronado Nadal  
+**Localització:** Barcelona, abril 2026
 
