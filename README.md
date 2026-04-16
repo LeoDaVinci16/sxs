@@ -10,17 +10,17 @@ Posterior a la recollida de dades a camp s'han automatitzat els següents proces
 
 ### Informe automatitzat de mesures de cabal
 
-[Veure informe aigua de torres](web-at/report_generated_html.html)
+[Veure informe aigua de torres](https://leodavinci16.github.io/sxs/web-at/report_generated_html.html)
 
-[Veure informe vapor](web-ste/report_generated_html.html)
+[Veure informe vapor](https://leodavinci16.github.io/sxs/web-ste/report_generated_html.html)
 
 Aquest repositori conté un sistema completament automatitzat per generar informes de mesura per a les canonades de vapor d’Euromed. El flux de treball utilitza Python per processar dades CSV, Plotly per a gràfics interactius i Quarto per a la generació d’informes. El sistema admet tant informes HTML interactius per a l’anàlisi com informes estàtics preparats per a PDF per a la impressió.
 
 ### Punts de mesura: Mapa d'Euromed
 
-[Veure mapa de les mesures d'aigua de torres](web-at/map.html)
+[Veure mapa de les mesures d'aigua de torres](https://leodavinci16.github.io/sxs/web-at/map.html)
 
-[Veure mapa de les mesures vapor](web-ste/map.html)
+[Veure mapa de les mesures vapor](https://leodavinci16.github.io/sxs/web-ste/map.html)
 
 Per representar els resultats en cada punt de mesura s'ha fet un mapa que mostra els punts de mesura i mostra en pantalla el valor mesurat en aquest punt. S'ha fet 
 
