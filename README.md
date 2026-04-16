@@ -1,119 +1,106 @@
 # Projecte SuperSonic (sxs)
 
-🌐 Pàgina principal: [Mapa de mesures de vapor](https://leodavinci16.github.io/sxs/)
+🌐 **Pàgina principal:** [Mapa de mesures de vapor](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html)  
+🌐 **Mapa aigua torres:** [Mapa AT](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/map.html)
 
 ## Informe mesures de cabal Euromed
 
-En aquest projecte s'han recollit els resultats del treball realitzat per medir els cabals en diferents punts de la fabrica. Per fer aquesta feina s'ha fet servir el cabalímetre supersònic de Flexim (Fluxus G608), per això s'ha anomenat Projecte SuperSònic (sxs).
+En aquest projecte s'han recollit els resultats del treball realitzat per mesurar cabals en diferents punts de la fàbrica Euromed. S'ha utilitzat el cabalímetre supersònic Flexim (Fluxus G608), d'aquí el nom **Projecte SuperSònic (sxs)**.
 
-Posterior a la recollida de dades a camp s'han automatitzat els següents processos, emprant sobretot python:
+Posteriorment a la recollida de dades a camp, s'han automatitzat processos amb Python per generar informes, mapes i diagrames.
 
-### Informe automatitzat de mesures de cabal
+### Informes automatitzats de mesures
 
-[Veure informe aigua de torres](https://leodavinci16.github.io/sxs/web-at/report_generated_html.html)
+**[Informe aigua torres (AT)](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/report_generated_html.html)**  
+**[Informe vapor (STE)](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/report_generated_html.html)**
 
-[Veure informe vapor](https://leodavinci16.github.io/sxs/web-ste/report_generated_html.html)
+Sistema automatitzat que processa CSVs amb Python, genera gràfics Plotly interactius i informes Quarto (HTML/PDF).
 
-Aquest repositori conté un sistema completament automatitzat per generar informes de mesura per a les canonades de vapor d’Euromed. El flux de treball utilitza Python per processar dades CSV, Plotly per a gràfics interactius i Quarto per a la generació d’informes. El sistema admet tant informes HTML interactius per a l’anàlisi com informes estàtics preparats per a PDF per a la impressió.
+### Mapes de punts de mesura
 
-### Punts de mesura: Mapa d'Euromed
+Els mapes mostren punts de mesura sobre el plànol de la fàbrica amb velocitats de cabal interactives.
 
-[Veure mapa de les mesures d'aigua de torres](https://leodavinci16.github.io/sxs/web-at/map.html)
+### Diagrama Sankey
 
-[Veure mapa de les mesures vapor](https://leodavinci16.github.io/sxs/web-ste/map.html)
+Diagrames de fluxos d'aigua/vapor des del subministrament (torres/caldera) fins al consum (intercanviadors/reactors).
 
-Per representar els resultats en cada punt de mesura s'ha fet un mapa que mostra els punts de mesura i mostra en pantalla el valor mesurat en aquest punt. S'ha fet 
+**[Sankey AT](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-at_20260416_1343.html)**  
+**[Sankey STE](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-ste_20260416_1347.html)**
 
-### Diagrama sankey:
+## 📂 Estructura del repositori (actualitzada)
 
-Finalment s'han fet els diagrames sankey dels fluxos d'aigua o vapor des del subministrament (torres de refrigeració o caldera) fins al consum (intercanviadors de calor o camises dels reactors)
-
-## 📂 Estructura del repositori
-
-```Bash
 sxs/
 │
-├─ data                     # Dades de l'usuari 
-│  ├─ planol                # Planol de la fabrica
-│  ├─ punts                 # Punts de mesura 
-│  ├─ sankey                # Nodes del diagrama de sankey  
-│  └─ raw                   # Fitxers CSV en brut de campanyes de mesura
-├─ src/                     # Scripts de Python
-│  ├─ add_date.py           # Funcions per afegir dates als noms dels fitxers en brut
-│  ├─ config.py             # Distribució de les carpetes de "data"
-│  ├─ create_plots.py       # Funcions per carregar CSVs i generar gràfics interactius/estàtics
-│  ├─ create_report_html.py # Funcions per crear l’informe en format HTML
-│  ├─ create_report_pdf.py  # Funcions per crear l’informe en format PDF
-│  ├─ create_sankey.py      # Funcions per crear el diagrama de Sankey
-│  ├─ create_tkinter.py     # Funcions per crear el mapa d’Euromed (versió actualitzada)
-│  ├─ excel2csv.py          # Funcions per carregar CSVs i generar gràfics interactius/estàtics
-│  ├─ gui.py                # Codi que crea la interfície gràfica (GUI) que utilitza totes les funcions
-│  └─ points_dict.py        # Diccionari amb els noms dels punts i el seu identificador
-├─ outputs/                 # Carpeta opcional per a PNGs o figures exportades (es crea automaticament)
-├─ requirements.txt         # Per crear un enviroment amb conda o descarregar les dependencies amb git
-├─ .gitignore               # per git
-├─ run_sxs.bat              # Per obrir la gui amb windows com una apicació
-└─ README.md                # Aquest fitxer
+├─ data/ # Dades d'usuari
+│ ├─ planol/ # Planols fàbrica
+│ ├─ punts/ # punts_mesura-*.xlsx
+│ ├─ sankey/ # sankey_nodes-*.xlsx
+│ └─ raw/ # CSVs bruts de campanyes
+├─ src/ # Scripts Python
+│ ├─ add_date.py
+│ ├─ config.py
+│ ├─ create_plots.py
+│ ├─ create_report_html.py
+│ ├─ create_report_pdf.py
+│ ├─ create_sankey.py # Actualitzat
+│ ├─ create_tkinter.py
+│ ├─ excel2csv.py
+│ ├─ gui.py
+│ └─ points_dict.py
+├─ outputs/ # Sortides automàtiques
+│ ├─ html/
+│ │ ├─ mapa/
+│ │ │ ├─ mapa-at/ # Mapa aigua torres
+│ │ │ └─ mapa-ste/ # Mapa vapor
+│ │ └─ sankey/ # Diagrames Sankey HTML
+│ └─ plots/ # PNGs de gràfics (opcional)
+├─ requirements.txt
+├─ .gitignore
+├─ run_sxs.bat # Actualitzat
+└─ README.md
 
-```
 
-## ⚡ Característiques
-1. Processament automàtic de CSV (add_date.py)
-    - Detecta fitxers CSV a data/raw/
-    - Agrupa fitxers per punts de mesura (STE-1, STE-2, …, E800, PEC)
-    - Extreu automàticament la data de mesura dels noms dels fitxers
-2. Generació de gràfics interactius (create_plots.py)
-    - Té dues funcions:
-    2.1. Batch plot
-        - Per crear els gràfics de tots els arxius csv que hi ha a raw
-    2.2. Previsualitza un gràfic
-        - Utilitza Plotly per a gràfics HTML interactius
-        - Les figures s’integren dins l’informe Quarto per a anàlisi immediata
-        - La mida dels gràfics es pot ajustar dinàmicament (això potser es mentida)
-3. Creació dinàmica d’informes (create_report_html.py/create_report_pdf.py)
-    - A partir dels grafics generats es pot crear un informe que recull totes les dades.
-    - Python create_report.py genera el fitxer Quarto markdown (.qmd)
-    - Títols, dates i seccions s’afegeixen automàticament segons els CSV
-    - Els blocs de codi es poden ocultar per a un informe més net
-    - Els arxius de quarto estan preparats per exportar directament a html per visualitzar els gràfics interactivament o en pdf per imprimir.
-4. Creació de planol amb els punts analitzats (create_map.py (legacy), create_tkinter.py)
-    - A partir de les dades es poden recopilar en un excel (punts_mesura) les velocitats en els diferents punts.
-    - El programa crea un mapa per visualitzar de forma interactiva aquestes dades recopilades sobre el terreny.
-5. Creació de diagrama sankey (crate_sankey.py)
-    - A partir de les dades es pot omplir l'excel de sankey_nodes
-    - Amb aquestes dades es genera un diagrama amb els balanços de cabal tipus sankey
-6. GUI per executar totes aquestes comandes.
-    - Permet navegar per totes aquestes funcions.
-    - A la GUI li falta implementar la creació dinamica d'informes.
+**Canvis recents:**  
+- `web-at/` i `web-ste/` movits a `outputs/html/mapa/mapa-at/` i `mapa-ste/`.  
+- Eliminats PNGs innecessaris de `outputs/plots/`.  
+- Actualitzats `data/punts/punts-mesura-ste.xlsx`, `data/sankey/sankey_nodes-ste.xlsx`, `src/create_sankey.py`, `run_sxs.bat`.
 
-## 🛠️ Flux de treball 
-0. Instal·lar dependències
+## ⚡ Característiques principals
 
-Millor instalar el "enviroment" a través de l'arxiu `requirements.txt`
+1. **Processament CSV automàtic** (`add_date.py`): Agrupa per punts (STE‑01, AT‑E800, etc.) i extreu dates.
+2. **Gràfics interactius** (`create_plots.py`): Plotly HTML per anàlisi, PNG per PDF.
+3. **Informes dinàmics** (`create_report_html.py`/`create_report_pdf.py`): Quarto `.qmd` amb títols/dates automàtics.
+4. **Mapes interactius** (`create_tkinter.py`): Visualitza velocitats sobre plànol.
+5. **Diagrama Sankey** (`create_sankey.py`): Balanços de cabal.
+6. **GUI** (`gui.py`): Navegació per totes funcions.
+
+## 🛠️ Flux de treball
+
+Generar CSV → Gràfics → Informe → Excel punts_mesura → Mapa → Excel sankey_nodes → Diagrama
+
+
+### Instal·lació
 
 ```bash
-pip install pandas plotly kaleido quarto
+pip install -r requirements.txt
 ```
 
-`kaleido` is required for exporting Plotly figures to PNG.
-
-`quarto` must be installed for rendering QMD files.
-
-Disclaimer: No se si només kalideo i quarto son suficients!
-
-Generar csv > generar grafiques > generar informe > editar excel punts_mesura > generar i visualitzar mapa > editar excel sankey_nodes > generar i visualitzar diagrama
+**Necessari:** `kaleido` (PNG Plotly), `quarto` (render QMD).
 
 ## 🧩 Personalització
-- Variables to plot: Edit the variables_to_plot list in create_report.py
-- Figure size: Adjust in create_plotly_plot() or write_image()
-- Measurement point detection: Modify the regex in point_sort_key() for custom naming schemes
+
+- Variables a plotar: `variables_to_plot` a `create_report.py`.
+- Mida gràfics: `create_plotly_plot()`.
+- Regex punts: `point_sort_key()`.
 
 ## ⚙️ Notes
-- Mantén HTML interactiu per a l’anàlisi; utilitza PNG per a PDF/impressió
-- Els noms dels CSV han d’incloure el punt de mesura (p. ex. STE-2) i la data (YYYYMMDD)
-- Els números STE amb zero inicial (p. ex. STE-01) asseguren l’ordre correcte
+
+- Noms CSV: Inclouen punt i data (ex: `20251202_095142_AT-EI906-RT.csv`).  
+- Números amb zero inicial (STE‑01) per ordre correcte.  
+- HTML interactiu per anàlisi; PNG per impressió.
 
 ## 👤 Autor
 
-Arnau Coronado Nadal
-Estudi de cabals Euromed
+**Arnau Coronado Nadal**  
+Estudi de cabals Euromed  
+Barcelona, abril 2026
