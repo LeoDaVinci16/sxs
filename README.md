@@ -1,6 +1,6 @@
 <p align="center">
   <svg width="650" height="270" viewBox="0 0 650 270" xmlns="http://www.w3.org/2000/svg">
-    <text x="50%" y="10" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF" style="white-space: pre;">
+    <text x="50%" y="0" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF" style="white-space: pre;">
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠟⢫⡿⠋⠀⡀⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
@@ -45,7 +45,7 @@ Aquest projecte recull els resultats del treball realitzat per mesurar cabals en
 
 ### 📊 Diagrama Sankey (Balanç de fluxos) `sankey`
 
-[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-at_20260416_1343.html) | [**Sankey vapor (STE) STE**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
+[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-at_20260416_1343.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
 
 \---
 
