@@ -10,8 +10,8 @@ Posteriorment a la recollida de dades a camp, s'han automatitzat processos amb P
 
 ### Informes automatitzats
 
-**[Informe aigua torres (AT)](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/report_generated_html.html)**  
-**[Informe vapor (STE)](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/report_generated_html.html)**
+**[Informe aigua torres (AT)](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_at.html)**  
+**[Informe vapor (STE)](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_vapor.html)**
 
 Sistema automatitzat que processa CSVs amb Python, genera gràfics Plotly interactius i informes Quarto (*exportables a format HTML/PDF).
 
