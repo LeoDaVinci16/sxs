@@ -56,10 +56,10 @@ sxs/
 ├─ src/                 # Scripts de processament en Python
 │  ├─ gui.py            # Interfície principal d'usuari
 │  ├─ config.py         # Gestió centralitzada de rutes
-│  ├─ add\_date.py       # Estandardització de fitxers raw
-│  ├─ create\_plots.py   # Generació de gràfics temporals
-│  ├─ create\_sankey.py  # Generació de diagrames de flux interactius
-│  └─ create\_report\_\*.py# Generació d'informes Quarto (HTML/PDF)
+│  ├─ add_date.py       # Estandardització de fitxers raw
+│  ├─ create_plots.py   # Generació de gràfics temporals
+│  ├─ create_sankey.py  # Generació de diagrames de flux interactius
+│  └─ create_report.py  # Generació d'informes Quarto (HTML/PDF)
 ├─ outputs/             # Resultats generats automàticament
 │  ├─ html/             # Mapes, Sankeys i Informes interactius
 │  └─ plots/            # Gràfics en format imatge
@@ -112,5 +112,5 @@ El flux recomanat per a l'usuari és:
 \---
 
 **Autor:** Arnau Coronado Nadal  
-**Localització:** Barcelona, abril 2026
+**Localització:** Mollet del Vallès, abril 2026
 
