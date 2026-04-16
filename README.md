@@ -1,27 +1,33 @@
-# Projecte SuperSonic (sxs)
+<p align="center">
+  <svg width="650" height="280" viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
+    <text x="50%" y="0" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF">
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠟⢫⡿⠋⠀⡀⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⡾⠟⠉⠀⢀⣴⠋⢀⣴⣾⣿⡀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⠿⠛⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⠟⠉⠀⠀⠀⢀⠞⠁⣠⣾⣿⣿⣿⡇⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀⠀⠀⠀⠈⠀⠠⣿⣿⣿⣿⣿⡇⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠻⠇⠀⠏⠀⠀⠀⠠⠤⠤⣤⣴⣿⣯⣥⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⣴⣶⡶⠶⠶⠶⣶⣦⣴⣾⡟⠀⠀⠀⠀⠀⠀⠀⠀⣠⡤⠶⠶⠶⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠻⠿⣷⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⢹⣿⠀⠀⠀⠀⠀⠀⠉⡟⠀⠀⠀⠀⠀⠀⠀⣠⠟⠁⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⣶⣄⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⢻⣧⡀⠀⠀⠀⠀⣸⠁⠀⠀⠀⠀⠀⠀⣰⠃⠀⣤⠶⠛⠛⠒⢦⡀⠀⢳⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⡀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠻⣷⣄⠀⠀⢀⡏⠀⠀⠀⠀⠀⠀⠀⡏⢀⡞⠁⠀⠀⠀⠀⠀⠙⡄⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠈⠻⣷⣤⠞⠧⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣦⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⢹⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⠀⡔⠲⣄⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⡀⠀⠀⢻⣧⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠘⣿⡄⢻⢆⠀⠀⠀⠀⠀⠀⢸⠇⠀⠀⠀⣇⡇⢈⡆⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠳⢶⣤⣶⣾⠿⠿⠛⠛⠛⠛⠛⠛⠛⠿⠿⠿⠿⠇</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠘⢻⣿⡌⢣⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠸⡽⣾⡿⠀⣼⠟⠛⠛⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⠈⢷⣾⣄⠀⢀⡟⠀⠀⠀⠀⠀⠙⢽⣃⠟⠁⠠⣦⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⡈⢝⢾⣟⣩⠤⠶⠶⠦⠤⠤⠴⠚⠁⠀⠀⣰⠃⠀⣸⡥⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠿⠿⠷⣷⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⣠⣾⣿⣶⣶⣶⣦⣤⣤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣄⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣶⣶⣾⣿⣿⣄⡀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣴⡿⠟⠉⠀⠀⠀⠉⠉⠉⠉⠛⠛⠻⠿⢿⣶⣦⣤⣀⡀⠀⠀⠀⠀⠻⣿⣆⠀⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠛⠻⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣤⣀⠀⢹⣿⡄⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⣷⣦⣿⣷⠀⠀⠀⠀⠀</tspan>
+      <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠀⠀⠀⠀⠀</tspan>
+    </text>
+  </svg>
+</p>
 
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠟⢫⡿⠋⠀⡀⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⡾⠟⠉⠀⢀⣴⠋⢀⣴⣾⣿⡀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⠿⠛⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⠟⠉⠀⠀⠀⢀⠞⠁⣠⣾⣿⣿⣿⡇⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀⠀⠀⠀⠈⠀⠠⣿⣿⣿⣿⣿⡇⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠻⠇⠀⠏⠀⠀⠀⠠⠤⠤⣤⣴⣿⣯⣥⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣴⣶⡶⠶⠶⠶⣶⣦⣴⣾⡟⠀⠀⠀⠀⠀⠀⠀⠀⣠⡤⠶⠶⠶⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠻⠿⣷⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢹⣿⠀⠀⠀⠀⠀⠀⠉⡟⠀⠀⠀⠀⠀⠀⠀⣠⠟⠁⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⣶⣄⠀⠀⠀⠀⠀⠀⠀
-⠀⢻⣧⡀⠀⠀⠀⠀⣸⠁⠀⠀⠀⠀⠀⠀⣰⠃⠀⣤⠶⠛⠛⠒⢦⡀⠀⢳⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⡀⠀⠀⠀⠀
-⠀⠀⠻⣷⣄⠀⠀⢀⡏⠀⠀⠀⠀⠀⠀⠀⡏⢀⡞⠁⠀⠀⠀⠀⠀⠙⡄⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⠀⠀⠀
-⠀⠀⠀⠈⠻⣷⣤⠞⠧⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣦⠀⠀
-⠀⠀⠀⠀⠀⢹⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⠀⡔⠲⣄⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⡀⠀⠀⢻⣧⠀
-⠀⠀⠀⠀⠀⠘⣿⡄⢻⢆⠀⠀⠀⠀⠀⠀⢸⠇⠀⠀⠀⣇⡇⢈⡆⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠳⢶⣤⣶⣾⠿⠿⠛⠛⠛⠛⠛⠛⠛⠿⠿⠿⠿⠇
-⠀⠀⠀⠀⠀⠀⠘⢻⣿⡌⢣⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠸⡽⣾⡿⠀⣼⠟⠛⠛⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⠈⢷⣾⣄⠀⢀⡟⠀⠀⠀⠀⠀⠙⢽⣃⠟⠁⠠⣦⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣧⡈⢝⢾⣟⣩⠤⠶⠶⠦⠤⠤⠴⠚⠁⠀⠀⣰⠃⠀⣸⡥⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠿⠿⠷⣷⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⣠⣾⣿⣶⣶⣶⣦⣤⣤⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣶⣶⣾⣿⣿⣄⡀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣴⡿⠟⠉⠀⠀⠀⠉⠉⠉⠉⠛⠛⠻⠿⢿⣶⣦⣤⣀⡀⠀⠀⠀⠀⠻⣿⣆⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠛⠻⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣤⣀⠀⢹⣿⡄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⣷⣦⣿⣷⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠀⠀⠀⠀⠀
+# Projecte SuperSonic (sxs)
 
 🌐 **Pàgina principal:** [Projecte SuperSònc (sxs)](https://leodavinci16.github.io/sxs/)
 
@@ -47,24 +53,34 @@ Aquest projecte recull els resultats del treball realitzat per mesurar cabals en
 
 ```bash
 sxs/
-│
-├─ data/                # Dades d'entrada i configuració
-│  ├─ raw/              # CSVs bruts descarregats del cabalímetre
-│  ├─ punts/            # Coordenades i metadades dels punts (.xlsx/.csv)
-│  ├─ sankey/           # Definicions de nodes per al diagrama Sankey
-│  └─ planol/           # Imatges dels plànols de la fàbrica
-├─ src/                 # Scripts de processament en Python
-│  ├─ gui.py            # Interfície principal d'usuari
-│  ├─ config.py         # Gestió centralitzada de rutes
-│  ├─ add_date.py       # Estandardització de fitxers raw
-│  ├─ create_plots.py   # Generació de gràfics temporals
-│  ├─ create_sankey.py  # Generació de diagrames de flux interactius
-│  └─ create_report.py  # Generació d'informes Quarto (HTML/PDF)
-├─ outputs/             # Resultats generats automàticament
-│  ├─ html/             # Mapes, Sankeys i Informes interactius
-│  └─ plots/            # Gràfics en format imatge
-├─ requirements.txt     # Dependències del projecte
-└─ README3.md           # Documentació completa
+├── run_sxs.bat             # Script d'execució ràpida per llançar la interfície (GUI).
+├── README.md               # Aquest document
+├── requirements.txt
+├── .gitignore
+├── src/                    # Codi font del projecte (Python).
+│   ├── gui_2.py            # Interfície gràfica principal (SXS Tools).
+│   ├── selection_layer.py  # Lògica de selecció de fitxers i columnes per a la GUI.
+│   ├── config.py           # Configuració centralitzada de rutes i fitxers constants.
+│   ├── add_date.py         # Script per normalitzar noms de fitxers CSV afegint la data.
+│   ├── excel2csv.py        # Utilitat per convertir fulls d'Excel a format CSV.
+│   ├── create_plots.py     # Generació de gràfics (batch processing i previsualització).
+│   ├── create_tkinter.py   # Visualitzador interactiu de punts sobre el plànol de la planta.
+│   ├── create_sankey.py    # Generació de diagrames de flux (Sankey) en HTML.
+│   ├── create_report_html.py # Generador d'informes interactius en format HTML (Quarto).
+│   ├── create_report_pdf.py  # Generador d'informes en format PDF (Quarto).
+│   ├── points_dict.py      # Diccionari de traducció d'IDs de punts a noms descriptius.
+│   └── gui.py              # Legacy.
+├── data/                   # Dades d'entrada.
+│   ├── raw/                # Fitxers CSV bruts obtinguts de les mesures.
+│   ├── punts/              # Llistat de punts de mesura (punts-mesura-ste.csv, etc.).
+│   ├── sankey/             # Fitxers de nodes i fluxos per als diagrames Sankey.
+│   └── planol/             # Imatges de fons (PNG) per als mapes de la planta.
+└── outputs/                # Fitxers generats pel programari.
+    ├── plots/              # Gràfiques exportades en format PNG.
+    ├── sankey/             # Diagrames de flux exportats.
+    ├── mapa-at/            # Mapa amb els punts de mesura d'aigua de torres
+    ├── mapa-ste/           # Mapa de la fabrica amb els punts de mesura de vapor
+    └── report/             # Html reports dels grafics obtinguts de les mesures
 ```
 
 \---
@@ -113,4 +129,3 @@ El flux recomanat per a l'usuari és:
 
 **Autor:** Arnau Coronado Nadal  
 **Localització:** Mollet del Vallès, abril 2026
-
