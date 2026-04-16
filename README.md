@@ -1,6 +1,8 @@
 <p align="center">
   <svg width="650" height="280" viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg">
     <text x="50%" y="0" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF">
+  <svg width="650" height="270" viewBox="0 0 650 270" xmlns="http://www.w3.org/2000/svg">
+    <text x="50%" y="10" text-anchor="middle" font-family="monospace" font-size="10" fill="#1E90FF" style="white-space: pre;">
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⡾⠟⠉⢹⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⣷⣶⣦⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
       <tspan x="50%" dy="1.2em">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⠾⠟⢫⡿⠋⠀⡀⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⠿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀</tspan>
@@ -37,15 +39,15 @@ Aquest projecte recull els resultats del treball realitzat per mesurar cabals en
 
 ### 📑 Informes automatitzats
 
-[**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_at.html) | [**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/html/report/report_generated_vapor.html)
+[**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/report/report_generated_at.html) | [**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/report/report_generated_vapor.html)
 
 ### 🗺️ Mapes de punts de mesura
 
-[**Mapa mesures vapor**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-ste/map.html) | [**Mapa mesures aigua torres**](https://leodavinci16.github.io/sxs/outputs/html/mapa/mapa-at/map.html)
+[**Mapa mesures vapor**](https://leodavinci16.github.io/sxs/outputs/mapa-ste/map.html) | [**Mapa mesures aigua torres**](https://leodavinci16.github.io/sxs/outputs/mapa-at/map.html)
 
 ### 📊 Diagrama Sankey (Balanç de fluxos)
 
-[**Sankey AT**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-at_20260416_1343.html) | [**Sankey STE**](https://leodavinci16.github.io/sxs/outputs/html/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
+[**Sankey AT**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-at_20260416_1343.html) | [**Sankey STE**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-ste_20260416_1347.html)
 
 \---
 
@@ -81,6 +83,11 @@ sxs/
     ├── mapa-at/            # Mapa amb els punts de mesura d'aigua de torres
     ├── mapa-ste/           # Mapa de la fabrica amb els punts de mesura de vapor
     └── report/             # Html reports dels grafics obtinguts de les mesures
+    ├── plots/              # Gràfiques exportades (PNG).
+    └── html/               # Resultats interactius.
+        ├── sankey/         # Diagrames de flux (Sankey).
+        ├── mapa/           # Mapes web (mapa-at, mapa-ste).
+        └── report/         # Informes dinàmics generats.
 ```
 
 \---
