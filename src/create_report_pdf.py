@@ -6,7 +6,7 @@ from create_plots import batch_plot
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).parents[1]
+ROOT = Path(__file__).parents[1] 
 
 csv_folder = ROOT / "data" / "raw"
 plot_folder = ROOT / "outputs" / "plots"

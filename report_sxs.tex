@@ -1,0 +1,118 @@
+% ==========================================
+%          Document configuration
+% ===========================================
+
+% ------ Margins, font and packages -------------
+\documentclass[12pt]{article}
+\usepackage[a4paper,
+            left=2.5cm,
+            right=2.5cm,
+            top=3.5cm,
+            bottom=2.5cm]{geometry}
+
+\usepackage{inter}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{fancyhdr} % Package for fancy header and footer
+
+% ------ Edit pakage header & footer ------
+\fancypagestyle{body}{%
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \fancyhead[R]{Arnau Coronado}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \setlength{\headheight}{16pt}   % minimum; you can increase to 18pt, 20pt
+  \setlength{\headsep}{26pt}      % gap between header rule and main text
+}
+\pagestyle{body} % Wtf is this??
+
+% Style for title and TOC: nothing, no line
+\fancypagestyle{emptystyle}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% Style for first page of a new section 
+\fancypagestyle{firstpage}{%
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ----------- User custom comands -------------------------
+\newcommand{\sectionstartlow}{\vspace*{0.25\textheight}}
+
+\usepackage{parskip} % Why?? shouldnt i put all packages together?? what does thisone do?
+
+% ----------------- Document info--------------------------
+\title{Projecte SuperSònic}
+\author{Arnau Coronado Nadal}
+\date{April 2026}
+
+
+% ==========================================
+%          Start of actual document
+% ===========================================
+\begin{document}
+
+% ------------------------- Title page ------------------------
+\begin{center}
+\vspace*{3cm}
+{\Huge Projecte SuperSònic}
+
+\vspace{1cm}
+{\Large Estudi dels cabals a la fabrica d'Euromed}
+
+\vspace{2cm}
+{\large Arnau Coronado Nadal}
+
+\vspace{1cm}
+{\normalsize April 2026}
+\end{center}
+\thispagestyle{emptystyle}
+\newpage
+
+% ---------------------------- TOC ------------------------------------------
+\thispagestyle{emptystyle}
+\tableofcontents 
+\newpage
+
+% --------------- Start body with page numbers ----------------------------
+\pagenumbering{arabic}
+
+% -------------------- New section ---------------------------------
+\sectionstartlow
+\section{Introduction}
+\thispagestyle{firstpage} 
+% ------------------------------------------------------------------
+
+Your text here; now you have:
+- first page  → title (no header, no header line, no page number),
+- second page → TOC (same),
+- body pages → header “Arnau Coronado” with header line, plus page number in footer.
+
+\newpage
+
+% -------------------- New section ---------------------------------
+\sectionstartlow
+\section{Segon apartat}
+\thispagestyle{firstpage} 
+% ------------------------------------------------------------------
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\newpage
+
+More text; this page is not the first page of the section, so:
+- header “Arnau Coronado” appears,
+- header line appears,
+- footer page number appears.
+
+\newpage
+
+mes i mes i mes text
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
+\end{document}
