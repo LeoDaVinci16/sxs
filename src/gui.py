@@ -44,6 +44,11 @@ class SimpleGUI(QMainWindow):
         batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))
         layout.addWidget(batch_btn)
 
+        batch_btn = QPushButton("Excel2csv")
+        batch_btn.setFixedWidth(250)
+        batch_btn.clicked.connect(lambda: controller.run_excel2csv_button(self))
+        layout.addWidget(batch_btn)
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = SimpleGUI()

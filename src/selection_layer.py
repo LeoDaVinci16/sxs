@@ -6,8 +6,9 @@ from PyQt5.QtCore import Qt
 
 import pandas as pd
 import os
+import sys
 import create_sankey
-import create_tkinter
+import create_map
 import create_plots
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -35,8 +36,6 @@ def ask_file(initial_dir, title="Select file", filetypes=None):
     elif initial_dir is None:
         initial_dir = "."
     return QFileDialog.getExistingDirectory(None, title, initial_dir) """
-
-
 
 def ask_folder(initial_dir, title="Select folder"):
     if hasattr(initial_dir, 'resolve'):
@@ -130,7 +129,7 @@ def ask_magnitude_columns(root, columns, title="Select columns"):
 # SANKEY
 # =========================================================
 def run_sankey(root):
-    run_excel2csv()
+    run_excel2csv(DATA_SANKEY)
     file_path = ask_file(DATA_SANKEY, "Select Sankey file")
     
     if not file_path:
@@ -148,7 +147,9 @@ def run_sankey(root):
 # =========================================================
 # MAP (MULTI MAGNITUDE SUPPORT)
 # =========================================================
+
 def run_map(root):
+    run_excel2csv(DATA_PUNTS)
     map_file = ask_file(DATA_PLANOL, "Tria una imatge de fons", [("PNG files", "*.png"), ("All files", "*.*")])
     if not map_file:
         return
@@ -158,8 +159,8 @@ def run_map(root):
         return
     
     try:
-        df = create_tkinter.load_measure_points(file_path)
-    except Exception:
+        df = create_map.load_measure_points(file_path)  # From create_pyqt
+    except:
         df = pd.read_csv(file_path)
     
     cols = ask_magnitude_columns(root, df.columns.tolist(), "Map magnitudes")
@@ -167,17 +168,9 @@ def run_map(root):
         QMessageBox.warning(None, "Warning", "No columns selected")
         return
     
-    # Create a simple PyQt window for the map visualizer
-    # Note: You'll need to port create_tkinter.Visualizer to PyQt5 or keep using tkinter for this
-    # For now, using a temporary tkinter root as workaround
-    tk_root = tk.Tk()
-    tk_root.withdraw()
-    try:
-        create_tkinter.Visualizer(tk_root, img_file=map_file, csv_file=file_path, magnitude_cols=cols)
-        tk_root.deiconify()
-        tk_root.mainloop()
-    finally:
-        tk_root.destroy()
+    # Pure PyQt5!
+    dialog = create_map.Visualizer(map_file, file_path, cols)
+    dialog.show()
 
 # =========================================================
 # PLOTS
@@ -286,6 +279,11 @@ def run_batch_plots_folder(root):
 def run_excel2csv():
     import subprocess
     subprocess.run(["python", "excel2csv.py"])
+
+def run_excel2csv_button(root):
+    import subprocess
+    script_path = Path(__file__).parent / "excel2csv.py"
+    subprocess.run([sys.executable, str(script_path)])
 
 # Keep main for backward compatibility
 def main(func):
