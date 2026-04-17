@@ -10,6 +10,7 @@ import sys
 import create_sankey
 import create_map
 import create_plots
+import excel2csv
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -276,9 +277,9 @@ def run_batch_plots_folder(root):
     # Pass folder and selected columns (skips missing columns per file)
     create_plots.batch_plot(folder, str(OUTPUT_PLOTS), variables=cols)
 
-def run_excel2csv():
-    import subprocess
-    subprocess.run(["python", "excel2csv.py"])
+def run_excel2csv(folder):
+    excel2csv.main(folder)
+
 
 def run_excel2csv_button(root):
     import subprocess
