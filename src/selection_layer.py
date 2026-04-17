@@ -1,5 +1,8 @@
-import tkinter as tk
-from tkinter import filedialog, messagebox
+from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout, 
+                           QLabel, QListWidget, QListWidgetItem, QCheckBox, 
+                           QPushButton, QFileDialog, QMessageBox, QScrollArea, 
+                           QMainWindow, QWidget, QFrame)
+from PyQt5.QtCore import Qt
 import pandas as pd
 import os
 import create_sankey
@@ -7,278 +10,254 @@ import create_tkinter
 import create_plots
 from pathlib import Path
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, DATA_PLANOL
 
 # =========================================================
 # FILE / FOLDER HELPERS
 # =========================================================
 def ask_file(initial_dir, title="Select file", filetypes=None):
-    return filedialog.askopenfilename(
-        initialdir=initial_dir,
-        title=title,
-        filetypes=filetypes or [("All files", "*.*")]
-    )
-
+    if hasattr(initial_dir, 'resolve'):  # pathlib.Path
+        initial_dir = str(initial_dir)
+    elif initial_dir is None:
+        initial_dir = "."
+    filetypes = filetypes or [("CSV files", "*.csv"), ("PNG files", "*.png"), ("All files", "*.*")]
+    filter_str = ";;".join([f"{desc} ({pattern})" for desc, pattern in filetypes])
+    result = QFileDialog.getOpenFileName(None, title, initial_dir, filter_str)
+    return result[0]
+    # return QFileDialog.getOpenFileName(None, title, initial_dir, ";;".join([f"{t[1]} ({t[0]})" for t in filetypes]))[0]
 
 def ask_folder(initial_dir, title="Select folder"):
-    return filedialog.askdirectory(
-        initialdir=initial_dir,
-        title=title
-    )
+    if hasattr(initial_dir, 'resolve'):  # pathlib.Path
+        initial_dir = str(initial_dir)
+    elif initial_dir is None:
+        initial_dir = "."
+    return QFileDialog.getExistingDirectory(None, title, initial_dir)
 
 def ask_file_from_list(root, files, title="Select file"):
-    top = tk.Toplevel(root)
-    top.title(title)
-    top.geometry("300x400")
-
-    tk.Label(top, text="Select a CSV file:").pack(pady=5)
-
-    var = tk.StringVar(value=files[0])
-
-    lb = tk.Listbox(top)
-    lb.pack(fill="both", expand=True)
-
+    dialog = QDialog(root)
+    dialog.setWindowTitle(title)
+    dialog.setFixedSize(400, 400)
+    
+    layout = QVBoxLayout()
+    
+    layout.addWidget(QLabel("Select a CSV file:"))
+    
+    list_widget = QListWidget()
     for f in files:
-        lb.insert(tk.END, f)
-
-    def submit():
-        selection = lb.curselection()
-        if selection:
-            var.set(files[selection[0]])
-        top.destroy()
-
-    tk.Button(top, text="OK", command=submit).pack(pady=5)
-
-    top.grab_set()
-    root.wait_window(top)
-
-    return var.get()
+        list_widget.addItem(QListWidgetItem(f))
+    list_widget.setCurrentRow(0)
+    layout.addWidget(list_widget)
+    
+    ok_btn = QPushButton("OK")
+    ok_btn.clicked.connect(dialog.accept)
+    layout.addWidget(ok_btn)
+    
+    dialog.setLayout(layout)
+    dialog.exec_()
+    
+    if list_widget.currentRow() >= 0:
+        return list_widget.currentItem().text()
+    return None
 
 # =========================================================
 # MULTI COLUMN SELECTOR (CHECKBOXES)
 # =========================================================
 def ask_magnitude_columns(root, columns, title="Select columns"):
-    top = tk.Toplevel(root)
-    top.title(title)
-    top.geometry("400x500")
-
-    tk.Label(top, text="Select one or more columns:").pack(pady=5)
-
-    vars_map = {}
-
-    frame = tk.Frame(top)
-    frame.pack(fill="both", expand=True)
-
-    canvas = tk.Canvas(frame)
-    scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
-    scroll = tk.Frame(canvas)
-
-    scroll.bind(
-        "<Configure>",
-        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-    )
-
-    canvas.create_window((0, 0), window=scroll, anchor="nw")
-    canvas.configure(yscrollcommand=scrollbar.set)
-
-    canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
-
+    dialog = QDialog(root)
+    dialog.setWindowTitle(title)
+    dialog.resize(400, 500)
+    
+    layout = QVBoxLayout()
+    layout.addWidget(QLabel("Select one or more columns:"))
+    
+    scroll = QScrollArea()
+    scroll_widget = QWidget()
+    scroll_layout = QVBoxLayout(scroll_widget)
+    
+    checkboxes = {}
     for col in columns:
-        var = tk.BooleanVar(value=False)
-        tk.Checkbutton(scroll, text=col, variable=var).pack(anchor="w")
-        vars_map[col] = var
-
-    result = {"cols": []}
-
+        cb = QCheckBox(col)
+        checkboxes[col] = cb
+        scroll_layout.addWidget(cb)
+    
+    scroll.setWidget(scroll_widget)
+    scroll.setWidgetResizable(True)
+    layout.addWidget(scroll)
+    
+    result = []
+    
     def submit():
-        result["cols"] = [c for c, v in vars_map.items() if v.get()]
-        top.destroy()
-
-    tk.Button(top, text="OK", command=submit).pack(pady=10)
-
-    top.grab_set()
-    root.wait_window(top)
-
-    return result["cols"]
+        nonlocal result
+        result = [col for col, cb in checkboxes.items() if cb.isChecked()]
+        dialog.accept()
+    
+    ok_btn = QPushButton("OK")
+    ok_btn.clicked.connect(submit)
+    layout.addWidget(ok_btn)
+    
+    dialog.setLayout(layout)
+    dialog.exec_()
+    
+    return result
 
 # =========================================================
 # SANKEY
 # =========================================================
 def run_sankey(root):
     run_excel2csv()
-    file_path = ask_file(
-        DATA_SANKEY,
-        "Select Sankey file",
-        [("All files", "*.*")]
-    )
-
+    file_path = ask_file(DATA_SANKEY, "Select Sankey file")
+    
     if not file_path:
         return
-
+    
     df = create_sankey.load_file(file_path)
-
-    cols = ask_magnitude_columns(root, df.columns, "Sankey magnitudes")
-
+    cols = ask_magnitude_columns(root, df.columns.tolist(), "Sankey magnitudes")
+    
     if not cols:
-        messagebox.showwarning("Warning", "No columns selected")
+        QMessageBox.warning(None, "Warning", "No columns selected")
         return
-
-    # if your sankey still expects single column, take first
-    create_sankey.main_sankey(
-        file_path=file_path,
-        magnitude_col=cols[0]
-    )
+    
+    create_sankey.main_sankey(file_path=file_path, magnitude_col=cols[0])
 
 # =========================================================
 # MAP (MULTI MAGNITUDE SUPPORT)
 # =========================================================
 def run_map(root):
-    map_file = ask_file(
-        DATA_PLANOL,
-        "Tria una imatge de fons",
-        [("All files", "*.*")]
-    )
-
+    map_file = ask_file(DATA_PLANOL, "Tria una imatge de fons", [("PNG files", "*.png"), ("All files", "*.*")])
     if not map_file:
         return
     
-
-    file_path = ask_file(
-        DATA_PUNTS,
-        "Arxiu dels punts de mesura",
-        [("All files", "*.*")]
-    )
-
+    file_path = ask_file(DATA_PUNTS, "Arxiu dels punts de mesura")
     if not file_path:
         return
-
+    
     try:
         df = create_tkinter.load_measure_points(file_path)
     except Exception:
         df = pd.read_csv(file_path)
-
-    cols = ask_magnitude_columns(root, df.columns, "Map magnitudes")
-
+    
+    cols = ask_magnitude_columns(root, df.columns.tolist(), "Map magnitudes")
     if not cols:
-        messagebox.showwarning("Warning", "No columns selected")
+        QMessageBox.warning(None, "Warning", "No columns selected")
         return
-
-    top = tk.Toplevel(root)
-
-    create_tkinter.Visualizer(
-        top,
-        img_file=map_file,
-        csv_file=file_path,
-        magnitude_cols=cols
-    )
+    
+    # Create a simple PyQt window for the map visualizer
+    # Note: You'll need to port create_tkinter.Visualizer to PyQt5 or keep using tkinter for this
+    # For now, using a temporary tkinter root as workaround
+    tk_root = tk.Tk()
+    tk_root.withdraw()
+    try:
+        create_tkinter.Visualizer(tk_root, img_file=map_file, csv_file=file_path, magnitude_cols=cols)
+        tk_root.deiconify()
+        tk_root.mainloop()
+    finally:
+        tk_root.destroy()
 
 # =========================================================
 # PLOTS
 # =========================================================
 def run_preview_plot(root):
+    print(f"DATA_RAW type: {type(DATA_RAW)}, value: {DATA_RAW}")
+    print(f"After str(): {str(DATA_RAW)}")
     folder = ask_folder(DATA_RAW, "Select folder with CSVs")
-
     if not folder:
         return
-
+    
     files = [f for f in os.listdir(folder) if f.endswith(".csv")]
-
     if not files:
-        messagebox.showerror("Error", "No CSVs found")
+        QMessageBox.critical(None, "Error", "No CSVs found")
         return
-
+    
     file = ask_file_from_list(root, files, title="Select CSV to plot")
-
     if not file:
         return
-
+    
     file_path = os.path.join(folder, file)
-
     df = create_plots.load_csv(file_path)
-
+    
     if df is None:
-        messagebox.showerror("Error", "Could not load file")
+        QMessageBox.critical(None, "Error", "Could not load file")
         return
-
-    cols = ask_magnitude_columns(root, df.columns, "Select magnitudes")
-
+    
+    cols = ask_magnitude_columns(root, df.columns.tolist(), "Select magnitudes")
     if not cols:
         return
-
-    # ONE AT A TIME PREVIEW
+    
     for col in cols:
         fig = create_plots.plot_preview_plot(file_path, col)
-
         if fig is not None:
             show_preview_window(root, fig, file_path, col)
 
 def show_preview_window(root, fig, csv_path, variable):
-    win = tk.Toplevel(root)
-    win.title(f"Preview: {variable}")
-
-    canvas = FigureCanvasTkAgg(fig, master=win)
-    canvas.draw()
-    canvas.get_tk_widget().pack(fill="both", expand=True)
-
+    dialog = QDialog(root)
+    dialog.setWindowTitle(f"Preview: {variable}")
+    dialog.resize(800, 600)
+    
+    layout = QVBoxLayout()
+    
+    canvas = FigureCanvas(fig)
+    layout.addWidget(canvas)
+    
+    btn_layout = QHBoxLayout()
+    
+    save_btn = QPushButton("Save")
     def save():
         filename = f"{Path(csv_path).stem}_{variable}.png"
         output_path = Path(OUTPUT_PLOTS) / filename
-        fig.savefig(output_path, dpi=300)
-        messagebox.showinfo("Saved", f"Saved to:\n{output_path}")
-        plt.close(fig)
-
+        fig.savefig(output_path, dpi=300, bbox_inches='tight')
+        QMessageBox.information(None, "Saved", f"Saved to:\n{output_path}")
+    
+    discard_btn = QPushButton("Discard")
     def discard():
-        win.destroy()
         plt.close(fig)
-
-    btn_frame = tk.Frame(win)
-    btn_frame.pack(pady=10)
-
-    tk.Button(btn_frame, text="Save", command=save).pack(side="left", padx=5)
-    tk.Button(btn_frame, text="Discard", command=discard).pack(side="left", padx=5)
+        dialog.close()
+    
+    save_btn.clicked.connect(save)
+    discard_btn.clicked.connect(discard)
+    
+    btn_layout.addWidget(save_btn)
+    btn_layout.addWidget(discard_btn)
+    layout.addLayout(btn_layout)
+    
+    dialog.setLayout(layout)
+    dialog.exec_()
+    plt.close(fig)
 
 def run_batch_plots_folder(root):
     folder = ask_folder(DATA_RAW, "Select folder with CSVs")
-
     if not folder:
         return
-
+    
     files = [f for f in os.listdir(folder) if f.endswith(".csv")]
-
     if not files:
-        messagebox.showerror("Error", "No s'han trobat CSVs")
+        QMessageBox.critical(None, "Error", "No s'han trobat CSVs")
         return
-
+    
     sample_path = os.path.join(folder, files[0])
     sample_df = create_plots.load_csv(sample_path)
-
+    
     if sample_df is None:
-        messagebox.showerror("Error", "Could not load sample file")
+        QMessageBox.critical(None, "Error", "Could not load sample file")
         return
-
-    cols = ask_magnitude_columns(root, sample_df.columns, "Plot magnitudes")
-
+    
+    cols = ask_magnitude_columns(root, sample_df.columns.tolist(), "Plot magnitudes")
     if not cols:
         return
-
+    
     create_plots.batch_plot(folder, OUTPUT_PLOTS, variables=cols)
 
 def run_excel2csv():
-        import subprocess       
-        subprocess.run(["python", "excel2csv.py"])
+    import subprocess
+    subprocess.run(["python", "excel2csv.py"])
 
+# Keep main for backward compatibility
 def main(func):
-    root = tk.Tk()
-    root.withdraw()
-    root.protocol("WM_DELETE_WINDOW", root.destroy)
-    root.after(0, lambda: func(root))
-    root.mainloop()
-    plt.close('all')
-    print("GUI done, script exiting")   # <- add this line
-
-if __name__ == "__main__":
-    main(run_map)
-
-### functions: run_sankey, run_map, run_preview_plot, run_batch_plots_folder
+    app = QApplication.instance() or QApplication([])
+    # Create dummy root if needed
+    root = QMainWindow()
+    root.setWindowTitle("SXS Tools Helper")
+    root.hide()
+    func(root)
+    root.close()

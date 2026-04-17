@@ -1,5 +1,5 @@
 import tkinter as tk
-import selection_layer as controller
+import selection_layer_2 as controller
 
 
 class SimpleGUI(tk.Tk):
@@ -52,4 +52,4 @@ class SimpleGUI(tk.Tk):
 
 if __name__ == "__main__":
     app = SimpleGUI()
-    app.mainloop()
+    app.mainloop() 

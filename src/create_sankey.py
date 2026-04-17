@@ -7,7 +7,7 @@ import itertools
 import os
 from datetime import datetime
 import sys
-from config import DATA_PLANOL, DATA_PUNTS, DATA_RAW, DATA_SANKEY, OUTPUT_PLOTS, sankey_at, sankey_ste
+from config import OUTPUT_SANKEY, sankey_at, sankey_ste
 
 # ==============================
 # 1️⃣ LOAD DATA
@@ -18,7 +18,6 @@ def load_file(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
 
     ext = os.path.splitext(file_path)[1].lower()
-    print(ext)
     if ext == ".csv":
         df = pd.read_csv(file_path)
     elif ext in [".xls", ".xlsx"]:
@@ -120,13 +119,13 @@ def main_sankey(file_path=None, magnitude_col=None, title=""):
 
     # 1️⃣ Guardar el sankey com a fitxer HTML
     from os.path import join
-    output_dir = r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\outputs\html\sankey"  # o usa OUTPUT_PLOTS des del config
+    output_dir = OUTPUT_SANKEY
     os.makedirs(output_dir, exist_ok=True)
 
     # nom del fitxer: p.ex. sankey_at_20241001.html
     base_name = os.path.splitext(os.path.basename(file_path))[0]
     now = datetime.now().strftime("%Y%m%d_%H%M")
-    html_path = join(output_dir, f"sankey_{base_name}_{now}.html")
+    html_path = join(output_dir, f"{base_name}_{now}.html")
 
     fig.write_html(html_path, auto_open=False)  # no obre el navegador, només guarda
     print(f"Sankey guardat a: {html_path}")
@@ -137,12 +136,10 @@ def columnes_disponibles(df):
     print("Columnes disponibles:", ", ".join(df.columns))
     return df.columns
 
-
 def main():
-    main_sankey(file_path= r"C:\Users\ArnauCoronado\Documents_local\euromed\sxs\data\sankey\sankey_nodes-ste.csv", 
+    main_sankey(file_path= sankey_ste, 
                 magnitude_col="cabal", 
                 title="Estudi dels cabals", 
-
     )
 
 # ==============================
