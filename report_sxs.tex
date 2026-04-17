@@ -1,9 +1,9 @@
 % ==========================================
-%          Document configuration
-% ===========================================
+%          Document class & packages
+% ==========================================
 
-% ------ Margins, font and packages -------------
 \documentclass[12pt]{article}
+
 \usepackage[a4paper,
             left=2.5cm,
             right=2.5cm,
@@ -12,51 +12,79 @@
 
 \usepackage{inter}
 \renewcommand{\familydefault}{\sfdefault}
-\usepackage{fancyhdr} % Package for fancy header and footer
 
-% ------ Edit pakage header & footer ------
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage[spanish]{babel}  % <- AFEGEIX això per millor separació de síl·labes
+\usepackage{microtype}  
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{referencies.bib}  % Nom del fitxer .bib
+\usepackage{hyperref}
+\usepackage{xurl}
+
+
+
+\urlstyle{same}
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=black,
+    citecolor=black,
+    linkcolor=black
+}
+
+% ==========================================
+%          Page style configuration
+% ==========================================
+
+% ---- Main body style ----
 \fancypagestyle{body}{%
   \fancyhf{}
   \fancyfoot[R]{\thepage}
-  \fancyhead[R]{Arnau Coronado}
+  \fancyhead[R]{\textcolor{gray}{\textit{Projecte SuperSònic}}}
   \renewcommand{\headrulewidth}{0.4pt}
-  \setlength{\headheight}{16pt}   % minimum; you can increase to 18pt, 20pt
-  \setlength{\headsep}{26pt}      % gap between header rule and main text
+  \setlength{\headheight}{16pt}
+  \setlength{\headsep}{26pt}
 }
-\pagestyle{body} % Wtf is this??
 
-% Style for title and TOC: nothing, no line
+% ---- Title / TOC pages (empty header/footer) ----
 \fancypagestyle{emptystyle}{%
   \fancyhf{}
   \renewcommand{\headrulewidth}{0pt}
 }
 
-% Style for first page of a new section 
+% ---- First page of each section ----
 \fancypagestyle{firstpage}{%
   \fancyhf{}
   \fancyfoot[R]{\thepage}
   \renewcommand{\headrulewidth}{0pt}
 }
 
-% ----------- User custom comands -------------------------
+\pagestyle{body}
+
+% ==========================================
+%          Custom commands
+% ==========================================
 \newcommand{\sectionstartlow}{\vspace*{0.25\textheight}}
 
-\usepackage{parskip} % Why?? shouldnt i put all packages together?? what does thisone do?
-
-% ----------------- Document info--------------------------
+% ==========================================
+%          Document metadata
+% ==========================================
 \title{Projecte SuperSònic}
 \author{Arnau Coronado Nadal}
 \date{April 2026}
 
-
 % ==========================================
-%          Start of actual document
-% ===========================================
+%          Document start
+% ==========================================
 \begin{document}
 
-% ------------------------- Title page ------------------------
+% ---------------- Title page ----------------
 \begin{center}
 \vspace*{3cm}
+
 {\Huge Projecte SuperSònic}
 
 \vspace{1cm}
@@ -68,51 +96,79 @@
 \vspace{1cm}
 {\normalsize April 2026}
 \end{center}
+
 \thispagestyle{emptystyle}
 \newpage
 
-% ---------------------------- TOC ------------------------------------------
+% ---------------- TOC ----------------
 \thispagestyle{emptystyle}
-\tableofcontents 
+\renewcommand{\contentsname}{Taula de continguts}
+\tableofcontents
 \newpage
 
-% --------------- Start body with page numbers ----------------------------
+% ---------------- Body ----------------
 \pagenumbering{arabic}
 
-% -------------------- New section ---------------------------------
-\sectionstartlow
-\section{Introduction}
-\thispagestyle{firstpage} 
-% ------------------------------------------------------------------
+% ===== Section 1 =====
+\section{Introducció}
 
-Your text here; now you have:
-- first page  → title (no header, no header line, no page number),
-- second page → TOC (same),
-- body pages → header “Arnau Coronado” with header line, plus page number in footer.
+Euromed, S.A. és una empresa industrial amb seu a Mollet del Vallès (Barcelona), especialitzada en el desenvolupament i producció d'extractes botànics per a la indústria farmacèutica, nutracèutica i alimentària. 
+L'empresa forma part del grup Euromed \cite{Euromed2024}, amb presència internacional i orientació a mercats europeus, americans i asiàtics.
 
+Segons informació corporativa disponible a la seva pàgina web oficial \cite{Euromed2024}, la companyia disposa d'instal·lacions industrials avançades amb processos d'extracció, purificació i assecat, que impliquen l'ús intensiu de fluids tèrmics, aigua de procés i sistemes auxiliars. Aquestes 
+instal·lacions requereixen un control rigorós dels paràmetres operatius per garantir tant la qualitat del producte com l'eficiència energètica.
+
+Des del punt de vista operatiu, la planta integra múltiples circuits de fluids (aigua calenta, aigua freda, vapor, etc.) que intervenen directament en els processos productius. El control dels cabals en aquests circuits és un factor crític per a l'optimització del consum energètic i la detecció de possibles desviacions operatives.
+
+% ===== Section 2 =====
+\section{Objectiu}
+
+En el context actual d'emergència climàtica global, reconeguda per organismes internacionals com el Panell Intergovernamental sobre el Canvi Climàtic \cite{EU2023}, la reducció del consum energètic i de les emissions de gasos amb efecte d'hivernacle s'ha convertit en una prioritat estratègica per al sector industrial.
+
+La indústria representa aproximadament un 25-30\% del consum energètic final a nivell europeu \cite{IPCC2023}, fet que posa de manifest la importància d'implementar mesures d'eficiència energètica basades en dades reals d'operació.
+
+En aquest marc, el present projecte té com a objectiu principal la caracterització dels cabals en diferents punts de la planta d'Euromed, amb la finalitat de:
+
+\begin{itemize}
+\item Quantificar el comportament real dels fluxos de fluids.
+\item Detectar possibles ineficiències o desviacions respecte als valors esperats.
+\item Proporcionar una base de dades fiable per a futures accions d'optimització
+energètica.
+\end{itemize}
+    
+
+L’obtenció de dades experimentals és un requisit imprescindible per a la correcta presa de decisions en entorns industrials, specialment en processos amb elevada dependència energètica.
+
+% ===== Section 3 =====
+\section{Material i mètode}
+
+Per a la realització de les mesures s'ha utilitzat el cabalímetre ultrasònic portàtil Flexim Fluxus G608 (Emerson), equip específic per a la determinació no invasiva de cabals en conduccions industrials.
+
+Aquest dispositiu opera mitjançant la tecnologia d'ultrasons per temps de trànsit (transit-time), basada en la diferència de temps que experimenten dues senyals ultrasòniques en propagar-se a favor i en contra del flux del fluid. Aquesta diferència temporal ($\Delta t$) és directament proporcional a la velocitat mitjana del fluid, i permet calcular el cabal volumètric amb elevada
+ precisió \cite{Emerson2024}.
+
+Els sensors s'instal·len externament a la canonada (clamp-on), evitant qualsevol intervenció mecànica sobre el sistema. Aquesta característica presenta avantatges rellevants en entorns industrials:
+\begin{itemize}
+\item Eliminació de parades de producció per instal·lació.
+\item Absència de pèrdues de càrrega.
+\item Aplicabilitat a múltiples materials i diàmetres de canonada.
+\end{itemize}
+
+Durant el desenvolupament del projecte, el cabalímetre s'ha utilitzat en diferents punts representatius dels circuits de fluids de la planta, seguint criteris d'accessibilitat, rellevància energètica i representativitat del procés. Les mesures s'han realitzat en condicions operatives normals per garantir la validesa dels resultats obtinguts.
+
+% ===== Section 4 =====
+\section{Resultats}
+
+Els resultats s'han
+
+% ===== Section 4 =====
+\section{Conclusions}
+
+Ja ho faré jo
+
+
+% ===== Bibliografia =====
 \newpage
-
-% -------------------- New section ---------------------------------
-\sectionstartlow
-\section{Segon apartat}
-\thispagestyle{firstpage} 
-% ------------------------------------------------------------------
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\newpage
-
-More text; this page is not the first page of the section, so:
-- header “Arnau Coronado” appears,
-- header line appears,
-- footer page number appears.
-
-\newpage
-
-mes i mes i mes text
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-
-
+\renewcommand{\refname}{Referències}
+\printbibliography
 \end{document}
