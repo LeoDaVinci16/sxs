@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout,
                            QPushButton, QFileDialog, QMessageBox, QScrollArea, 
                            QMainWindow, QWidget, QFrame)
 from PyQt5.QtCore import Qt
+
 import pandas as pd
 import os
 import create_sankey
@@ -28,12 +29,35 @@ def ask_file(initial_dir, title="Select file", filetypes=None):
     return result[0]
     # return QFileDialog.getOpenFileName(None, title, initial_dir, ";;".join([f"{t[1]} ({t[0]})" for t in filetypes]))[0]
 
-def ask_folder(initial_dir, title="Select folder"):
+""" def ask_folder(initial_dir, title="Select folder"):
     if hasattr(initial_dir, 'resolve'):  # pathlib.Path
         initial_dir = str(initial_dir)
     elif initial_dir is None:
         initial_dir = "."
-    return QFileDialog.getExistingDirectory(None, title, initial_dir)
+    return QFileDialog.getExistingDirectory(None, title, initial_dir) """
+
+
+
+def ask_folder(initial_dir, title="Select folder"):
+    if hasattr(initial_dir, 'resolve'):
+        initial_dir = str(initial_dir)
+    elif initial_dir is None:
+        initial_dir = "."
+  
+    dialog = QFileDialog(None, Qt.Dialog | Qt.WindowCloseButtonHint)  # <- FIXED
+    dialog.setWindowTitle(title)
+    dialog.setDirectory(initial_dir)
+    
+    # KEY SETTINGS:
+    dialog.setFileMode(QFileDialog.Directory)           # Folder selection ONLY
+    dialog.setOption(QFileDialog.ShowDirsOnly, False)   # Show files too (gray)
+    dialog.setViewMode(QFileDialog.Detail)              # List + size/type columns
+    dialog.setOption(QFileDialog.DontUseNativeDialog, True)  # <- CRITICAL: Use Qt dialog
+    
+    result = dialog.exec_()
+    if result == QDialog.Accepted:
+        return dialog.selectedFiles()[0]
+    return ""
 
 def ask_file_from_list(root, files, title="Select file"):
     dialog = QDialog(root)
@@ -235,18 +259,29 @@ def run_batch_plots_folder(root):
         QMessageBox.critical(None, "Error", "No s'han trobat CSVs")
         return
     
-    sample_path = os.path.join(folder, files[0])
-    sample_df = create_plots.load_csv(sample_path)
+    # Get ALL unique columns across ALL files
+    all_columns = set()
     
-    if sample_df is None:
-        QMessageBox.critical(None, "Error", "Could not load sample file")
+    for file in files:
+        file_path = os.path.join(folder, file)
+        try:
+            df = create_plots.load_csv(file_path)
+            if df is not None:
+                all_columns.update(df.columns)
+        except:
+            continue  # Skip broken files
+    
+    if not all_columns:
+        QMessageBox.critical(None, "Error", "No columns found in any file")
         return
     
-    cols = ask_magnitude_columns(root, sample_df.columns.tolist(), "Plot magnitudes")
+    # User selects from ALL available columns
+    cols = ask_magnitude_columns(root, sorted(list(all_columns)), "Available columns (across all files)")
     if not cols:
         return
     
-    create_plots.batch_plot(folder, OUTPUT_PLOTS, variables=cols)
+    # Pass folder and selected columns (skips missing columns per file)
+    create_plots.batch_plot(folder, str(OUTPUT_PLOTS), variables=cols)
 
 def run_excel2csv():
     import subprocess
