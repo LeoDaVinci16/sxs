@@ -15,20 +15,20 @@ class SimpleGUI(tk.Tk):
     def _build_ui(self):
         tk.Label(
             self,
-            text="Processing Tools",
+            text="Eines",
             font=("Arial", 14, "bold")
         ).pack(pady=15)
 
         tk.Button(
             self,
-            text="Sankey Diagram",
+            text="Diagrama Sankey",
             width=25,
             command=lambda: controller.run_sankey(self)
         ).pack(pady=5)
 
         tk.Button(
             self,
-            text="Map Visualizer",
+            text="Mapa dels punts de mesura",
             width=25,
             command=lambda: controller.run_map(self)
         ).pack(pady=5)
@@ -36,7 +36,7 @@ class SimpleGUI(tk.Tk):
         # NEW: Preview plot button
         tk.Button(
             self,
-            text="Preview Plot",
+            text="Veure un gràfic",
             width=25,
             command=lambda: controller.run_preview_plot(self)
         ).pack(pady=5)
@@ -44,7 +44,7 @@ class SimpleGUI(tk.Tk):
         # RENAMED: Batch plots
         tk.Button(
             self,
-            text="Batch Plots (Folder)",
+            text="Gràfics de tots els arxius",
             width=25,
             command=lambda: controller.run_batch_plots_folder(self)
         ).pack(pady=5)
