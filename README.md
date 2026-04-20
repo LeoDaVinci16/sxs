@@ -45,8 +45,10 @@ Aquest projecte recull els resultats del treball realitzat per mesurar cabals en
 
 ### 📊 Diagrama Sankey (Balanç de fluxos) `sankey`
 
-[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-at_20260417_1152.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_sankey_nodes-ste_20260417_1151.html)
+[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-at_20260417_1152.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-ste_20260417_1151.html)
 
+
+sankey_nodes-at_20260417_1152.html
 \---
 
 ## 📂 Estructura del repositori
