@@ -5,14 +5,15 @@ import re
 from collections import defaultdict
 import plotly.io as pio
 from points_dict import main
+from config import OUTPUT_REPORT, DATA_RAW
 
 
 # Configuration
-csv_folder = "data/raw"
+csv_folder = str(DATA_RAW)
 qmd_file = "report_generated_html.qmd"
 variables_to_plot = ["A Flow velocity [m/s]"]  # add more if needed
 cache_folder = "_quarto_cache_html"
-output_folder = "outputs"
+output_folder = str(OUTPUT_REPORT)
 
 # Ensure output folder exists (optional)
 os.makedirs(output_folder, exist_ok=True)
@@ -81,4 +82,4 @@ pio.renderers.default = "notebook_connected"
 fig.show()
 ```\n\n""")
 
-print(f"✅ Generated {qmd_file}")
+print(f"✅ Generated {qmd_file} in {OUTPUT_REPORT}")
