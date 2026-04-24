@@ -40,11 +40,11 @@ def choose_magnitude_column(df, default="cabal"):
 # ==============================
 # 2️⃣ SANKEY PROCESSING
 # ==============================
-def validate_sankey_df(df, source_col, target_col, magnitude_col):
-    required_cols = {source_col, target_col, magnitude_col}
+def validate_sankey_df(df, source_col, target_col, colors_col, magnitude_col):
+    required_cols = {source_col, target_col, colors_col, magnitude_col}
     missing = required_cols - set(df.columns)
     if missing:
-        raise ValueError(f"Missing columns in dataframe: {missing}")
+        raise ValueError(f"Falta aquesta dada: {missing}")
 
 def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
     all_nodes = list(pd.unique(df[[source_col, target_col]].values.ravel()))
@@ -76,7 +76,7 @@ def generate_link_colors(n_links, palette=None, alpha=0.4):
 
     return [hex_to_rgba(c, alpha) for c in colors]
 
-def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, magnitude_col="value"):
+def build_sankey_figure(df, node_labels, colors_col, title="", file_path=None, magnitude_col="value"):
     fig = go.Figure(go.Sankey(
         node=dict(
             label=node_labels,
@@ -88,7 +88,7 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
             source=df["source_idx"],
             target=df["target_idx"],
             value=df[magnitude_col],
-            color=link_colors,
+            color=df[colors_col],
             hovertemplate="%{source.label} → %{target.label}<br>Flow: %{value}<extra></extra>"
         )
     ))
@@ -112,10 +112,10 @@ def build_sankey_figure(df, node_labels, link_colors, title="", file_path=None, 
 # ==============================
 def main_sankey(file_path=None, magnitude_col=None, title=""):
     df = load_file(file_path)
-    validate_sankey_df(df, "source", "target", magnitude_col)
+    validate_sankey_df(df, "source", "target", "color", magnitude_col)
     df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
     link_colors = generate_link_colors(len(df_prepared))
-    fig = build_sankey_figure(df_prepared, node_labels, link_colors, title, file_path, magnitude_col)
+    fig = build_sankey_figure(df_prepared, node_labels, "color", title, file_path, magnitude_col)
 
     # 1️⃣ Guardar el sankey com a fitxer HTML
     from os.path import join
@@ -137,8 +137,8 @@ def columnes_disponibles(df):
     return df.columns
 
 def main():
-    main_sankey(file_path= sankey_ste, 
-                magnitude_col="cabal", 
+    main_sankey(file_path= sankey_at, 
+                magnitude_col="cabal m3h", 
                 title="Estudi dels cabals", 
     )
 

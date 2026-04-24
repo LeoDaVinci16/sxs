@@ -143,7 +143,7 @@ def run_sankey(root):
         QMessageBox.warning(None, "Warning", "No columns selected")
         return
     
-    create_sankey.main_sankey(file_path=file_path, magnitude_col=cols[0])
+    create_sankey.main_sankey(file_path=file_path, magnitude_col=cols[0], title="diagrama Sankey")
 
 # =========================================================
 # MAP (MULTI MAGNITUDE SUPPORT)
