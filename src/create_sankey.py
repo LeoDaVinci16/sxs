@@ -6,6 +6,7 @@ import plotly.express as px
 import itertools
 import os
 from datetime import datetime
+from pathlib import Path
 import sys
 from config import OUTPUT_SANKEY, sankey_at, sankey_ste
 
@@ -82,20 +83,21 @@ def build_sankey_figure(df, node_labels, colors_col, title="", file_path=None, m
             label=node_labels,
             color="#8aa512",
             pad=20,
-            thickness=25
+            thickness=25,
+            align="left"
         ),
         link=dict(
             source=df["source_idx"],
             target=df["target_idx"],
             value=df[magnitude_col],
-            color=df[colors_col],
+            color=df[colors_col],   
             hovertemplate="%{source.label} → %{target.label}<br>Flow: %{value}<extra></extra>"
         )
     ))
 
     creation_date = datetime.now().strftime("%Y-%m-%d %H:%M")
     file_name = os.path.basename(file_path) if file_path else "Unknown file"
-    subtitle = f"Source: {file_name} | Generated: {creation_date} | Magnitude: {magnitude_col}"
+    subtitle = f"Arxiu: {file_name} | Data creació: {creation_date} | Magnitud: {magnitude_col}"
 
     fig.update_layout(
         title=dict(
@@ -110,7 +112,20 @@ def build_sankey_figure(df, node_labels, colors_col, title="", file_path=None, m
 # ==============================
 # 3️⃣ MAIN SANKEY FUNCTION
 # ==============================
-def main_sankey(file_path=None, magnitude_col=None, title=""):
+def generate_sankey_title(file_path, magnitude_col):
+    """Generates a title based on the filename suffix and magnitude."""
+    if not file_path:
+        return f"Diagrama de flux: {magnitude_col}"
+    
+    raw_suffix = Path(file_path).stem.split("-")[-1].lower()
+    mapping = {"ste": "Vapor", "at": "Aigua de torres"}
+    display_suffix = mapping.get(raw_suffix, "")
+    
+    title_prefix = f" {display_suffix}" if display_suffix else ""
+    return f"Diagrama Sankey - {title_prefix}"
+
+def main_sankey(file_path=None, magnitude_col=None, title=None):
+    title = title or generate_sankey_title(file_path, magnitude_col)
     df = load_file(file_path)
     validate_sankey_df(df, "source", "target", "color", magnitude_col)
     df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
@@ -139,7 +154,6 @@ def columnes_disponibles(df):
 def main():
     main_sankey(file_path= sankey_at, 
                 magnitude_col="cabal m3h", 
-                title="Estudi dels cabals", 
     )
 
 # ==============================
