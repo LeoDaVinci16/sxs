@@ -38,7 +38,7 @@ function updateDots() {
 
     if (dots[i]) {
       dots[i].style.left = x + "px";
-      dots[i].style.top  = y + "px";
+      dots[i].style.top = y + "px";
     }
   });
 }
@@ -59,7 +59,7 @@ function markDotSelected(index) {
 
 window.addEventListener("load", () => {
   if (!map || !points || points.length === 0) {
-    info.innerHTML = "❌ No points loaded. Check <code>js/points.js</code>.";
+    info.innerHTML = "❌ No points loaded. Check <code>points.js</code>.";
     return;
   }
 
@@ -72,7 +72,7 @@ window.addEventListener("load", () => {
     const dot = document.createElement("div");
     dot.className = "point";
     dot.style.left = x + "px";
-    dot.style.top  = y + "px";
+    dot.style.top = y + "px";
 
     // Clicking a dot selects that point, updates panel, and marks the dot
     dot.addEventListener("click", (e) => {

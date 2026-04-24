@@ -8,7 +8,8 @@ import pandas as pd
 import os
 import sys
 import webbrowser
-import create_sankey
+import create_sankey # Mantenim aquest, és per als diagrames Sankey
+import excel2js # Importem el nou script excel2js
 import create_map
 import create_plots
 import excel2csv
@@ -285,10 +286,17 @@ def run_batch_plots_folder(root):
 def run_excel2csv(folder):
     excel2csv.main(folder)
 
+def run_excel2js_for_map(map_type: str):
+    excel2js.main(map_type)
 
 def run_excel2csv_button(root):
     import subprocess
     script_path = Path(__file__).parent / "excel2csv.py"
+    subprocess.run([sys.executable, str(script_path)])
+
+def run_excel2js_button(root):
+    import subprocess
+    script_path = Path(__file__).parent / "excel2js.py"
     subprocess.run([sys.executable, str(script_path)])
 
 def run_html_map(root):
@@ -302,8 +310,10 @@ def run_html_map(root):
     msg.exec_()
     
     if msg.clickedButton() == at_btn:
+        run_excel2js_for_map("AT") # Genera points.js per a Aigua de Torres
         path = OUTPUT_MAPA_AT / "index.html"
     elif msg.clickedButton() == ste_btn:
+        run_excel2js_for_map("STE") # Genera points.js per a Vapor
         path = OUTPUT_MAPA_STE / "index.html"
     else:
         return
