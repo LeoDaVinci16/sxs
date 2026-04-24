@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import os
 import sys
+import webbrowser
 import create_sankey
 import create_map
 import create_plots
@@ -15,7 +16,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from config import DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, DATA_PLANOL
+from config import (DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, 
+                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE)
 
 # =========================================================
 # FILE / FOLDER HELPERS
@@ -288,6 +290,28 @@ def run_excel2csv_button(root):
     import subprocess
     script_path = Path(__file__).parent / "excel2csv.py"
     subprocess.run([sys.executable, str(script_path)])
+
+def run_html_map(root):
+    msg = QMessageBox(root)
+    msg.setWindowTitle("Seleccionar Mapa HTML")
+    msg.setText("Quin mapa vols obrir al navegador?")
+    at_btn = msg.addButton("Aigua de Torres (AT)", QMessageBox.ActionRole)
+    ste_btn = msg.addButton("Vapor (STE)", QMessageBox.ActionRole)
+    msg.addButton("Cancel·lar", QMessageBox.RejectRole)
+    
+    msg.exec_()
+    
+    if msg.clickedButton() == at_btn:
+        path = OUTPUT_MAPA_AT / "index.html"
+    elif msg.clickedButton() == ste_btn:
+        path = OUTPUT_MAPA_STE / "index.html"
+    else:
+        return
+
+    if path.exists():
+        webbrowser.open(path.as_uri())
+    else:
+        QMessageBox.warning(root, "Error", f"No s'ha trobat el fitxer:\n{path}")
 
 # Keep main for backward compatibility
 def main(func):

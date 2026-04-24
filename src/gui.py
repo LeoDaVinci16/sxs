@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(300, 240)
+        self.setFixedSize(300, 290)
 
         self._build_ui()
 
@@ -33,6 +33,11 @@ class SimpleGUI(QMainWindow):
         map_btn.setFixedWidth(250)
         map_btn.clicked.connect(lambda: controller.run_map(self))
         layout.addWidget(map_btn)
+
+        html_map_btn = QPushButton("Mapa interactiu (HTML)")
+        html_map_btn.setFixedWidth(250)
+        html_map_btn.clicked.connect(lambda: controller.run_html_map(self))
+        layout.addWidget(html_map_btn)
 
         preview_btn = QPushButton("Veure un gràfic")
         preview_btn.setFixedWidth(250)
