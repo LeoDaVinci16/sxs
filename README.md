@@ -41,11 +41,11 @@ Aquest projecte recull els resultats del treball realitzat per mesurar cabals en
 
 ### 🗺️ Mapes de punts de mesura `mapa`
 
-[**Mapa mesures aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/mapa-at/map.html) | [**Mapa mesures vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/mapa-ste/map.html) | 
+[**Mapa mesures aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/mapa-at/index.html) | [**Mapa mesures vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/mapa-ste/index.html) | 
 
 ### 📊 Diagrama Sankey (Balanç de fluxos) `sankey`
 
-[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-at_20260417_1152.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-ste_20260417_1151.html)
+[**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-at.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-ste.html)
 
 
 sankey_nodes-at_20260417_1152.html
