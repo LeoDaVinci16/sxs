@@ -55,34 +55,40 @@ sankey_nodes-at_20260417_1152.html
 
 ```bash
 sxs/
-├── run_sxs.bat             # Script d'execució ràpida per llançar la interfície (GUI).
-├── README.md               # Aquest document
-├── requirements.txt
+├── run_sxs.bat               # Script d'execució ràpida per llançar la interfície (GUI).
+├── README.md                 # Aquest document
+├── requirements.txt          # Paquets de python necessaris pel projecte
 ├── .gitignore
-├── src/                    # Codi font del projecte (Python).
-│   ├── gui_2.py            # Interfície gràfica principal (SXS Tools).
-│   ├── selection_layer.py  # Lògica de selecció de fitxers i columnes per a la GUI.
-│   ├── config.py           # Configuració centralitzada de rutes i fitxers constants.
-│   ├── add_date.py         # Script per normalitzar noms de fitxers CSV afegint la data.
-│   ├── excel2csv.py        # Utilitat per convertir fulls d'Excel a format CSV.
-│   ├── create_plots.py     # Generació de gràfics (batch processing i previsualització).
-│   ├── create_tkinter.py   # Visualitzador interactiu de punts sobre el plànol de la planta.
-│   ├── create_sankey.py    # Generació de diagrames de flux (Sankey) en HTML.
+├── src/                      # Codi font del projecte (Python).
+│   ├── selection_layer.py    # Lògica de selecció de fitxers i columnes per a la GUI.
+│   ├── config.py             # Configuració centralitzada de rutes i fitxers constants.
+│   ├── add_date.py           # Script per normalitzar noms de fitxers CSV afegint la data.
+│   ├── excel2csv.py          # Utilitat per convertir fulls d'Excel a format CSV.
+│   ├── excel2js.py           # Utilitat per convertir fulls d'Excel a format JavaScript.
+│   ├── create_plots.py       # Generació de gràfics (batch processing i previsualització).
+│   ├── create_map.py         # Visualitzador interactiu de punts sobre el plànol de la planta.
+│   ├── create_sankey.py      # Generació de diagrames de flux (Sankey) en HTML.
 │   ├── create_report_html.py # Generador d'informes interactius en format HTML (Quarto).
 │   ├── create_report_pdf.py  # Generador d'informes en format PDF (Quarto).
-│   ├── points_dict.py      # Diccionari de traducció d'IDs de punts a noms descriptius.
-│   └── gui.py              # Legacy.
-├── data/                   # Dades d'entrada.
-│   ├── raw/                # Fitxers CSV bruts obtinguts de les mesures.
-│   ├── punts/              # Llistat de punts de mesura (punts-mesura-ste.csv, etc.).
-│   ├── sankey/             # Fitxers de nodes i fluxos per als diagrames Sankey.
-│   └── planol/             # Imatges de fons (PNG) per als mapes de la planta.
-└── outputs/                # Fitxers generats pel programari.
-    ├── plots/              # Gràfiques exportades en format PNG (es crea automàticament)
-    ├── sankey/             # Diagrames de flux exportats.
-    ├── mapa-at/            # Mapa amb els punts de mesura d'aigua de torres
-    ├── mapa-ste/           # Mapa de la fabrica amb els punts de mesura de vapor
-    └── report/             # Html reports dels grafics obtinguts de les mesures
+│   ├── points_dict.py        # Traducció ID -> Descripció.
+│   └── gui.py                # Interfície gràfica del projecte.
+├── data/                     # Dades d'Entrada
+│   ├── raw/                  # Fitxers CSV bruts de Flexim.
+│   ├── punts/                # Definicions de punts de mesura.
+│   ├── sankey/               # Fitxers de configuració de nodes/fluxos.
+│   ├── planol/               # Plànols de la fàbrica (PNG).
+│   └── configurations.zip    # Fitxers del programa FluxDiag
+├── report/                   # Report fet manualment (no amb l'script create report)
+│   ├── report figures/       # Imatges per l'informe.
+│   ├── referencies.bib       # Referències.
+│   ├── report_sxs.tex        # Fitxer de l'informe latex.
+│   └── report_sxs.pdf        # Fitxer en pdf (no inclòs a github, es crea a partir de l'anterior!!).
+└── outputs/                  # Actius Generats
+    ├── plots/                # Gràfics de sèries temporals PNG.
+    ├── sankey/               # Diagrames Sankey HTML.
+    ├── mapa-at/              # Mapa web per a Aigua de Refrigeració.
+    ├── mapa-ste/             # Mapa web per a Vapor.
+    └── report/               # Informes HTML/PDF creats automàticament
 ```
 
 \---
