@@ -15,7 +15,7 @@ function showPoint(point) {
     OD: ${point["OD mm"] || "?"} mm<br>
     WT: ${point["WT mm"] || "?"} mm<br>
     Flow velocity: ${point["Flow velocity ms"] || "?"} m/s<br>
-    Mass flow rate: ${point["mass flow rate m3h"] || "?"} m3/h
+    Volume flow rate: ${point["volume flow rate m3h"] || "?"} m3/h
   `;
   info.innerHTML = text;
 }

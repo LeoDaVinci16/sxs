@@ -101,7 +101,7 @@ class DotItem(QGraphicsEllipseItem):
 # ==============================
 class Visualizer(QMainWindow):
     def __init__(self, img_file=planol_at, csv_file=punts_at,
-                 magnitude_cols=["OD mm", "mass flow rate m3h", "Flow velocity ms"]):
+                 magnitude_cols=["OD mm", "volume flow rate m3h", "Flow velocity ms"]):
         super().__init__()
 
         self.setWindowTitle("Visualizer")
