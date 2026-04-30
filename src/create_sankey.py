@@ -278,7 +278,7 @@ def main_sankey(file_path=None, magnitude_col=None, title=None):
     # nom del fitxer: p.ex. sankey_at_20241001.html
     base_name = os.path.splitext(os.path.basename(file_path))[0]
     now = datetime.now().strftime("%Y%m%d_%H%M")
-    html_path = join(output_dir, f"{base_name}.html")
+    html_path = join(output_dir, f"{base_name}_local.html")
 
     fig.write_html(html_path, auto_open=False)  # no obre el navegador, només guarda
     print(f"Sankey guardat a: {html_path}")
