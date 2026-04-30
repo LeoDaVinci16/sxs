@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 import sys
 from config import OUTPUT_SANKEY, sankey_at, sankey_ste
+from collections import defaultdict
 
 # ==============================
 # 1️⃣ LOAD DATA
@@ -46,9 +47,126 @@ def validate_sankey_df(df, source_col, target_col, colors_col, magnitude_col):
     missing = required_cols - set(df.columns)
     if missing:
         raise ValueError(f"Falta aquesta dada: {missing}")
+    
+def build_graph(df, source_col, target_col):
+    out_edges = defaultdict(list)
+    in_edges = defaultdict(list)
+    nodes = set()
 
-def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
-    all_nodes = list(pd.unique(df[[source_col, target_col]].values.ravel()))
+    for _, row in df.iterrows():
+        s = row[source_col]
+        t = row[target_col]
+
+        out_edges[s].append(t)
+        in_edges[t].append(s)
+
+        nodes.add(s)
+        nodes.add(t)
+
+    return nodes, out_edges, in_edges
+
+def find_layer0(nodes, in_edges):
+    indegree = {n: len(in_edges[n]) for n in nodes}
+    layer0 = sorted([n for n in nodes if indegree[n] == 0])
+
+    if not layer0:
+        layer0 = sorted(nodes)
+
+    return layer0
+
+def propagate_order(nodes, out_edges, in_edges):
+    # 1. Rank assignment: Longest Path Layering
+    # Ensures nodes appear after ALL their dependencies
+    node_layer = {n: 0 for n in nodes}
+    
+    # Relax edges to find longest path to each node
+    for _ in range(len(nodes)):
+        changed = False
+        for u in nodes:
+            for v in out_edges[u]:
+                if node_layer[v] < node_layer[u] + 1:
+                    node_layer[v] = node_layer[u] + 1
+                    changed = True
+        if not changed:
+            break
+
+    # 2. Ordering within layers: Barycenter heuristic
+    node_order = {}
+    layers_map = defaultdict(list)
+    for n, l in node_layer.items():
+        layers_map[l].append(n)
+
+    for l in sorted(layers_map.keys()):
+        def get_sort_val(n):
+            parents = in_edges[n]
+            if not parents: return (0, str(n))
+            p_orders = [node_order[p] for p in parents if p in node_order]
+            # Sort by average parent position to minimize link crossings
+            return (sum(p_orders)/len(p_orders) if p_orders else 0, str(n))
+        
+        layer_nodes = sorted(layers_map[l], key=get_sort_val)
+        for i, n in enumerate(layer_nodes):
+            node_order[n] = i
+
+    return node_layer, node_order
+
+""" def propagate_order(layer0, out_edges, in_edges):
+    from collections import deque
+
+    node_layer = {}
+    node_order = {}
+
+    queue = deque(layer0)
+    visited = set()
+
+    layer_index = 0
+
+    while queue:
+        size = len(queue)
+        current_layer = list(queue)
+        queue = deque()
+
+        for i, node in enumerate(current_layer):
+            if node in visited:
+                continue
+
+            visited.add(node)
+
+            node_layer[node] = layer_index
+            node_order[node] = i
+
+            for child in out_edges[node]:
+                queue.append(child)
+
+        # stable ordering of next layer
+        def sort_key(n):
+            parents = in_edges[n]
+            if not parents:
+                return (0, str(n))
+
+            parent_orders = [node_order[p] for p in parents if p in node_order]
+            if not parent_orders:
+                return (0, str(n))
+
+            return (min(parent_orders), str(n))
+
+        queue = deque(sorted(set(queue), key=sort_key))
+
+        layer_index += 1
+    print(node_layer, node_order)
+
+    return node_layer, node_order """
+
+def build_sankey_output(df, source_col, target_col, magnitude_col, node_layer, node_order, nodes):
+    sorted_nodes = sorted(
+        nodes,
+        key=lambda n: (
+            node_layer.get(n, 999),
+            node_order.get(n, 999),
+            str(n)
+        )
+    )
+    all_nodes = sorted_nodes
     node_indices = {name: i for i, name in enumerate(all_nodes)}
 
     df_copy = df.copy()
@@ -56,31 +174,53 @@ def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
     df_copy["target_idx"] = df_copy[target_col].map(node_indices)
 
     node_labels_max = []
-    for i, label in enumerate(all_nodes):
+    for i, label in enumerate(sorted_nodes):
         incoming = df_copy.loc[df_copy["target_idx"] == i, magnitude_col].sum()
         outgoing = df_copy.loc[df_copy["source_idx"] == i, magnitude_col].sum()
         max_flow = max(incoming, outgoing)
         node_labels_max.append(f"{label} ({max_flow:.2f})")
 
-    return df_copy, all_nodes, node_labels_max
+    return df_copy, sorted_nodes, node_labels_max, node_layer, node_order
+    
+def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
+    nodes, out_edges, in_edges = build_graph(df, source_col, target_col)
+    # Pass the full nodes set to propagate_order for proper rank calculation
+    node_layer, node_order = propagate_order(nodes, out_edges, in_edges)
+    df_copy, sorted_nodes, node_labels, node_layer, node_order = build_sankey_output(
+        df,
+        source_col,
+        target_col,
+        magnitude_col,
+        node_layer,
+        node_order,
+        nodes
+    )
+    print("\n\n===========\nSorted Nodes:\n", sorted_nodes, "\n===========\n")
+    print("\n\n===========\nNode_abels:\n", node_labels, "\n===========\n")
+    print("\n\n===========\nNode_layer:\n", node_layer, "\n===========\n")
+    print("\n\n===========\nNode_order:\n", node_order, "\n===========\n")
+    return df_copy, sorted_nodes, node_labels, node_layer, node_order
 
-def generate_link_colors(n_links, palette=None, alpha=0.4):
-    palette = palette or px.colors.qualitative.Plotly
-    colors = list(itertools.islice(itertools.cycle(palette), n_links))
 
-    def hex_to_rgba(hex_color, alpha):
-        hex_color = hex_color.lstrip("#")
-        r = int(hex_color[0:2], 16)
-        g = int(hex_color[2:4], 16)
-        b = int(hex_color[4:6], 16)
-        return f"rgba({r},{g},{b},{alpha})"
-
-    return [hex_to_rgba(c, alpha) for c in colors]
-
-def build_sankey_figure(df, node_labels, colors_col, title="", file_path=None, magnitude_col="value"):
+def build_sankey_figure(
+    df,
+    all_nodes,
+    node_labels,
+    node_layer,
+    node_order,
+    colors_col,
+    title="",
+    file_path=None,
+    magnitude_col="value"
+):
+    coords = compute_coordinates(node_layer, node_order)
+    x, y = build_node_xy(all_nodes, coords)
     fig = go.Figure(go.Sankey(
+        arrangement="snap",
         node=dict(
             label=node_labels,
+            #x=x,
+            #y=y,
             color="#8aa512",
             pad=20,
             thickness=25,
@@ -105,9 +245,56 @@ def build_sankey_figure(df, node_labels, colors_col, title="", file_path=None, m
             x=0.5,
             xanchor='center'
         ),
-        font=dict(size=12)
+        font=dict(size=12),
+        margin=dict(l=50, r=50, t=100, b=80),
     )
     return fig
+# =============================
+# Manual order
+# =============================
+def compute_coordinates(node_layer, node_order):
+    from collections import defaultdict
+
+    # group nodes per layer
+    layers = defaultdict(list)
+
+    for node, layer in node_layer.items():
+        layers[layer].append(node)
+
+    coords = {}
+
+    for layer, nodes in layers.items():
+        # sort by your propagated order
+        nodes_sorted = sorted(nodes, key=lambda n: node_order.get(n, 0))
+
+        # normalize Y in [0, 1]
+        n = len(nodes_sorted)
+        max_layer = max(node_layer.values() or 1)
+        
+        for i, node in enumerate(nodes_sorted):
+            # Ensure x and y stay within a safe center range [0.1, 0.9] to avoid edge overflow
+            x_raw = (node_layer[node] + node_order[node] * 0.01) / (max_layer + 1)
+            x = 0.05 + 0.9 * x_raw
+            x = min(max(x, 0.0), 1.0)
+            
+            if n == 1:
+                y = 0.5
+            else:
+                y = 0.1 + 0.8 * (i / (n - 1)) # Use a tighter inner range for safety
+            y = min(max(y, 0.0), 1.0)
+            coords[node] = (x, y)
+    return coords
+
+def build_node_xy(all_nodes, coords):
+    x = []
+    y = []
+
+    for n in all_nodes:
+        xi, yi = coords[n]
+        x.append(xi)
+        y.append(yi)
+    return x, y
+
 
 # ==============================
 # 3️⃣ MAIN SANKEY FUNCTION
@@ -128,9 +315,18 @@ def main_sankey(file_path=None, magnitude_col=None, title=None):
     title = title or generate_sankey_title(file_path, magnitude_col)
     df = load_file(file_path)
     validate_sankey_df(df, "source", "target", "color", magnitude_col)
-    df_prepared, all_nodes, node_labels = prepare_sankey_nodes(df, "source", "target", magnitude_col)
-    link_colors = generate_link_colors(len(df_prepared))
-    fig = build_sankey_figure(df_prepared, node_labels, "color", title, file_path, magnitude_col)
+    df_prepared, all_nodes, node_labels, node_layer, node_order = prepare_sankey_nodes(df, "source", "target", magnitude_col)
+    fig = build_sankey_figure(
+        df_prepared,
+        all_nodes,
+        node_labels,
+        node_layer,
+        node_order,
+        colors_col="color",
+        title=title,
+        file_path=file_path,
+        magnitude_col=magnitude_col
+    )
 
     # 1️⃣ Guardar el sankey com a fitxer HTML
     from os.path import join
