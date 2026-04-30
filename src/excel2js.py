@@ -2,7 +2,7 @@
 
 import pandas as pd
 from pathlib import Path
-import json
+import json 
 from PIL import Image
 from config import DATA_PUNTS, DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE
 
