@@ -62,17 +62,8 @@ def build_graph(df, source_col, target_col):
 
         nodes.add(s)
         nodes.add(t)
-
+    #print("Nodes:", nodes, "\nOut edges:", dict(out_edges), "\nIn edges:", dict(in_edges))
     return nodes, out_edges, in_edges
-
-def find_layer0(nodes, in_edges):
-    indegree = {n: len(in_edges[n]) for n in nodes}
-    layer0 = sorted([n for n in nodes if indegree[n] == 0])
-
-    if not layer0:
-        layer0 = sorted(nodes)
-
-    return layer0
 
 def propagate_order(nodes, out_edges, in_edges):
     # 1. Rank assignment: Longest Path Layering
@@ -107,55 +98,9 @@ def propagate_order(nodes, out_edges, in_edges):
         layer_nodes = sorted(layers_map[l], key=get_sort_val)
         for i, n in enumerate(layer_nodes):
             node_order[n] = i
-
+    print("Node layers:", node_layer)
+    print("Node order within layers:", node_order)
     return node_layer, node_order
-
-""" def propagate_order(layer0, out_edges, in_edges):
-    from collections import deque
-
-    node_layer = {}
-    node_order = {}
-
-    queue = deque(layer0)
-    visited = set()
-
-    layer_index = 0
-
-    while queue:
-        size = len(queue)
-        current_layer = list(queue)
-        queue = deque()
-
-        for i, node in enumerate(current_layer):
-            if node in visited:
-                continue
-
-            visited.add(node)
-
-            node_layer[node] = layer_index
-            node_order[node] = i
-
-            for child in out_edges[node]:
-                queue.append(child)
-
-        # stable ordering of next layer
-        def sort_key(n):
-            parents = in_edges[n]
-            if not parents:
-                return (0, str(n))
-
-            parent_orders = [node_order[p] for p in parents if p in node_order]
-            if not parent_orders:
-                return (0, str(n))
-
-            return (min(parent_orders), str(n))
-
-        queue = deque(sorted(set(queue), key=sort_key))
-
-        layer_index += 1
-    print(node_layer, node_order)
-
-    return node_layer, node_order """
 
 def build_sankey_output(df, source_col, target_col, magnitude_col, node_layer, node_order, nodes):
     sorted_nodes = sorted(
@@ -166,6 +111,7 @@ def build_sankey_output(df, source_col, target_col, magnitude_col, node_layer, n
             str(n)
         )
     )
+        
     all_nodes = sorted_nodes
     node_indices = {name: i for i, name in enumerate(all_nodes)}
 
@@ -195,10 +141,10 @@ def prepare_sankey_nodes(df, source_col, target_col, magnitude_col):
         node_order,
         nodes
     )
-    print("\n\n===========\nSorted Nodes:\n", sorted_nodes, "\n===========\n")
-    print("\n\n===========\nNode_abels:\n", node_labels, "\n===========\n")
-    print("\n\n===========\nNode_layer:\n", node_layer, "\n===========\n")
-    print("\n\n===========\nNode_order:\n", node_order, "\n===========\n")
+    #print("\n\n===========\nSorted Nodes:\n", sorted_nodes, "\n===========\n")
+    #print("\n\n===========\nNode_abels:\n", node_labels, "\n===========\n")
+    #print("\n\n===========\nNode_layer:\n", node_layer, "\n===========\n")
+    #print("\n\n===========\nNode_order:\n", node_order, "\n===========\n")
     return df_copy, sorted_nodes, node_labels, node_layer, node_order
 
 
@@ -211,8 +157,7 @@ def build_sankey_figure(
     colors_col,
     title="",
     file_path=None,
-    magnitude_col="value"
-):
+    magnitude_col="value"):
     coords = compute_coordinates(node_layer, node_order)
     x, y = build_node_xy(all_nodes, coords)
     fig = go.Figure(go.Sankey(
@@ -254,43 +199,40 @@ def build_sankey_figure(
 # =============================
 def compute_coordinates(node_layer, node_order):
     from collections import defaultdict
-
-    # group nodes per layer
-    layers = defaultdict(list)
-
+    
+    # Group nodes by their layer index
+    layer_groups = defaultdict(list)
     for node, layer in node_layer.items():
-        layers[layer].append(node)
-
-    coords = {}
-
-    for layer, nodes in layers.items():
-        # sort by your propagated order
+        layer_groups[layer].append(node)
+    
+    # Determine max layer index for X normalization (avoiding division by zero)
+    max_l = max(node_layer.values()) if node_layer and max(node_layer.values()) > 0 else 1
+    
+    # This dictionary maps the node name to its computed (x, y) coordinates
+    layers = {}
+    
+    for layer_idx, nodes in layer_groups.items():
+        # X coordinate: constant for every node in the same layer
+        x = 0.05 + 0.9 * (layer_idx / max_l)
+        
         nodes_sorted = sorted(nodes, key=lambda n: node_order.get(n, 0))
-
-        # normalize Y in [0, 1]
-        n = len(nodes_sorted)
-        max_layer = max(node_layer.values() or 1)
+        n_in_layer = len(nodes_sorted)
         
         for i, node in enumerate(nodes_sorted):
-            # Ensure x and y stay within a safe center range [0.1, 0.9] to avoid edge overflow
-            x_raw = (node_layer[node] + node_order[node] * 0.01) / (max_layer + 1)
-            x = 0.05 + 0.9 * x_raw
-            x = min(max(x, 0.0), 1.0)
+            # Y coordinate: distributed based on the node's index within the layer
+            y_norm = 0.5 if n_in_layer == 1 else i / (n_in_layer - 1)
+            y = 0.1 + 0.8 * y_norm
             
-            if n == 1:
-                y = 0.5
-            else:
-                y = 0.1 + 0.8 * (i / (n - 1)) # Use a tighter inner range for safety
-            y = min(max(y, 0.0), 1.0)
-            coords[node] = (x, y)
-    return coords
+            layers[node] = (layer_idx, x, y)
+    print("Computed node coordinates (node: [layer, x, y]):", layers)        
+    return layers
 
 def build_node_xy(all_nodes, coords):
     x = []
     y = []
 
     for n in all_nodes:
-        xi, yi = coords[n]
+        layer, xi, yi = coords[n]
         x.append(xi)
         y.append(yi)
     return x, y
