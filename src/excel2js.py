@@ -46,11 +46,13 @@ def generate_points_js(excel_input_path: Path, image_input_path: Path, output_js
 
     points_data = []
     for _, row in df.iterrows():
+        x_val = float(row["x"])
+        y_val = float(row["y"])
         point = {
             "id": str(row["id"]),
-            # Calcula les coordenades relatives (0 a 1)
-            "x_rel": float(row["x"]) / img_width,
-            "y_rel": float(row["y"]) / img_height,
+            # Si ja està normalitzat (0 a 1), s'usa directament; si no, es normalitza dividint per la dimensió de la imatge
+            "x_rel": x_val if 0 <= x_val <= 1 else x_val / img_width,
+            "y_rel": y_val if 0 <= y_val <= 1 else y_val / img_height,
         }
         # Afegeix altres columnes dinàmicament, excloent 'id', 'x' i 'y'
         for col in df.columns:
