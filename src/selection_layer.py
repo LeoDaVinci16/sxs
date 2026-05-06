@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import os
 import sys
+import time
 import webbrowser
 import create_sankey # Mantenim aquest, és per als diagrames Sankey
 import excel2js # Importem el nou script excel2js
@@ -32,14 +33,6 @@ def ask_file(initial_dir, title="Select file", filetypes=None):
     filter_str = ";;".join([f"{desc} ({pattern})" for desc, pattern in filetypes])
     result = QFileDialog.getOpenFileName(None, title, initial_dir, filter_str)
     return result[0]
-    # return QFileDialog.getOpenFileName(None, title, initial_dir, ";;".join([f"{t[1]} ({t[0]})" for t in filetypes]))[0]
-
-""" def ask_folder(initial_dir, title="Select folder"):
-    if hasattr(initial_dir, 'resolve'):  # pathlib.Path
-        initial_dir = str(initial_dir)
-    elif initial_dir is None:
-        initial_dir = "."
-    return QFileDialog.getExistingDirectory(None, title, initial_dir) """
 
 def ask_folder(initial_dir, title="Select folder"):
     if hasattr(initial_dir, 'resolve'):
@@ -183,24 +176,16 @@ def run_map(root):
 # PLOTS
 # =========================================================
 def run_preview_plot(root):
-    print(f"DATA_RAW type: {type(DATA_RAW)}, value: {DATA_RAW}")
-    print(f"After str(): {str(DATA_RAW)}")
-    folder = ask_folder(DATA_RAW, "Select folder with CSVs")
-    if not folder:
+    # Directly ask for a CSV file, allowing the user to navigate from DATA_RAW
+    file_path = ask_file(DATA_RAW, "Select CSV to plot", [("CSV files", "*.csv")])
+    
+    if not file_path: # User cancelled file selection
         return
     
-    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
-    if not files:
-        QMessageBox.critical(None, "Error", "No CSVs found")
-        return
-    
-    file = ask_file_from_list(root, files, title="Select CSV to plot")
-    if not file:
-        return
-    
-    file_path = os.path.join(folder, file)
+    # Load the selected CSV file
     df = create_plots.load_csv(file_path)
     
+    # Handle potential errors during CSV loading
     if df is None:
         QMessageBox.critical(None, "Error", "Could not load file")
         return
@@ -209,6 +194,7 @@ def run_preview_plot(root):
     if not cols:
         return
     
+    # Create and show a plot for each selected column
     for col in cols:
         fig = create_plots.plot_preview_plot(file_path, col)
         if fig is not None:
@@ -322,6 +308,50 @@ def run_html_map(root):
         webbrowser.open(path.as_uri())
     else:
         QMessageBox.warning(root, "Error", f"No s'ha trobat el fitxer:\n{path}")
+
+# =========================================================
+# SERIAL INTEGRATION
+# =========================================================
+def run_serial_import(root):
+    import subprocess
+    script_path = Path(__file__).parent / "serial_import.py"
+    
+    # Start the process
+    proc = subprocess.Popen([sys.executable, str(script_path)])
+    
+    # Create a modal dialog to keep the UI "frozen" but allowing a "Stop" button
+    msg = QMessageBox(root)
+    msg.setIcon(QMessageBox.Information)
+    msg.setWindowTitle("Importació en curs")
+    msg.setText("S'està esperant la transmissió del dispositiu...")
+    msg.setInformativeText("Un cop detectat el flux de dades (Header \\DEVICE), el fitxer es crearà i es tancarà sol.\n\nPots forçar la finalització amb el botó d'aquí sota.")
+    stop_btn = msg.addButton("Finalitzar / Aturar", QMessageBox.RejectRole)
+    msg.setModal(True)
+    msg.show()
+
+    # Wait for process or user stop
+    while proc.poll() is None:
+        QApplication.processEvents() # Keep the "Stop" button responsive
+        if msg.clickedButton() == stop_btn:
+            proc.terminate()
+            break
+        time.sleep(0.1)
+    
+    msg.accept()
+    
+    if proc.returncode == 0:
+        QMessageBox.information(root, "Èxit", "Importació finalitzada i fitxer processat correctament.") # Keep this message
+    else:
+        QMessageBox.warning(root, "Informació", "El procés d'importació s'ha aturat manualment o per timeout.")
+
+def run_serial_monitor(root):
+    import subprocess
+    script_path = Path(__file__).parent / "serial_read.py"
+    # For a raw monitor, we open it in a separate console window for better visibility
+    if sys.platform == "win32":
+        subprocess.Popen(["cmd", "/c", "start", sys.executable, str(script_path)])
+    else:
+        subprocess.Popen([sys.executable, str(script_path)])
 
 # Keep main for backward compatibility
 def main(func):

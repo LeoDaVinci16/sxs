@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(350, 450) # Mida de finestra augmentada per als botons més grans
+        self.setFixedSize(350, 550) # Increased height for new serial buttons
 
         self._build_ui()
 
@@ -29,43 +29,55 @@ class SimpleGUI(QMainWindow):
         BTN_HEIGHT = 40
         BTN_STYLE = "font-size: 14px;"
 
-        sankey_btn = QPushButton("Diagrama Sankey")
+        import_btn = QPushButton("📥 Importar dades (Serial)")
+        import_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        import_btn.setStyleSheet(BTN_STYLE) # Removed special background/font-weight
+        import_btn.clicked.connect(lambda: controller.run_serial_import(self))
+        layout.addWidget(import_btn)
+
+        monitor_btn = QPushButton("🔍 Monitoritzar Port (Consola)")
+        monitor_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        monitor_btn.setStyleSheet(BTN_STYLE)
+        monitor_btn.clicked.connect(lambda: controller.run_serial_monitor(self))
+        layout.addWidget(monitor_btn)
+
+        sankey_btn = QPushButton("📊 Diagrama Sankey")
         sankey_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         sankey_btn.setStyleSheet(BTN_STYLE)
         sankey_btn.clicked.connect(lambda: controller.run_sankey(self))
         layout.addWidget(sankey_btn)
 
-        map_btn = QPushButton("Mapa dels punts de mesura")
+        map_btn = QPushButton("🗺️ Mapa dels punts de mesura")
         map_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         map_btn.setStyleSheet(BTN_STYLE)
         map_btn.clicked.connect(lambda: controller.run_map(self))
         #layout.addWidget(map_btn)
 
-        html_map_btn = QPushButton("Mapa interactiu (HTML)")
+        html_map_btn = QPushButton("🌐 Mapa interactiu (HTML)")
         html_map_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         html_map_btn.setStyleSheet(BTN_STYLE)
         html_map_btn.clicked.connect(lambda: controller.run_html_map(self))
         layout.addWidget(html_map_btn)
 
-        preview_btn = QPushButton("Veure un gràfic")
+        preview_btn = QPushButton("📈 Veure un gràfic")
         preview_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         preview_btn.setStyleSheet(BTN_STYLE)
         preview_btn.clicked.connect(lambda: controller.run_preview_plot(self))
         layout.addWidget(preview_btn)
 
-        batch_btn = QPushButton("Gràfics de tots els arxius")
+        batch_btn = QPushButton("📉 Gràfics de tots els arxius")
         batch_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         batch_btn.setStyleSheet(BTN_STYLE)
         batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))
         layout.addWidget(batch_btn)
 
-        csv_btn = QPushButton("Excel2csv")
+        csv_btn = QPushButton("📝 Excel2csv")
         csv_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         csv_btn.setStyleSheet(BTN_STYLE)
         csv_btn.clicked.connect(lambda: controller.run_excel2csv_button(self))
         layout.addWidget(csv_btn) # Assegurem que el botó Excel2csv s'afegeix
 
-        excel2js_btn = QPushButton("Excel2js")
+        excel2js_btn = QPushButton("📜 Excel2js")
         excel2js_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         excel2js_btn.setStyleSheet(BTN_STYLE)
         excel2js_btn.clicked.connect(lambda: controller.run_excel2js_button(self))

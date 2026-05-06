@@ -1,4 +1,5 @@
 from pathlib import Path
+import serial
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,3 +23,14 @@ punts_ste = DATA_PUNTS / "punts-mesura-ste.csv"
 punts_at = DATA_PUNTS / "punts-mesura-at.csv"
 planol_ste = DATA_PLANOL / "planol-ste.png"
 planol_at = DATA_PLANOL / "planol-at.png"
+
+# Serial Configuration
+SERIAL_PORT = "COM3"
+SERIAL_BAUD = 9600
+SERIAL_BYTESIZE = serial.EIGHTBITS
+SERIAL_PARITY = serial.PARITY_EVEN
+SERIAL_STOPBITS = serial.STOPBITS_TWO
+SERIAL_TIMEOUT = 1  # Seconds to wait for data before deciding a block is finished
+# CSV Export configuration: Use a specific char or "AUTO" to detect from stream
+SERIAL_CSV_SEP = "AUTO" 
+DEFAULT_SEP = ";" # Fallback if AUTO fails
