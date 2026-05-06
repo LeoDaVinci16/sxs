@@ -36,33 +36,71 @@ def parse_datetime_series(series):
 # =========================
 # LOAD DATA
 # =========================
+def detect_delimiter(filepath):
+    """Safely sniffs the delimiter (comma, semicolon, or tab) by skipping metadata."""
+    with open(filepath, "r") as f:
+        # Read past the metadata lines starting with '#'
+        sample_lines = []
+        for line in f:
+            clean_line = line.strip()
+            if not clean_line or clean_line.startswith("#"):
+                continue
+            sample_lines.append(clean_line)
+            if len(sample_lines) >= 3:  # Grab a few lines of actual data
+                break
+        
+        if not sample_lines:
+            return ","  # Fallback default
+            
+        # Join the sample lines and sniff the delimiter
+        sample_text = "\n".join(sample_lines)
+        if ";" in sample_text:
+            return ";"
+        elif "\t" in sample_text:
+            return "\t"
+        else:
+            return ","
+
 def load_csv(csv_path):
     csv_path = Path(csv_path)
-    # df = pd.read_csv(csv_path, sep="\t", engine="python")
-    df = pd.read_csv(
-        csv_path,
-        sep="\t",
-        engine="python"
-    )
+    
+    # 1. Detect the delimiter manually and safely
+    detected_sep = detect_delimiter(csv_path)
+    
+    # 2. Read the CSV using the precise delimiter found
+    try:
+        df = pd.read_csv(
+            csv_path,
+            sep=detected_sep,
+            comment="#",
+            engine="python",
+            skip_blank_lines=True
+        )
+    except Exception as e:
+        print(f"[ERROR] Could not read {csv_path.name}: {e}")
+        return None
+    
+    # Strip any accidental white spaces from column names
     df.columns = df.columns.astype(str).str.strip()
+    
+    # Try to locate a date or time column
     date_col = next(
-        (c for c in df.columns if any(x in c.lower() for x in ["date", "data", "fecha"])),
+        (c for c in df.columns if any(x in c.lower() for x in ["date", "data", "fecha", "time"])),
         None
     )
 
-    if date_col is None:
-        print(f"[SKIP] No date column in {csv_path.name}")
-        return None
+    if date_col: 
+        df[date_col] = parse_datetime_series(df[date_col])
+        df_cleaned_by_date = df.dropna(subset=[date_col])
 
-    #df[date_col] = pd.to_datetime(df[date_col], errors="coerce") #old way
-    df[date_col] = parse_datetime_series(df[date_col])
-    df = df.dropna(subset=[date_col])
+        if df_cleaned_by_date.empty:
+            print(f"[WARNING] No valid dates found in '{date_col}'. Using numeric index.")
+            return df
+        else:
+            df = df_cleaned_by_date.set_index(date_col)
+    else: 
+        print(f"[INFO] No date column in {csv_path.name}. Using sample number index.")
 
-    if df.empty:
-        print(f"[SKIP] No valid dates in {csv_path.name}")
-        return None
-
-    df = df.set_index(date_col)
     return df
 
 
@@ -75,7 +113,8 @@ def create_plot(df, variable, title=""):
     ax.plot(df.index, df[variable], linewidth=1)
 
     ax.set_title(title or variable)
-    ax.set_xlabel("Time")
+    x_label = "Time" if isinstance(df.index, pd.DatetimeIndex) else "Sample Number"
+    ax.set_xlabel(x_label)
     ax.set_ylabel(variable)
 
     ax.grid(True, linestyle="--", linewidth=0.5)
@@ -105,7 +144,10 @@ def plot_preview_plot(csv_path, variable: str):
     if variable not in df.columns:
         return None
 
-    df_clean = df[[variable]].dropna()
+    # Ensure numeric data and sorted index for correct line plotting
+    df[variable] = pd.to_numeric(df[variable], errors='coerce')
+    df_clean = df[[variable]].dropna().sort_index()
+
     if df_clean.empty:
         return None
 
@@ -138,7 +180,10 @@ def batch_plot(folder, output_folder, variables):
                 print(f"Missing variable: {var}")
                 continue
 
-            df_clean = df[[var]].dropna()
+            # Ensure numeric data and sorted index for correct line plotting
+            df[var] = pd.to_numeric(df[var], errors='coerce')
+            df_clean = df[[var]].dropna().sort_index()
+
             if df_clean.empty:
                 print(f"No data: {var}")
                 continue
@@ -159,7 +204,7 @@ def batch_plot(folder, output_folder, variables):
 # MAIN (CLI)
 # =========================
 def main(variables=None):
-    variables = ["A Flow velocity [m/s]"]
+    variables = ["MEASURE"]
 
     batch_plot(
         DATA_RAW,

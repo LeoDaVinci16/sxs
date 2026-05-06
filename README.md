@@ -35,15 +35,15 @@
 
 Aquest projecte recull els resultats del treball realitzat per mesurar cabals en diferents punts de la fàbrica d'Euromed mitjançant el cabalímetre supersònic **Flexim (Fluxus G608)**. L'objectiu és automatitzar el processament de dades, la generació d'informes i la visualització geoespacial i de fluxos.
 
-### 📑 Informes automatitzats `report`
+### 📑 Informes automatitzats (report)
 
 [**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/report/report_generated_at.html) | [**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/report/report_generated_vapor.html)
 
-### 🗺️ Mapes de punts de mesura `mapa`
+### 🗺️ Mapes de punts de mesura (mapa/punts)
 
 [**Mapa mesures aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/mapa-at/index.html) | [**Mapa mesures vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/mapa-ste/index.html) | 
 
-### 📊 Diagrama Sankey (Balanç de fluxos) `sankey`
+### 📊 Diagrama Sankey: Balanç de fluxos (sankey)
 
 [**Sankey aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-at.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-ste.html)
 

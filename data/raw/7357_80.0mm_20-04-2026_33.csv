@@ -1,0 +1,36 @@
+# \DEVICE          : G 608ST-60802901
+# \MODE            : STORED
+# DATE             : 20.04.2026
+# TIME             : 11:02:33
+# Par.Record       :
+# Meas. Point No.: : A:7357
+# Outer Diameter  :      80.0 mm
+# Wall Thickness  :       0.1 mm
+# Roughness       :       0.1 mm
+# Pipe Material   : Other Material
+# c-Material      :     330.0 m/s
+# Lining           : WITHOUT LINING
+# Medium           : Other Medium
+# c-Medium     MIN:     330.0 m/s
+# c-Medium     MAX:     330.0 m/s
+# Kinem.Viscosity :       3.3 mm2/s
+# Density         :      0.00 g/cm3
+# Medium Temperat.:     150.0 C
+# Transducer Type  : GRM1SH3-186243
+# Sound Path       :         1 NUM
+# Transd. Distance :     -62.6 mm
+# Damping          :        10 s
+# Full-Scale Val.  :           kg/h
+# Current Loop     :           mA
+# Storage Rate     :  00:01:00 AVERAGE
+# Physic. Quant.   : Mass flow
+# Unit Of Measure  : [kg/h]/[kg]
+# Numb.Of Meas.Val :         4
+# Average MEASURE: N/A
+# Average SSPEED: N/A
+
+CHANNEL,MEASURE,AMP,SCNR
+A,???,15.0
+A,???,15.0
+A,???,15.0
+A,???,15.0

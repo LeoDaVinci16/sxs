@@ -1,0 +1,29 @@
+# \DEVICE          : G 608ST-60802901
+# \MODE            : STORED
+# DATE             : 04.05.2026
+# TIME             : 08:39:47
+# Par.Record       :
+# Meas. Point No.: : A:3-900-08
+# Outer Diameter  :     139.7 mm
+# Wall Thickness  :       2.0 mm
+# Roughness       :       0.0 mm
+# Pipe Material   : Stainless Steel
+# Lining           : WITHOUT LINING
+# Medium           : Water
+# Medium Temperat.:      20.0 C
+# Transducer Type  : CDM1N5213047
+# Sound Path       :         2 NUM
+# Transd. Distance :      52.9 mm
+# Damping          :        10 s
+# Full-Scale Val.  :           kg/h
+# Current Loop     :           mA
+# Storage Rate     :  00:01:00 AVERAGE
+# Physic. Quant.   : Mass flow
+# Unit Of Measure  : [kg/h]/[kg]
+# Numb.Of Meas.Val :         2
+# Average MEASURE: N/A
+# Average SSPEED: 781.55
+
+CHANNEL,MEASURE,SSPEED,AMP,SCNR
+A,???,14.0
+A,???,1549.1,50.0

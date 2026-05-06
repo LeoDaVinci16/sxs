@@ -1,0 +1,79 @@
+# \DEVICE          : G 608ST-60802901
+# \MODE            : STORED
+# DATE             : 04.05.2026
+# TIME             : 08:53:55
+# Par.Record       :
+# Meas. Point No.: : B:3-900-02
+# Outer Diameter  :     204.0 mm
+# Wall Thickness  :       2.0 mm
+# Roughness       :       0.0 mm
+# Pipe Material   : Stainless Steel
+# Lining           : WITHOUT LINING
+# Medium           : Water
+# Medium Temperat.:      20.0 C
+# Transducer Type  : CDM1N5213047
+# Sound Path       :         2 NUM
+# Transd. Distance :     102.6 mm
+# Damping          :        10 s
+# Full-Scale Val.  :           m3/h
+# Current Loop     :           mA
+# Storage Rate     :  00:00:01 SAMPLES
+# Physic. Quant.   : Volume flow
+# Unit Of Measure  : [m3/h]/[m3]
+# Numb.Of Meas.Val :        52
+# Average MEASURE: 76.130625
+# Average SSPEED: 644.7923076923076
+
+CHANNEL,MEASURE,SSPEED,AMP,SCNR
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,32.0
+B,???,32.0
+B,???,1151.5,34.0
+B,???,1151.5,34.0
+B,???,1151.5,34.0
+B,???,1307.0,33.0
+B,82.07,1307.0,33.0
+B,83.22,1307.0,33.0
+B,83.22,1307.0,33.0
+B,80.49,1253.3,33.0
+B,76.31,1253.3,33.0
+B,72.86,1253.3,33.0
+B,69.28,1253.3,33.0
+B,69.28,1253.3,33.0
+B,???,1250.0,34.0
+B,???,1250.0,34.0
+B,???,1250.0,34.0
+B,???,1250.0,34.0
+B,68.65,1293.4,34.0
+B,70.34,1293.4,34.0
+B,72.05,1293.4,34.0
+B,73.74,1322.4,34.0
+B,77.28,1322.4,34.0
+B,78.78,1322.4,34.0
+B,78.78,1322.4,34.0
+B,81.74,1342.8,35.0
+B,???,1342.8,35.0
+B,???,1342.8,35.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,14.0
+B,???,14.0
+B,???,14.0
+B,???,13.0
+B,???,13.0
+B,???,13.0
+B,???,14.0
+B,???,14.0
+B,???,14.0
