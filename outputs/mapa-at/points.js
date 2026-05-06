@@ -1411,21 +1411,21 @@ const points = [
     "volume flow rate m3h": 30.75820583953503
   },
   {
-    "id": "nan",
-    "x_rel": NaN,
-    "y_rel": NaN,
-    "planta": null,
-    "planta-numero": null,
-    "id_vell": null,
-    "DN": null,
-    "OD mm": null,
-    "WT mm": null,
+    "id": "RI-153",
+    "x_rel": 0.37308622078968573,
+    "y_rel": 0.609,
+    "planta": "R-150",
+    "planta-numero": "R-150-01",
+    "id_vell": "RI-153",
+    "DN": 80.0,
+    "OD mm": 88.9,
+    "WT mm": 4.0,
     "material": null,
-    "area m2": 0.0,
+    "area m2": 0.005140281753785256,
     "measured speed": null,
     "Flow velocity ms": 1.0,
-    "volume flow rate m3s": 0.0,
-    "volume flow rate m3h": 0.0
+    "volume flow rate m3s": 0.005140281753785256,
+    "volume flow rate m3h": 18.50501431362692
   },
   {
     "id": "nan",
