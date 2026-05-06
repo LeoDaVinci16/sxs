@@ -135,7 +135,7 @@ while True:
             continue
 
         sep = detect_line_sep(content)
-        parts = [p.strip() for p in content.split(sep) if p.strip()]
+        parts = [p.strip() for p in content.split(sep)] # Preserve empty fields
 
         if "*MEASURE" in content or "*CHANNEL" in content:
             header_parts = [p.replace("\\*", "").replace("*", "").strip() for p in parts]

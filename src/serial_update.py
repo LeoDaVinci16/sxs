@@ -1,5 +1,7 @@
 import csv
 import os
+import re
+from datetime import datetime, timedelta
 from config import DATA_RAW
 
 def detect_delimiter(filepath):
@@ -48,6 +50,29 @@ def post_process_file(filepath):
     if not headers or not data_rows:
         print(f"Skipping {filepath}: No data rows or headers found.")
         return
+
+    # --- Generate TIME column from metadata ---
+    start_time_str = None
+    storage_rate_str = None
+    for meta in metadata_lines:
+        if "# TIME" in meta:
+            m = re.search(r"(\d{2}:\d{2}:\d{2})", meta)
+            if m: start_time_str = m.group(1)
+        if "Storage Rate" in meta:
+            m = re.search(r"(\d{2}:\d{2}:\d{2})", meta)
+            if m: storage_rate_str = m.group(1)
+
+    if start_time_str and storage_rate_str: # Always attempt to generate TIME if metadata is available
+        try:
+            t = datetime.strptime(start_time_str, "%H:%M:%S")
+            h, m, s = map(int, storage_rate_str.split(":"))
+            delta = timedelta(hours=h, minutes=m, seconds=s)
+            headers.insert(0, "TIME") # Insert at the beginning
+            for row in data_rows:
+                row.insert(0, t.strftime("%H:%M:%S")) # Insert at the beginning
+                t += delta
+        except Exception as e:
+            print(f"Error generating TIME column for {filepath}: {e}")
 
     # 2. Dynamically locate the column indices
     measure_idx = None
