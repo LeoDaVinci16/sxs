@@ -30,7 +30,7 @@ SERIAL_BAUD = 9600
 SERIAL_BYTESIZE = serial.EIGHTBITS
 SERIAL_PARITY = serial.PARITY_EVEN
 SERIAL_STOPBITS = serial.STOPBITS_TWO
-SERIAL_TIMEOUT = 1  # Seconds to wait for data before deciding a block is finished
+SERIAL_TIMEOUT = 10  # Seconds to wait for data before deciding a block is finished
 # CSV Export configuration: Use a specific char or "AUTO" to detect from stream
 SERIAL_CSV_SEP = "AUTO" 
 DEFAULT_SEP = ";" # Fallback if AUTO fails

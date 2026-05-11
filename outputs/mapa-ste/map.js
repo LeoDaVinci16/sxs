@@ -10,12 +10,11 @@ function showPoint(point) {
   const text = `
     <b>ID: ${point.id}</b><br>
     Planta: ${point.planta || "?"}<br>
-    Planta número: ${point["planta-numero"] || "?"}<br>
     DN: ${point.DN || "?"}<br>
     OD: ${point["OD mm"] || "?"} mm<br>
     WT: ${point["WT mm"] || "?"} mm<br>
-    Flow velocity: ${point["Flow velocity ms"] || "?"} m/s<br>
-    Mass flow rate: ${point["mass flow rate kgh"] || "?"} m3/h
+    Velocitat del cabal: ${point["Flow velocity ms"] || "?"} m/s<br>
+    Cabal massic: ${point["mass flow rate kgh"] || "?"} m3/h
   `;
   info.innerHTML = text;
 }

@@ -25,20 +25,32 @@ def safe(s):
 def extract_filename(meta):
     meas_point = "NA"
     diameter = "NA"
-    date = "NA"
-    time = "NA"
+    date_code = "000000"
+    time_code = "0000"
 
     for l in meta:
         if "Meas. Point No." in l:
             meas_point = l.split(":")[-1].strip()
         if "Outer Diameter" in l:
-            diameter = l.split(":")[-1].strip().replace(" ", "")
+            raw_diameter = l.split(":")[-1].strip()
+            # Extract only the integer part (digits before any dot or unit)
+            m_diam = re.search(r"(\d+)", raw_diameter)
+            diameter = m_diam.group(1) if m_diam else "NA"
         if "DATE" in l:
-            date = l.split(":")[-1].strip().replace(".", "-")
+            raw_date = l.split(":")[-1].strip()
+            parts = re.split(r'[.-]', raw_date)
+            if len(parts) == 3:
+                if len(parts[2]) == 4: # Handles DD.MM.YYYY
+                    date_code = f"{parts[2][2:]}{parts[1]}{parts[0]}"
+                elif len(parts[0]) == 4: # Handles YYYY-MM-DD
+                    date_code = f"{parts[0][2:]}{parts[1]}{parts[2]}"
         if "TIME" in l:
-            time = l.split(":")[-1].strip().replace(":", "-")
+            raw_time = l.split(":", 1)[-1].strip()
+            m_time = re.search(r"(\d{2}):(\d{2})", raw_time)
+            if m_time:
+                time_code = f"{m_time.group(1)}{m_time.group(2)}"
 
-    filename = safe(f"{meas_point}_{diameter}_{date}_{time}.csv")
+    filename = safe(f"{date_code}_{time_code}_{meas_point}_{diameter}.csv")
     return DATA_RAW / filename
 
 def detect_line_sep(line):
@@ -79,9 +91,9 @@ while True:
         if import_active and data_received_in_session:
             print("\nTransmission finished. Running post-processing...")
             post_process_file(fname)
-            print("Done. Exiting program.")
-            ser.close()
-            sys.exit(0) # Automatic exit
+            print("Done. Waiting for next transmission...")
+            import_active = False
+            data_received_in_session = False
         continue
 
     # Reset state if a new device header is detected (start of a new transfer)

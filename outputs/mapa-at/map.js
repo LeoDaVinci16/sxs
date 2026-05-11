@@ -8,18 +8,16 @@ const dots = [];
 // Show point data in the info panel
 function showPoint(point) {
   const text = `
-    <b>ID: ${point.id}</b><br>
+    <b>Codi: ${point.id}</b><br>
     Planta: ${point.planta || "?"}<br>
-    Planta número: ${point["planta-numero"] || "?"}<br>
     DN: ${point.DN || "?"}<br>
     OD: ${point["OD mm"] || "?"} mm<br>
     WT: ${point["WT mm"] || "?"} mm<br>
-    Flow velocity: ${point["Flow velocity ms"] || "?"} m/s<br>
-    Volume flow rate: ${point["volume flow rate m3h"] || "?"} m3/h
+    Velocitat del cabal: ${point["Flow velocity ms"] || "?"} m/s<br>
+    Cabal volumètric: ${point["volume flow rate m3h"] || "?"} m3/h
   `;
   info.innerHTML = text;
 }
-
 // Enable / disable navigation buttons
 function updateButtons() {
   prevBtn.disabled = currentIndex <= 0;

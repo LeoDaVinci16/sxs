@@ -2,7 +2,26 @@ import csv
 import os
 import re
 from datetime import datetime, timedelta
+import statistics
 from config import DATA_RAW
+
+def calculate_stats(vals):
+    """Computes basic statistics for a list of numeric values."""
+    if not vals:
+        return {k: "N/A" for k in ["avg", "median", "mode", "max", "min"]}
+    
+    try:
+        mode_val = statistics.mode(vals)
+    except Exception:
+        mode_val = "N/A"
+        
+    return {
+        "avg": sum(vals) / len(vals),
+        "median": statistics.median(vals),
+        "mode": mode_val,
+        "max": max(vals),
+        "min": min(vals)
+    }
 
 def detect_delimiter(filepath):
     """Sniffs the delimiter by checking a non-comment line."""
@@ -38,7 +57,7 @@ def post_process_file(filepath):
             # Identify metadata lines (they start with "#")
             if row[0].startswith("#"):
                 # Avoid doubling up averages if the script is run twice
-                if "Average MEASURE:" not in row[0] and "Average SSPEED:" not in row[0]:
+                if "Stats ->" not in row[0] and "Average " not in row[0]:
                     metadata_lines.append(row[0])
             # Identify column headers
             elif "CHANNEL" in row:
@@ -101,8 +120,8 @@ def post_process_file(filepath):
             except ValueError:
                 pass
 
-    avg_measure = sum(measure_vals) / len(measure_vals) if measure_vals else "N/A"
-    avg_sspeed = sum(sspeed_vals) / len(sspeed_vals) if sspeed_vals else "N/A"
+    m_stats = calculate_stats(measure_vals)
+    s_stats = calculate_stats(sspeed_vals)
 
     # 4. Overwrite the file with the final polished format
     with open(filepath, "w", newline="") as f:
@@ -113,15 +132,21 @@ def post_process_file(filepath):
             w.writerow([meta])
             
         # Write computed stats
-        w.writerow([f"# Average MEASURE: {avg_measure}"])
-        w.writerow([f"# Average SSPEED: {avg_sspeed}"])
+        for label, stats in [("MEASURE", m_stats), ("SSPEED", s_stats)]:
+            if stats["avg"] != "N/A":
+                # Helper to format float or N/A
+                fmt = lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x)
+                stat_line = f"# {label} Stats -> Avg: {fmt(stats['avg'])} | Median: {fmt(stats['median'])} | Mode: {fmt(stats['mode'])} | Max: {fmt(stats['max'])} | Min: {fmt(stats['min'])}"
+                w.writerow([stat_line])
+
         w.writerow([])  # Blank spacer
         
         # Write headers and data rows
         w.writerow(headers)
         w.writerows(data_rows)
 
-    print(f"Successfully processed! Averages -> MEASURE: {avg_measure} | SSPEED: {avg_sspeed}\n")
+    print(f"Successfully processed! Stats -> Average: {m_stats['avg']} | Median: {m_stats['median']} | Mode: {m_stats['mode']} | Max: {m_stats['max']} | Min: {m_stats['min']}")
+    print("\n")
 
 
 # --- Main Execution ---
