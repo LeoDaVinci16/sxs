@@ -15,6 +15,7 @@ OUTPUT_REPORT = ROOT / "outputs" / "report"
 OUTPUT_SANKEY = ROOT / "outputs" / "sankey"
 OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at"
 OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste"
+OUTPUT_BOXPLOTS = ROOT / "outputs" / "boxplots"
 
 # Document names
 sankey_ste = DATA_SANKEY / "sankey_nodes-ste.csv"

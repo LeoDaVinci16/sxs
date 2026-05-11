@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(350, 550) # Increased height for new serial buttons
+        self.setFixedSize(350, 600) # Increased height for new boxplot button
 
         self._build_ui()
 
@@ -70,6 +70,12 @@ class SimpleGUI(QMainWindow):
         batch_btn.setStyleSheet(BTN_STYLE)
         batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))
         layout.addWidget(batch_btn)
+
+        box_btn = QPushButton("📦 Boxplots de tots els arxius")
+        box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        box_btn.setStyleSheet(BTN_STYLE)
+        box_btn.clicked.connect(lambda: controller.run_batch_boxplots_folder(self))
+        layout.addWidget(box_btn)
 
         csv_btn = QPushButton("📝 Excel2csv")
         csv_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)

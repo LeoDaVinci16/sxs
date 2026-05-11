@@ -13,13 +13,14 @@ import create_sankey # Mantenim aquest, és per als diagrames Sankey
 import excel2js # Importem el nou script excel2js
 import create_map
 import create_plots
+import create_boxplots
 import excel2csv
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from config import (DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, 
-                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE)
+                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE, OUTPUT_BOXPLOTS)
 
 # =========================================================
 # FILE / FOLDER HELPERS
@@ -268,6 +269,38 @@ def run_batch_plots_folder(root):
     
     # Pass folder and selected columns (skips missing columns per file)
     create_plots.batch_plot(folder, str(OUTPUT_PLOTS), variables=cols)
+
+def run_batch_boxplots_folder(root):
+    folder = ask_folder(DATA_RAW, "Select folder with CSVs for Boxplots")
+    if not folder:
+        return
+    
+    files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+    if not files:
+        QMessageBox.critical(None, "Error", "No s'han trobat CSVs")
+        return
+    
+    # Get ALL unique columns across ALL files
+    all_columns = set()
+    
+    for file in files:
+        file_path = os.path.join(folder, file)
+        try:
+            df = create_plots.load_csv(file_path)
+            if df is not None:
+                all_columns.update(df.columns)
+        except:
+            continue  # Skip broken files
+    
+    if not all_columns:
+        QMessageBox.critical(None, "Error", "No columns found in any file")
+        return
+    
+    cols = ask_magnitude_columns(root, sorted(list(all_columns)), "Available columns (across all files)")
+    if not cols:
+        return
+    
+    create_boxplots.batch_boxplot(folder, str(OUTPUT_BOXPLOTS), variables=cols)
 
 def run_excel2csv(folder):
     excel2csv.main(folder)
