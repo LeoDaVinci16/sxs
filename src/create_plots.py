@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import re
 from config import DATA_RAW, OUTPUT_PLOTS
-file = DATA_RAW / "20260316_134917_STE-05.csv"
-
-
 
 # =========================
 # UTIL
@@ -16,12 +13,12 @@ def safe_filename(text: str) -> str:
     text = re.sub(r"[^\w\-_. ]", "", text)
     return text.replace(" ", "_")
 
-
 def parse_datetime_series(series):
     known_formats = [
         "%m/%d/%Y %I:%M:%S %p",  # English / US format
         "%d/%m/%Y %H:%M:%S",     # European format
         "%Y-%m-%d %H:%M:%S",     # ISO-like
+        "%H:%M:%S",              # Time-only (from serial_update)
         ]
     for fmt in known_formats:
         try:
@@ -38,7 +35,7 @@ def parse_datetime_series(series):
 # =========================
 def detect_delimiter(filepath):
     """Safely sniffs the delimiter (comma, semicolon, or tab) by skipping metadata."""
-    with open(filepath, "r") as f:
+    with open(filepath, "r", encoding="utf-8", errors="replace") as f:
         # Read past the metadata lines starting with '#'
         sample_lines = []
         for line in f:
@@ -108,14 +105,25 @@ def load_csv(csv_path):
 # PLOT
 # =========================
 def create_plot(df, variable, title=""):
+    # Handle potential duplicate column names and ensure numeric conversion
+    data = df[variable]
+    if isinstance(data, pd.DataFrame):
+        data = data.iloc[:, 0]
+    
+    y_values = pd.to_numeric(data, errors='coerce').dropna()
+
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    ax.plot(df.index, df[variable], linewidth=1)
+    if not y_values.empty:
+        ax.plot(y_values.index, y_values.values, linewidth=1)
 
-    # Calculate and plot median
-    median_val = df[variable].median()
-    ax.axhline(median_val, color='red', linestyle='--', linewidth=1.5, alpha=0.7)
-    ax.text(1.01, median_val, f"Median: {median_val:.4f}", color='red', va='center', ha='left', transform=ax.get_yaxis_transform())
+        # Calculate and plot median
+        median_val = y_values.median()
+        ax.axhline(median_val, color='red', linestyle='--', linewidth=1.5, alpha=0.7)
+        ax.text(1.01, median_val, f"Median: {median_val:.4f}", color='red', va='center', ha='left', transform=ax.get_yaxis_transform())
+    else:
+        ax.text(0.5, 0.5, f"No numeric data available for: {variable}", 
+                ha='center', va='center', transform=ax.transAxes)
 
     ax.set_title(title or variable)
     x_label = "Time" if isinstance(df.index, pd.DatetimeIndex) else "Sample Number"
@@ -163,11 +171,18 @@ def plot_preview_plot(csv_path, variable: str):
 # =========================
 # BATCH PROCESS
 # =========================
-def batch_plot(folder, output_folder, variables):
+def batch_plot(folder, output_folder, variables, filter_str=None):
     folder = Path(folder)
     output_folder = Path(output_folder)
 
-    csv_files = list(folder.glob("*.csv"))
+    if filter_str:
+        filters = [filter_str] if isinstance(filter_str, str) else filter_str
+        csv_files = []
+        for s in filters:
+            csv_files.extend(folder.glob(f"*{s}*.csv"))
+        csv_files = sorted(list(set(csv_files)))
+    else:
+        csv_files = list(folder.glob("*.csv"))
 
     print(f"CSV folder: {folder}")
     print(f"Files found: {len(csv_files)}")
@@ -208,13 +223,15 @@ def batch_plot(folder, output_folder, variables):
 # =========================
 # MAIN (CLI)
 # =========================
-def main(variables=None):
-    variables = ["MEASURE"]
+def main(variables=None, filter_str=None):
+    if variables is None:
+        variables = ["MEASURE"]
 
     batch_plot(
         DATA_RAW,
         OUTPUT_PLOTS,
-        variables
+        variables,
+        filter_str=filter_str
     )
 
 

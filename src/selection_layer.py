@@ -215,7 +215,7 @@ def show_preview_window(root, fig, csv_path, variable):
     
     save_btn = QPushButton("Save")
     def save():
-        filename = f"{Path(csv_path).stem}_{variable}.png"
+        filename = f"{Path(csv_path).stem}_{create_plots.safe_filename(variable)}.png"
         output_path = Path(OUTPUT_PLOTS) / filename
         fig.savefig(output_path, dpi=300, bbox_inches='tight')
         QMessageBox.information(None, "Saved", f"Saved to:\n{output_path}")
@@ -269,6 +269,66 @@ def run_batch_plots_folder(root):
     
     # Pass folder and selected columns (skips missing columns per file)
     create_plots.batch_plot(folder, str(OUTPUT_PLOTS), variables=cols)
+
+def run_preview_boxplot(root):
+    # Directly ask for a CSV file, allowing the user to navigate from DATA_RAW
+    file_path = ask_file(DATA_RAW, "Select CSV for Boxplot", [("CSV files", "*.csv")])
+    
+    if not file_path: # User cancelled file selection
+        return
+    
+    # Load the selected CSV file
+    df = create_plots.load_csv(file_path)
+    
+    # Handle potential errors during CSV loading
+    if df is None:
+        QMessageBox.critical(None, "Error", "Could not load file")
+        return
+    
+    cols = ask_magnitude_columns(root, df.columns.tolist(), "Select magnitudes for Boxplot")
+    if not cols:
+        return
+    
+    # Create and show a boxplot for each selected column
+    for col in cols:
+        fig = create_boxplots.plot_preview_boxplot(file_path, col)
+        if fig is not None:
+            show_preview_boxplot_window(root, fig, file_path, col)
+
+def show_preview_boxplot_window(root, fig, csv_path, variable):
+    dialog = QDialog(root)
+    dialog.setWindowTitle(f"Boxplot Preview: {variable}")
+    dialog.resize(800, 600)
+    
+    layout = QVBoxLayout()
+    
+    canvas = FigureCanvas(fig)
+    layout.addWidget(canvas)
+    
+    btn_layout = QHBoxLayout()
+    
+    save_btn = QPushButton("Save")
+    def save():
+        filename = f"{Path(csv_path).stem}_boxplot_{create_boxplots.safe_filename(variable)}.png"
+        output_path = Path(OUTPUT_BOXPLOTS) / filename
+        fig.savefig(output_path, dpi=300, bbox_inches='tight')
+        QMessageBox.information(None, "Saved", f"Saved to:\n{output_path}")
+    
+    discard_btn = QPushButton("Discard")
+    def discard():
+        plt.close(fig)
+        dialog.close()
+    
+    save_btn.clicked.connect(save)
+    discard_btn.clicked.connect(discard)
+    
+    btn_layout.addWidget(save_btn)
+    btn_layout.addWidget(discard_btn)
+    layout.addLayout(btn_layout)
+    
+    dialog.setLayout(layout)
+    dialog.exec_()
+    plt.close(fig)
 
 def run_batch_boxplots_folder(root):
     folder = ask_folder(DATA_RAW, "Select folder with CSVs for Boxplots")

@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(350, 600) # Increased height for new boxplot button
+        self.setFixedSize(350, 650) # Increased height for new boxplot buttons
 
         self._build_ui()
 
@@ -70,6 +70,12 @@ class SimpleGUI(QMainWindow):
         batch_btn.setStyleSheet(BTN_STYLE)
         batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))
         layout.addWidget(batch_btn)
+
+        preview_box_btn = QPushButton("📦 Veure un boxplot")
+        preview_box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        preview_box_btn.setStyleSheet(BTN_STYLE)
+        preview_box_btn.clicked.connect(lambda: controller.run_preview_boxplot(self))
+        layout.addWidget(preview_box_btn)
 
         box_btn = QPushButton("📦 Boxplots de tots els arxius")
         box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
