@@ -112,6 +112,11 @@ def create_plot(df, variable, title=""):
 
     ax.plot(df.index, df[variable], linewidth=1)
 
+    # Calculate and plot median
+    median_val = df[variable].median()
+    ax.axhline(median_val, color='red', linestyle='--', linewidth=1.5, alpha=0.7)
+    ax.text(1.01, median_val, f"Median: {median_val:.4f}", color='red', va='center', ha='left', transform=ax.get_yaxis_transform())
+
     ax.set_title(title or variable)
     x_label = "Time" if isinstance(df.index, pd.DatetimeIndex) else "Sample Number"
     ax.set_xlabel(x_label)
@@ -128,7 +133,7 @@ def create_plot(df, variable, title=""):
 # =========================
 def save_plot(fig, plot_path: Path):
     plot_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(plot_path, dpi=300)
+    fig.savefig(plot_path, dpi=300, bbox_inches='tight')
     plt.close(fig)
 
 # =========================
