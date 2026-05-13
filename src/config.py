@@ -8,6 +8,7 @@ DATA_RAW = ROOT / "data" / "raw"
 DATA_PUNTS = ROOT / "data" / "punts"
 DATA_SANKEY = ROOT / "data" / "sankey"
 DATA_PLANOL = ROOT /    "data" / "planol"
+DATA_TIMESERIES = ROOT / "data" / "timeseries"
 
 # Outputs
 OUTPUT_PLOTS = ROOT / "outputs" / "plots"
