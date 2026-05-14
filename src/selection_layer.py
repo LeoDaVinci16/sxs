@@ -9,6 +9,7 @@ import os
 import sys
 import time
 import webbrowser
+import network
 import create_sankey # Mantenim aquest, és per als diagrames Sankey
 import excel2js # Importem el nou script excel2js
 import create_map
@@ -20,7 +21,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from config import (DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, 
-                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE, OUTPUT_BOXPLOTS)
+                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE, OUTPUT_BOXPLOTS, DATA_NETWORK)
 
 # =========================================================
 # FILE / FOLDER HELPERS
@@ -144,6 +145,36 @@ def run_sankey(root):
         file_path=file_path, 
         magnitude_col=cols[0]
     )
+
+# =========================================================
+# NETWORK
+# =========================================================
+def run_network(root):
+    run_excel2csv(DATA_NETWORK)
+    
+    # Seleccionem l'arxiu de branques (Edges)
+    edges_file = ask_file(DATA_NETWORK, "Selecciona l'arxiu de branques (edges)", [("CSV files", "*.csv")])
+    if not edges_file:
+        return
+    
+    df_edges = pd.read_csv(edges_file)
+    cols = ask_magnitude_columns(root, df_edges.columns.tolist(), "Selecciona la magnitud del flux")
+    if not cols:
+        QMessageBox.warning(None, "Atenció", "No s'ha seleccionat cap columna de dades")
+        return
+        
+    # Busquem el fitxer de nodes (intentem preveure si es diu nodes.csv)
+    nodes_file = os.path.join(os.path.dirname(edges_file), "nodes.csv")
+    if not os.path.exists(nodes_file):
+        nodes_file = ask_file(DATA_NETWORK, "Selecciona l'arxiu de nodes", [("CSV files", "*.csv")])
+        if not nodes_file:
+            return
+
+    html_path = network.main_network(nodes_file, edges_file, cols[0])
+    if html_path.exists():
+        webbrowser.open(html_path.as_uri())
+    else:
+        QMessageBox.warning(root, "Error", f"No s'ha trobat el fitxer:\n{html_path}")
 
 # =========================================================
 # MAP (MULTI MAGNITUDE SUPPORT)

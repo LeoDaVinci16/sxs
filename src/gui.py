@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(350, 650) # Increased height for new boxplot buttons
+        self.setFixedSize(350, 700) # Increased height for new network button
 
         self._build_ui()
 
@@ -46,6 +46,12 @@ class SimpleGUI(QMainWindow):
         sankey_btn.setStyleSheet(BTN_STYLE)
         sankey_btn.clicked.connect(lambda: controller.run_sankey(self))
         layout.addWidget(sankey_btn)
+
+        network_btn = QPushButton("🕸️ Xarxa hidràulica")
+        network_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        network_btn.setStyleSheet(BTN_STYLE)
+        network_btn.clicked.connect(lambda: controller.run_network(self))
+        layout.addWidget(network_btn)
 
         map_btn = QPushButton("🗺️ Mapa dels punts de mesura")
         map_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
