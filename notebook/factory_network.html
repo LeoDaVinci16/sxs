@@ -31,7 +31,7 @@
     <style type="text/css">
         #mynetwork {
             width: 100%;
-            height: 750px;
+            height: 800px;
             background-color: #ffffff;
             border: 1px solid lightgray;
             position: relative;
@@ -80,8 +80,8 @@
 
 
             // parsing and collecting nodes and edges from the python
-            nodes = new vis.DataSet([{ "color": "#97c2fc", "fixed": true, "id": "0", "label": "Main", "shape": "dot", "x": 0, "y": 0 }, { "color": "#97c2fc", "fixed": true, "id": "1", "label": "Splitter", "shape": "dot", "x": 300, "y": 0 }, { "color": "#97c2fc", "fixed": true, "id": "2", "label": "Outlet A", "shape": "dot", "x": 600, "y": -100 }, { "color": "#97c2fc", "fixed": true, "id": "3", "label": "Outlet B", "shape": "dot", "x": 600, "y": 100 }, { "color": "#97c2fc", "fixed": true, "id": "8105", "label": "Intake 1", "shape": "dot", "x": -300, "y": 150 }, { "color": "#97c2fc", "fixed": true, "id": "8107", "label": "Intake 2", "shape": "dot", "x": -300, "y": 50 }]);
-            edges = new vis.DataSet([{ "arrows": "to", "from": "8105", "title": "flow: 200", "to": "0", "value": 200 }, { "arrows": "to", "from": "8107", "title": "flow: 200", "to": "0", "value": 200 }, { "arrows": "to", "from": "0", "title": "flow: 1000", "to": "1", "value": 1000 }, { "arrows": "to", "from": "1", "title": "flow: 400", "to": "2", "value": 400 }, { "arrows": "to", "from": "1", "title": "flow: 600", "to": "3", "value": 600 }]);
+            nodes = new vis.DataSet([{ "color": "#97c2fc", "id": "Y-160", "label": "Y-160", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-107", "label": "BV-107", "shape": "dot" }, { "color": "#97c2fc", "id": "Y-170", "label": "Y-170", "shape": "dot" }, { "color": "#97c2fc", "id": "ext-nord", "label": "ext-nord", "shape": "dot" }, { "color": "#97c2fc", "id": "ext-sud", "label": "ext-sud", "shape": "dot" }, { "color": "#97c2fc", "id": "nautas", "label": "nautas", "shape": "dot" }, { "color": "#97c2fc", "id": "colector", "label": "colector", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-106", "label": "BV-106", "shape": "dot" }, { "color": "#97c2fc", "id": "SS-700B", "label": "SS-700B", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-104", "label": "BV-104", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-109", "label": "BV-109", "shape": "dot" }, { "color": "#97c2fc", "id": "S-600", "label": "S-600", "shape": "dot" }, { "color": "#97c2fc", "id": "E-900/E-1000", "label": "E-900/E-1000", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-105", "label": "BV-105", "shape": "dot" }, { "color": "#97c2fc", "id": "BV-108", "label": "BV-108", "shape": "dot" }, { "color": "#97c2fc", "id": "E-700", "label": "E-700", "shape": "dot" }, { "color": "#97c2fc", "id": "V-700/V-800", "label": "V-700/V-800", "shape": "dot" }, { "color": "#97c2fc", "id": "S-2100/S-2200", "label": "S-2100/S-2200", "shape": "dot" }, { "color": "#97c2fc", "id": "S-6000", "label": "S-6000", "shape": "dot" }, { "color": "#97c2fc", "id": "GF-ASS", "label": "GF-ASS", "shape": "dot" }, { "color": "#97c2fc", "id": "PEC", "label": "PEC", "shape": "dot" }, { "color": "#97c2fc", "id": "assecat", "label": "assecat", "shape": "dot" }]);
+            edges = new vis.DataSet([{ "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "assecat", "title": "0.0", "to": "S-2100/S-2200", "value": 0.0 }, { "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "assecat", "title": "0.0", "to": "S-600", "value": 0.0 }, { "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "assecat", "title": "0.0", "to": "S-6000", "value": 0.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-104", "title": "203.0", "to": "colector", "value": 203.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-105", "title": "222.0", "to": "colector", "value": 222.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-106", "title": "191.0", "to": "colector", "value": 191.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-107", "title": "205.0", "to": "colector", "value": 205.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-108", "title": "231.0", "to": "colector", "value": 231.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-109", "title": "75.0", "to": "Y-160", "value": 75.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "BV-109", "title": "72.0", "to": "Y-170", "value": 72.0 }, { "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "colector", "title": "78.99795165482517", "to": "assecat", "value": 78.99795165482517 }, { "arrows": "to", "color": "rgba(255,255,0, 0.4)", "from": "colector", "title": "129.48513944741836", "to": "E-700", "value": 129.48513944741836 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "colector", "title": "321.0", "to": "E-900/E-1000", "value": 321.0 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "colector", "title": "87.0", "to": "ext-nord", "value": 87.0 }, { "arrows": "to", "color": "rgba(255,255,0, 0.4)", "from": "colector", "title": "129.48513944741836", "to": "ext-sud", "value": 129.48513944741836 }, { "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "colector", "title": "100.46507000896432", "to": "GF-ASS", "value": 100.46507000896432 }, { "arrows": "to", "color": "rgba(0,0,0, 0.4)", "from": "colector", "title": "15.944518911578967", "to": "nautas", "value": 15.944518911578967 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "colector", "title": "124.0", "to": "PEC", "value": 124.0 }, { "arrows": "to", "color": "rgba(255,255,0, 0.4)", "from": "colector", "title": "32.97918304032421", "to": "SS-700B", "value": 32.97918304032421 }, { "arrows": "to", "color": "rgba(0,255,0, 0.4)", "from": "colector", "title": "42.5", "to": "V-700/V-800", "value": 42.5 }]);
 
             nodeColors = {};
             allNodes = nodes.get({ returnType: "Object" });
@@ -92,35 +92,7 @@
             // adding nodes and edges to the graph
             data = { nodes: nodes, edges: edges };
 
-            var options = {
-                "configure": {
-                    "enabled": false
-                },
-                "edges": {
-                    "color": {
-                        "inherit": true
-                    },
-                    "smooth": {
-                        "enabled": true,
-                        "type": "dynamic"
-                    }
-                },
-                "interaction": {
-                    "dragNodes": true,
-                    "hideEdgesOnDrag": false,
-                    "hideNodesOnDrag": false
-                },
-                "physics": {
-                    "enabled": false,
-                    "stabilization": {
-                        "enabled": true,
-                        "fit": true,
-                        "iterations": 1000,
-                        "onlyDynamicEdges": false,
-                        "updateInterval": 50
-                    }
-                }
-            };
+            var options = { "layout": { "hierarchical": { "enabled": true, "direction": "LR", "sortMethod": "directed", "levelSeparation": 180, "nodeSpacing": 120 } }, "physics": { "enabled": false }, "edges": { "smooth": false } };
 
 
 

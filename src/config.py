@@ -9,6 +9,7 @@ DATA_PUNTS = ROOT / "data" / "punts"
 DATA_SANKEY = ROOT / "data" / "sankey"
 DATA_PLANOL = ROOT /    "data" / "planol"
 DATA_TIMESERIES = ROOT / "data" / "timeseries"
+DATA_NETWORK = ROOT / "data" / "network"
 
 # Outputs
 OUTPUT_PLOTS = ROOT / "outputs" / "plots"
@@ -17,6 +18,7 @@ OUTPUT_SANKEY = ROOT / "outputs" / "sankey"
 OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at"
 OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste"
 OUTPUT_BOXPLOTS = ROOT / "outputs" / "boxplots"
+OUTPUT_NETWORK = ROOT / "outputs" / "network"
 
 # Document names
 sankey_ste = DATA_SANKEY / "sankey_nodes-ste.csv"
@@ -25,6 +27,8 @@ punts_ste = DATA_PUNTS / "punts-mesura-ste.csv"
 punts_at = DATA_PUNTS / "punts-mesura-at.csv"
 planol_ste = DATA_PLANOL / "planol-ste.png"
 planol_at = DATA_PLANOL / "planol-at.png"
+edges = DATA_NETWORK / "edges.xlsx"
+nodes = DATA_NETWORK / "nodes.xlsx"
 
 # Serial Configuration
 SERIAL_PORT = "COM3"
