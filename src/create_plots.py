@@ -141,7 +141,7 @@ def create_plot(df, variable, title=""):
 # =========================
 def save_plot(fig, plot_path: Path):
     plot_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(plot_path, dpi=300, bbox_inches='tight')
+    fig.savefig(str(plot_path), dpi=300, bbox_inches='tight')
     plt.close(fig)
 
 # =========================

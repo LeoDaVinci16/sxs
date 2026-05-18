@@ -56,14 +56,23 @@ def main():
     existing_df = pd.DataFrame()
     if summary_csv_path.exists():
         try:
-            existing_df = pd.read_csv(summary_csv_path, sep=";")
+            # Use sep=None with engine='python' to auto-detect separator (comma vs semicolon)
+            existing_df = pd.read_csv(summary_csv_path, sep=None, engine='python')
+            # Remove potential whitespace from column names to prevent KeyErrors
+            existing_df.columns = existing_df.columns.str.strip()
             print(f"Loaded existing summary with {len(existing_df)} entries from {summary_csv_path}")
         except Exception as e:
             print(f"[WARNING] Could not load existing summary CSV: {e}. Starting fresh.")
             existing_df = pd.DataFrame()
 
     # Get filenames already processed
-    processed_filenames = set(existing_df['Filename'].tolist()) if not existing_df.empty else set()
+    processed_filenames = set()
+    if not existing_df.empty:
+        if 'Filename' in existing_df.columns:
+            processed_filenames = set(existing_df['Filename'].tolist())
+        else:
+            print(f"[WARNING] 'Filename' column missing in {summary_csv_path}. Re-processing all files.")
+            existing_df = pd.DataFrame()
 
     # Get all raw CSV files
     all_raw_files = sorted(list(config.DATA_RAW.glob("*.csv")))

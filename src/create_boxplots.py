@@ -36,7 +36,7 @@ def create_boxplot(df, variable, title=""):
 def save_plot(fig, plot_path: Path):
     """Saves the figure to the specified path."""
     plot_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(plot_path, dpi=300, bbox_inches='tight')
+    fig.savefig(str(plot_path), dpi=300, bbox_inches='tight')
     plt.close(fig)
 
 def plot_preview_boxplot(csv_path, variable: str):

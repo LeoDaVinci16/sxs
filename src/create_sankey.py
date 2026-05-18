@@ -21,7 +21,9 @@ def load_file(file_path):
 
     ext = os.path.splitext(file_path)[1].lower()
     if ext == ".csv":
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path, sep=None, engine='python')
+        # Ensure column names are clean
+        df.columns = df.columns.str.strip()
     elif ext in [".xls", ".xlsx"]:
         df = pd.read_excel(file_path)
     else:
