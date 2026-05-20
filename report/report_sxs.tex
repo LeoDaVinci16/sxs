@@ -1,8 +1,4 @@
-% ==========================================
-%          Document class & packages
-% ==========================================
-
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 \usepackage[a4paper,
             left=2.5cm,
@@ -25,6 +21,7 @@
 \usepackage{csvsimple}
 \usepackage{booktabs}
 \usepackage[catalan]{babel}
+\usepackage{amsmath} % Added for equation environments
 
 \addto\captionscatalan{%
   \renewcommand{\tablename}{Taula}%
@@ -174,14 +171,51 @@ Per fer les mesures d'aigua de torres s'ha utilitzat el sensor CDP2NH1.
 
 Cal destacar que, durant la redacció d'aquest informe, s'ha executat una actuació consistent en la instal·lació de vàlvules automàtiques a les plantes E-800 i E-900/E-1000. L'impacte d'aquesta modificació s'analitzarà durant els pròxims mesos a partir de les dades de seguiment.
 
-Els punts de mesura del circuit d'aigua de torres es mostren a la Figura~\ref{fig:punts_at}.
+Un treball previ a la presa de mesures va consistir en representar el circuit d'aigua de torres i identificar els punts de mesura. Per fer-ho es van identificar les diferents bombes, consumidors i ramificacions. Aquests punts es van codificar amb un codi alfanumèric i estan representats a la Figura~\ref{fig:network}. els diferents punts, i se'ls atribueix un node d'origen (source) un de destí (target) i un valor de cabal.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{report_figures/punts_at.png}
+    \includegraphics[width=0.85\textwidth]{report_figures/network.pdf}
     \caption{Punts de mesura del circuit d'aigua de torres (AT).}
-    \label{fig:punts_at}
+    \label{fig:network}
 \end{figure}
+
+Com que no tots els punts de mesura són accessibles, s'han seleccionat els punts més representatius amb l'objectiu de repetir les mesures diariament durant un període de 3-4 setmanes.
+
+Els punts de mesura seleccionats es detallen a la Taula~\ref{tab:taula_punts_at}. El cabal teòric s'ha calculat mitjançant l'equació \ref{eq:cabal_teoric} suposant que la velocitat de l'aigua és de 1 m/s. El cabal esperat s'ha estimat a partir de les mesures previes fetes amb el cabalímetre ultrasònic.
+
+
+Combinant ambdues equacions, obtenim:
+\begin{equation}
+    Q = \frac{\pi \cdot D^2}{4} \cdot v = \frac{\pi \cdot D^2}{4} \, \text{[m}^3/\text{s]}
+    \label{eq:cabal_teoric}
+\end{equation}
+
+
+\begin{table}[htbp]
+    \centering
+    \caption{Punts de mesura del circuit d'aigua de torres (AT)}
+    \label{tab:taula_punts_at}
+    \begin{tabular}{llllll}
+        \toprule
+        \textbf{Source} & \textbf{Target} & \textbf{Codi} & \textbf{Diàmetre} & \textbf{Cabal calculat} & \textbf{Cabal esperat} \\
+        \midrule
+        05              & 06              & 05.06         & 323 mm            & 275 m³/h                & 660 m³/h               \\
+        05              & 3100.01         & 3100.01       & 220 mm            & 124 m³/h                & 100 m³/h               \\
+        06              & 22              & 06.22         & 114 mm            & 31 m³/h                 & 20 m³/h                \\
+        06              & 07              & 06.07         & 323 mm            & 275 m³/h                & 600 m³/h               \\
+        07              & 3700.01         & 3700.01       & 220 mm            & 124 m³/h                & 100 m³/h               \\
+        09              & 4700.01         & 4700.01       & 168 mm            & 70.5 m³/h               & 50 m³/h                \\
+        10              & 3900.01         & 3900.01       & 204 mm (inox)     & 113 m³/h                & 250 m³/h               \\
+        10              & 11              & 10.11         & 273 mm            & 194 m³/h                & 200 m³/h               \\
+        11              & 12              & 11.12         & 220 mm            & 124 m³/h                & 100 m³/h               \\
+        3900.03         & 31006           & 31006         & 139 mm (inox)     & 51.5 m³/h               & 51.5 m³/h              \\
+        3900.03         & 3906            & 3906          & 139 mm (inox)     & 51.5 m³/h               & 51.5 m³/h              \\
+        3800.01         & 3801            & 3801          & 88.9 mm (inox)    & 20 m³/h                 & 20 m³/h                \\
+        3800.01         & 3806            & 3806          & 139 mm (inox)     & 51.5 m³/h               & 51.5 m³/h              \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection{Vapor (STE)}
 
@@ -232,6 +266,8 @@ Els punts de mesura del circuit de vapor es detallen a la Taula~\ref{tab:taula_p
 \section{Resultats}
 
 A partir de les mesures realitzades s'han obtingut les següents mesures:
+
+
 
 
 % ===== Section 4 =====

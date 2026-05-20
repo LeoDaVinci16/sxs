@@ -79,7 +79,10 @@ def generate_report(variables=None):
         return
 
     for csv_file in csv_files:
-        stem = csv_file.stem
+        # Extract POINTNAME for the report section title
+        filename = csv_file.name
+        match = re.search(r"^\d{6}_\d{4,6}_(.+?)(?:_OD\d+)?(?:_Type\d+)?\.csv$", filename)
+        point_name = match.group(1) if match else csv_file.stem
         
         # Gather generated images for this specific file
         produced_items = []
@@ -93,7 +96,7 @@ def generate_report(variables=None):
             continue
 
         # Add section for the data file
-        tex_content.append(r"\section{" + tex_escape(stem) + "}")
+        tex_content.append(r"\section{Point: " + tex_escape(point_name) + " (" + tex_escape(csv_file.stem) + ")}")
         
         for var, ts_path, bx_path in produced_items:
             safe_var = tex_escape(var)

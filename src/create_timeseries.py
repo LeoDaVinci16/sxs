@@ -3,6 +3,28 @@ import config
 import pandas as pd
 from pathlib import Path
 
+def get_point_name_from_filename(filename):
+    """
+    Extracts POINTNAME from filename format: YYMMDD_HHMM_POINTNAME_OD_Type.csv
+    OD is optional.
+    """
+    try:
+        # 1. Remove the extension and split the filename by underscores
+        # Example: "260520_0711_myPoint_22_45OD_Type3.csv" -> ['260520', '0711', 'myPoint', '22', '45OD', 'Type3']
+        clean_name = Path(filename).stem
+        parts = clean_name.split("_")
+        # 2. Safety check: Ensure we at least have the date, time, and a name
+        if len(parts) >= 3:
+            point_name = parts[2]
+            print(point_name)
+            return point_name            
+    except Exception:
+        # If anything unexpected happens during splitting, pass through to fallback
+        pass
+    
+    # Fallback: if filename doesn't match expected pattern, return the stem
+    return Path(filename).stem
+
 def extract_file_info(csv_path):
     """
     Extracts metadata and statistics from the commented header of a CSV.
@@ -42,6 +64,9 @@ def extract_file_info(csv_path):
     except Exception as e:
         print(f"Error reading {csv_path.name}: {e}")
         
+    # Override or set the identifier based on the filename POINTNAME
+    # this fulfills the requirement of using the filename instead of Meas. Point No.
+    info["Meas. Point No."] = get_point_name_from_filename(csv_path.name)
     return info
 
 def main():
@@ -75,10 +100,10 @@ def main():
             existing_df = pd.DataFrame()
 
     # Get all raw CSV files
-    all_raw_files = sorted(list(config.DATA_RAW.glob("*.csv")))
+    all_raw_files = sorted(list(config.DATA_RAW_HIST.glob("*.csv")))
     
     if not all_raw_files and existing_df.empty:
-        print(f"No files found in {config.DATA_RAW} and no existing summary. Nothing to do.")
+        print(f"No files found in {config.DATA_RAW_HIST} and no existing summary. Nothing to do.")
         return
     
     # Identify new files that haven't been processed yet

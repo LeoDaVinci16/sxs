@@ -10,6 +10,7 @@ DATA_SANKEY = ROOT / "data" / "sankey"
 DATA_PLANOL = ROOT /    "data" / "planol"
 DATA_TIMESERIES = ROOT / "data" / "timeseries"
 DATA_NETWORK = ROOT / "data" / "network"
+DATA_RAW_HIST = ROOT / "data" / "raw_hist" 
 
 # Outputs
 OUTPUT_PLOTS = ROOT / "outputs" / "plots"
@@ -19,6 +20,7 @@ OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at"
 OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste"
 OUTPUT_BOXPLOTS = ROOT / "outputs" / "boxplots"
 OUTPUT_NETWORK = ROOT / "outputs" / "network"
+OUTPUT_SUMMARY = ROOT / "outputs" / "summary"
 
 # Document names
 sankey_ste = DATA_SANKEY / "sankey_nodes-ste.csv"
