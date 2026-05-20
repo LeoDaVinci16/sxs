@@ -1,0 +1,33 @@
+# \DEVICE          : G 608ST-60802901
+# \MODE            : STORED
+# DATE             : 19.05.2026
+# TIME             : 08:22:52
+# Par.Record       :
+# Meas. Point No.: : A:7357
+# Outer Diameter  :      15.0 mm
+# Wall Thickness  :       0.0 mm
+# Roughness       :       0.1 mm
+# Pipe Material   : Carbon Steel
+# Lining           : WITHOUT LINING
+# Medium           : Other Medium
+# c-Medium     MIN:     330.0 m/s
+# c-Medium     MAX:     330.0 m/s
+# Kinem.Viscosity :       1.0 mm2/s
+# Density         :      1.00 g/cm3
+# Medium Temperat.:      20.0 C
+# Transducer Type  : CDM1N5213047
+# Sound Path       :         1 NUM
+# Transd. Distance :     -55.2 mm
+# Damping          :        10 s
+# Full-Scale Val.  :           m3/h
+# Current Loop     :           mA
+# Storage Rate     :  00:00:10 AVERAGE
+# Physic. Quant.   : Volume flow
+# Unit Of Measure  : [m3/h]/[m3]
+# Numb.Of Meas.Val :         4
+
+TIME;CHANNEL;MEASURE;AMP;SCNR;
+08:22:52;A;???;13.0;
+08:23:02;A;???;13.0;
+08:23:12;A;???;13.0;
+08:23:22;A;???;13.0;

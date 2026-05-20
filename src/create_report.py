@@ -31,7 +31,7 @@ def generate_report(variables=None):
     """
     if variables is None:
         # Default variables to process based on existing project usage
-        variables = ["A Flow velocity [m/s]", "MEASURE", "SSPEED"]
+        variables = ["A Flow velocity [m/s]", "MEASURE"]
 
     # 1. Setup Output Directory
     # User requested 'outputs/informe/'
@@ -46,14 +46,14 @@ def generate_report(variables=None):
 
     # 2. Generate Plots and Boxplots
     # We redirect the output of batch functions to our new informe/assets folder
-    print(f"📊 Generating time-series plots into {assets_dir}...")
+    print(f"Generating time-series plots into {assets_dir}...")
     batch_plot(config.DATA_RAW, assets_dir, variables)
     
-    print(f"📦 Generating boxplots into {assets_dir}...")
+    print(f"Generating boxplots into {assets_dir}...")
     batch_boxplot(config.DATA_RAW, assets_dir, variables)
 
     # 3. Create LaTeX content
-    print("📝 Generating LaTeX document...")
+    print("Generating LaTeX document...")
     tex_content = [
         r"\documentclass{article}",
         r"\usepackage[utf8]{inputenc}",
@@ -117,13 +117,13 @@ def generate_report(variables=None):
         f.write("\n".join(tex_content))
 
     # 4. Compile PDF
-    print("🚀 Compiling PDF...")
+    print("Compiling PDF...")
     try:
         # Run twice to generate TOC correctly
         for _ in range(2):
             subprocess.run(["pdflatex", "-interaction=nonstopmode", "report.tex"], 
                            cwd=report_dir, check=True, capture_output=True)
-        print(f"✨ Success! PDF Report created at: {report_dir / 'report.pdf'}")
+        print(f"Success! PDF Report created at: {report_dir / 'report.pdf'}")
     except Exception:
         print(f"❌ Error compiling PDF. Ensure pdflatex is installed and in PATH.")
         print(f"Manual compilation source: {tex_path}")

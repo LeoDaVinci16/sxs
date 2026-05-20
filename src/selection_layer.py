@@ -1,13 +1,14 @@
 from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout, 
                            QLabel, QListWidget, QListWidgetItem, QCheckBox, 
                            QPushButton, QFileDialog, QMessageBox, QScrollArea, 
-                           QMainWindow, QWidget, QFrame)
+                           QMainWindow, QWidget, QFrame, QProgressDialog)
 from PyQt5.QtCore import Qt
 
 import pandas as pd
 import os
 import sys
 import time
+import subprocess # Added for running create_report.py
 import webbrowser
 import network
 import create_sankey # Mantenim aquest, és per als diagrames Sankey
@@ -21,7 +22,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from config import (DATA_PUNTS, DATA_SANKEY, DATA_RAW, OUTPUT_PLOTS, 
-                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE, OUTPUT_BOXPLOTS, DATA_NETWORK)
+                    DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE, OUTPUT_BOXPLOTS, DATA_NETWORK, ROOT)
 
 # =========================================================
 # FILE / FOLDER HELPERS
@@ -171,8 +172,16 @@ def run_network(root):
             return
 
     html_path = network.main_network(nodes_file, edges_file, cols[0])
+    
+    # Define the output directory in outputs/network at the root
+    output_dir = ROOT / "outputs" / "network"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    target_path = output_dir / html_path.name
+
     if html_path.exists():
-        webbrowser.open(html_path.as_uri())
+        # Move the generated file to the desired output directory
+        html_path.replace(target_path)
+        webbrowser.open(target_path.as_uri())
     else:
         QMessageBox.warning(root, "Error", f"No s'ha trobat el fitxer:\n{html_path}")
 
@@ -476,6 +485,59 @@ def run_serial_monitor(root):
         subprocess.Popen(["cmd", "/c", "start", sys.executable, str(script_path)])
     else:
         subprocess.Popen([sys.executable, str(script_path)])
+
+def run_create_report(root):
+    script_path = Path(__file__).parent / "create_report.py"
+    
+    msg = QMessageBox(root)
+    msg.setIcon(QMessageBox.Information)
+    msg.setWindowTitle("Generant Informe PDF")
+    msg.setText("S'està generant l'informe PDF. Això pot trigar uns minuts...")
+    msg.setInformativeText("Si us plau, espera. Pots cancel·lar el procés, però l'informe podria quedar incomplet.")
+    
+    cancel_button = msg.addButton("Cancel·lar", QMessageBox.RejectRole)
+    msg.setStandardButtons(QMessageBox.NoButton) # Remove default buttons
+    msg.setModal(True)
+    msg.show()
+
+    process = None
+    try:
+        # Start the report generation in a subprocess
+        process = subprocess.Popen([sys.executable, str(script_path)], 
+                                   stdout=subprocess.PIPE, 
+                                   stderr=subprocess.PIPE,
+                                   text=True,
+                                   encoding='utf-8') # Capture output as text
+        
+        # Keep the GUI responsive while waiting for the process to finish
+        while process.poll() is None:
+            QApplication.processEvents() # Process GUI events
+            if msg.clickedButton() == cancel_button:
+                process.terminate() # Terminate the subprocess
+                process.wait() # Wait for it to actually terminate
+                QMessageBox.warning(root, "Cancel·lat", "La generació de l'informe ha estat cancel·lada.")
+                msg.close()
+                return
+            time.sleep(0.1) # Small delay to prevent busy-waiting
+
+        # Process finished, check return code
+        stdout, stderr = process.communicate() # Get remaining output
+        
+        if process.returncode == 0:
+            QMessageBox.information(root, "Èxit", "L'informe PDF s'ha generat correctament a 'outputs/informe/report.pdf'.")
+        else:
+            error_message = f"La generació de l'informe ha fallat amb el codi {process.returncode}.\n"
+            if stderr:
+                error_message += f"Error: {stderr.strip()}"
+            QMessageBox.critical(root, "Error", error_message)
+
+    except Exception as e:
+        QMessageBox.critical(root, "Error Inesperat", f"S'ha produït un error inesperat: {e}")
+    finally:
+        if process and process.poll() is None: # If process is still running (e.g., due to an exception)
+            process.terminate()
+            process.wait()
+        msg.close() # Close the progress message box
 
 # Keep main for backward compatibility
 def main(func):

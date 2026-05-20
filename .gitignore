@@ -34,7 +34,7 @@ __pycache__/
 #*.xlsx
 
 # Images
-#*.png
+*.png
 *.jpg
 *.jpeg
 *.gif

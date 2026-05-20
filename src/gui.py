@@ -47,7 +47,7 @@ class SimpleGUI(QMainWindow):
         sankey_btn.clicked.connect(lambda: controller.run_sankey(self))
         layout.addWidget(sankey_btn)
 
-        network_btn = QPushButton("🕸️ Xarxa hidràulica")
+        network_btn = QPushButton("🧠 Network")
         network_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         network_btn.setStyleSheet(BTN_STYLE)
         network_btn.clicked.connect(lambda: controller.run_network(self))
@@ -83,11 +83,17 @@ class SimpleGUI(QMainWindow):
         preview_box_btn.clicked.connect(lambda: controller.run_preview_boxplot(self))
         layout.addWidget(preview_box_btn)
 
-        box_btn = QPushButton("📦 Boxplots de tots els arxius")
+        box_btn = QPushButton("📦📦📦 Boxplots de tots els arxius")
         box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         box_btn.setStyleSheet(BTN_STYLE)
         box_btn.clicked.connect(lambda: controller.run_batch_boxplots_folder(self))
         layout.addWidget(box_btn)
+
+        create_report_btn = QPushButton("📄 Crear Informe PDF", self)
+        create_report_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        create_report_btn.setStyleSheet(BTN_STYLE)
+        create_report_btn.clicked.connect(lambda: controller.run_create_report(self))
+        layout.addWidget(create_report_btn)
 
         csv_btn = QPushButton("📝 Excel2csv")
         csv_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
