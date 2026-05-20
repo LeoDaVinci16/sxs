@@ -16,14 +16,70 @@ def get_point_name_from_filename(filename):
         # 2. Safety check: Ensure we at least have the date, time, and a name
         if len(parts) >= 3:
             point_name = parts[2]
-            print(point_name)
             return point_name            
     except Exception:
         # If anything unexpected happens during splitting, pass through to fallback
         pass
-    
     # Fallback: if filename doesn't match expected pattern, return the stem
     return Path(filename).stem
+
+def get_date_from_filename(filename):
+    """
+    Extracts POINTNAME from filename format: YYMMDD_HHMM_POINTNAME_OD_Type.csv
+    OD is optional.
+    """
+    try:
+        # 1. Remove the extension and split the filename by underscores
+        # Example: "260520_0711_myPoint_22_45OD_Type3.csv" -> ['260520', '0711', 'myPoint', '22', '45OD', 'Type3']
+        clean_name = Path(filename).stem
+        parts = clean_name.split("_")
+        # 2. Safety check: Ensure we at least have the date, time, and a name
+        if len(parts) >= 3:
+            date_name = parts[0]
+            return date_name            
+    except Exception:
+        # If anything unexpected happens during splitting, pass through to fallback
+        pass
+    # Fallback: if filename doesn't match expected pattern, return the stem
+    return Path(filename).stem
+
+def get_time_name_from_filename(filename):
+    """
+    Extracts POINTNAME from filename format: YYMMDD_HHMM_POINTNAME_OD_Type.csv
+    OD is optional.
+    """
+    try:
+        # 1. Remove the extension and split the filename by underscores
+        # Example: "260520_0711_myPoint_22_45OD_Type3.csv" -> ['260520', '0711', 'myPoint', '22', '45OD', 'Type3']
+        clean_name = Path(filename).stem
+        parts = clean_name.split("_")
+        # 2. Safety check: Ensure we at least have the date, time, and a name
+        if len(parts) >= 3:
+            time_name = parts[1]
+            return time_name            
+    except Exception:
+        # If anything unexpected happens during splitting, pass through to fallback
+        pass
+    # Fallback: if filename doesn't match expected pattern, return the stem
+    return Path(filename).stem
+
+def get_type_from_filename(filename):
+    try:
+        # 1. Remove the extension and split the filename by underscores
+        # Example: "260520_0711_myPoint_22_45OD_Type3.csv" -> ['260520', '0711', 'myPoint', '22', '45OD', 'Type3']
+        clean_name = Path(filename).stem
+        parts = clean_name.split("_")
+        # 2. Safety check: Ensure we at least have the date, time, and a name
+        if len(parts) >= 3:
+            type_name = parts[-1]
+            return type_name            
+    except Exception:
+        # If anything unexpected happens during splitting, pass through to fallback
+        pass
+    # Fallback: if filename doesn't match expected pattern, return the stem
+    return Path(filename).stem
+
+
 
 def extract_file_info(csv_path):
     """
@@ -31,6 +87,22 @@ def extract_file_info(csv_path):
     Returns a flat dictionary for CSV row generation.
     """
     info = {"Filename": csv_path.name}  
+    info["Meas. Point No."] = get_point_name_from_filename(csv_path.name)
+    info["Type"] = get_type_from_filename(csv_path.name)
+    info["DATE"] = get_date_from_filename(csv_path.name)
+    info["TIME"] = get_time_name_from_filename(csv_path.name)
+
+    """
+    Type1: MEASURE
+    Type2: A Mass flow rate [kg/s]
+    Type3: A Mass flow rate [kg/h]
+    Type4: A Volumetric flow rate [m³/h]
+    Type5: A Mass flow rate [kg/h]
+    Type6: A Mass flow rate [kg/h]
+    Type7: A Mass flow rate [kg/h]
+    Type8: A Mass flow rate [kg/h]
+    Type9: other
+    """
     try:
         with open(csv_path, 'r', encoding='utf-8', errors='replace') as f:
             for line in f:
@@ -66,7 +138,6 @@ def extract_file_info(csv_path):
         
     # Override or set the identifier based on the filename POINTNAME
     # this fulfills the requirement of using the filename instead of Meas. Point No.
-    info["Meas. Point No."] = get_point_name_from_filename(csv_path.name)
     return info
 
 def main():
@@ -114,7 +185,7 @@ def main():
         if existing_df.empty: # If no new files and no existing data, still nothing to do
             return
         else: # If no new files but existing data, just confirm
-            print(f"Summary remains unchanged at {summary_csv_path}.")
+            print(f"Summary remains unchanged at {summary_csv_path} \n Currently it has {len(existing_df)} entries.")
             return
 
     print(f"Found {len(new_raw_files)} new files. Extracting metadata...")

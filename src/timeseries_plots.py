@@ -29,7 +29,7 @@ for target_point in unique_points:
 
     # Skip if there's no actual numerical data to plot for this point
     if df_filtered.empty:
-        print(f"Skipping {target_point} (No valid MEASURE_Avg values)")
+        #print(f"Skipping {target_point} (No valid MEASURE_Avg values)")
         continue
 
     # Prepare labels and sort chronologically
@@ -92,6 +92,6 @@ for target_point in unique_points:
     plt.savefig(filepath, dpi=150)
     plt.close()
 
-    print(f"Saved: {filepath}")
+    #print(f"Saved: {filepath}")
 
 print("All plots generated successfully!")
