@@ -5,7 +5,7 @@ from pathlib import Path
 from config import DATA_TIMESERIES, OUTPUT_SUMMARY
 
 # 1. Load your data
-timeseries_csv_path = DATA_TIMESERIES / "timeseries_8.csv"
+timeseries_csv_path = DATA_TIMESERIES / "timeseries_normalized_1.csv"
 df = pd.read_csv(timeseries_csv_path, sep=";")
 count = 0
 

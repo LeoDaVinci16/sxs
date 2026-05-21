@@ -1,6 +1,6 @@
 import re
 import config
-from config import DATA_RAW_HIST, DATA_RAW
+from config import DATA_RAW_HIST, DATA_RAW, DATA_RAW_HIST_NORMALIZED, ROOT
 import pandas as pd
 from pathlib import Path
 
@@ -144,7 +144,7 @@ def main(history=False, output_name="timeseries.csv"):
     their metadata and stats into a single summary CSV file.
     """
     if history == True:
-        raw = DATA_RAW_HIST
+        raw = ROOT / "data" / "raw_hist_normalized"
     else:    raw = DATA_RAW
     # 1. Select all CSV files in the raw folder
     summary_csv_path = config.DATA_TIMESERIES / output_name
@@ -217,12 +217,12 @@ def main(history=False, output_name="timeseries.csv"):
     print(f"Location: {summary_csv_path}")
 
     # Create a separate CSV with unique measurement points and the number of times they appear
-    unique_summary_df = final_df["Meas. Point No."].value_counts().reset_index()
-    unique_summary_df.columns = ["Meas. Point No.", "Occurrences"]
+    unique_summary_df = final_df["POINTNAME"].value_counts().reset_index()
+    unique_summary_df.columns = ["POINTNAME", "Occurrences"]
 
-    unique_summary_csv_path = config.DATA_TIMESERIES / "unique_timeseries_summary.csv"
+    unique_summary_csv_path = config.DATA_TIMESERIES / f"unique_points_{output_name.replace('.csv', '')}.csv"
     unique_summary_df.to_csv(unique_summary_csv_path, index=False, sep=";")
     print(f"Unique timeseries summary saved to: {unique_summary_csv_path}")
 
 if __name__ == "__main__":
-    main(history=True, output_name="timeseries_8.csv")
+    main(history=True, output_name="timeseries_normalized_1.csv")

@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Data
 DATA_RAW = ROOT / "data" / "raw"
 DATA_RAW_HIST = ROOT / "data" / "raw_hist" 
+DATA_RAW_HIST_NORMALIZED = ROOT / "data" / "raw_hist_normalized"
 DATA_PUNTS = ROOT / "data" / "punts" # Legacy
 DATA_SANKEY = ROOT / "data" / "sankey" # Legacy
 DATA_PLANOL = ROOT /    "data" / "planol" 
