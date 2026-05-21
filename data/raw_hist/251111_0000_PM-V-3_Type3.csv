@@ -1,5 +1,3 @@
-# MEASURE Stats -> Avg: nan | Median: 515.3999 | Mode: 441.9559 | Max: 533.2049 | Min: 365.2910
-
 Index	Date	Trigger	A Flow velocity [m/s]	A Mass flow rate [kg/h]	A Sound speed [m/s]	A Transducer temp. (->) [°C]	A Transducer temp. (>-) [°C]	A Amplitude [%]	A Gain [dB]	A Quality [%]	A Volumetric flow rate [m³/h]	A SCNR [dB]	A SNR [dB]	A VariAmp [%]	A VariTime [%]	A Diag.: error bits	A Event trigger R1	A Event trigger R2	A Event trigger R3	A Event trigger R4	A NoiseTrek activated	A Gain  > limit	A Flow vel. > limit	A Flow vel. < cut-off flow	A Pig detected	A FastFood activated	A Transducer temp. violation	A Last value is held	A Fluid temp. (Calculated) [°C]
 117	11/11/2025 11:09:49 AM		2.39800000190735	441.955867409706	506.278015136719	100	100	35	96.8499984741211	98	116.017489135265	22	14	13	14	0	0	0	0	0	0	0	0	0	0	0	0	0	100.808080808081
 118	11/11/2025 11:09:59 AM		2.3970000743866	441.855338215828	500.596008300781	100	100	35	96.8499984741211	97	115.969102084637	18	16	12	18	0	0	0	0	0	0	0	0	0	0	0	0	0	100.808080808081

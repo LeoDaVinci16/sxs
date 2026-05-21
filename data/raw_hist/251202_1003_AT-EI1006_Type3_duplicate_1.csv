@@ -1,4 +1,3 @@
-
 Index	Date	Trigger	A Flow velocity [m/s]	A Mass flow rate [kg/h]	A Sound speed [m/s]	A Transducer temp. (->) [°C]	A Transducer temp. (>-) [°C]	A Amplitude [%]	A Gain [dB]	A Quality [%]	A Volumetric flow rate [m³/h]	A SCNR [dB]	A SNR [dB]	A VariAmp [%]	A VariTime [%]	A Diag.: error bits	A Event trigger R1	A Event trigger R2	A Event trigger R3	A Event trigger R4	A NoiseTrek activated	A Gain  > limit	A Flow vel. > limit	A Flow vel. < cut-off flow	A Pig detected	A FastFood activated	A Transducer temp. violation	A Last value is held	A Fluid temp. (Calculated) [°C]
 15	12/2/2025 10:03:10 AM		0.896000027656555	47779.8946380615	1502.89697265625	16	16	60	59.5999984741211	98	47.8270791471004	48	7	1	254	0	0	0	0	0	0	0	0	0	0	0	0	0	16.7274631574446
 16	12/2/2025 10:03:11 AM		0.896000027656555	47779.8946380615	1502.89697265625	16	16	60	59.5999984741211	98	47.8270791471004	48	7	1	254	0	0	0	0	0	0	0	0	0	0	0	0	0	16.7274631574446

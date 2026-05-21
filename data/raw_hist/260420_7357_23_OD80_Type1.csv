@@ -26,6 +26,8 @@
 # Physic. Quant.   : Volume flow
 # Unit Of Measure  : [m3/h]/[m3]
 # Numb.Of Meas.Val :         1
+# Average MEASURE: N/A
+# Average SSPEED: N/A
 
-TIME,TIME,TIME,CHANNEL,MEASURE,AMP,SCNR,TIME
-11:00:23,11:00:23,11:00:23,A,???,15.0,11:00:23
+TIME,CHANNEL,MEASURE,AMP,SCNR,TIME
+11:00:23,A,???,15.0,11:00:23

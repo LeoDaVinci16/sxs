@@ -21,6 +21,8 @@
 # Physic. Quant.   : Mass flow
 # Unit Of Measure  : [kg/h]/[kg]
 # Numb.Of Meas.Val :         1
+# Average MEASURE: N/A
+# Average SSPEED: N/A
 
-TIME,TIME,TIME,CHANNEL,MEASURE,AMP,SCNR,TIME
-08:30:03,08:30:03,08:30:03,A,???,18.0,08:30:03
+TIME,CHANNEL,MEASURE,AMP,SCNR,TIME
+08:30:03,A,???,18.0,08:30:03

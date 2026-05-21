@@ -5,20 +5,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Data
 DATA_RAW = ROOT / "data" / "raw"
-DATA_PUNTS = ROOT / "data" / "punts"
-DATA_SANKEY = ROOT / "data" / "sankey"
-DATA_PLANOL = ROOT /    "data" / "planol"
+DATA_RAW_HIST = ROOT / "data" / "raw_hist" 
+DATA_PUNTS = ROOT / "data" / "punts" # Legacy
+DATA_SANKEY = ROOT / "data" / "sankey" # Legacy
+DATA_PLANOL = ROOT /    "data" / "planol" 
 DATA_TIMESERIES = ROOT / "data" / "timeseries"
 DATA_NETWORK = ROOT / "data" / "network"
-DATA_RAW_HIST = ROOT / "data" / "raw_hist" 
+
 
 # Outputs
 OUTPUT_PLOTS = ROOT / "outputs" / "plots"
-OUTPUT_REPORT = ROOT / "outputs" / "report"
-OUTPUT_SANKEY = ROOT / "outputs" / "sankey"
-OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at"
-OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste"
 OUTPUT_BOXPLOTS = ROOT / "outputs" / "boxplots"
+OUTPUT_REPORT = ROOT / "outputs" / "report"
+OUTPUT_SANKEY = ROOT / "outputs" / "sankey" # Legacy
+OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at" # Legacy
+OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste" # Legacy
 OUTPUT_NETWORK = ROOT / "outputs" / "network"
 OUTPUT_SUMMARY = ROOT / "outputs" / "summary"
 

@@ -1,5 +1,6 @@
 import re
 import config
+from config import DATA_RAW_HIST, DATA_RAW
 import pandas as pd
 from pathlib import Path
 
@@ -70,15 +71,13 @@ def get_type_from_filename(filename):
         clean_name = Path(filename).stem
         parts = clean_name.split("_")
         # 2. Safety check: Ensure we at least have the date, time, and a name
-        if len(parts) >= 3:
+        if parts[-1].startswith("Type"):
             type_name = parts[-1]
             return type_name            
     except Exception:
         # If anything unexpected happens during splitting, pass through to fallback
         pass
-    # Fallback: if filename doesn't match expected pattern, return the stem
-    return Path(filename).stem
-
+    return "Type1" # Type of serial data.
 
 
 def extract_file_info(csv_path):
@@ -140,13 +139,16 @@ def extract_file_info(csv_path):
     # this fulfills the requirement of using the filename instead of Meas. Point No.
     return info
 
-def main():
+def main(history=False, output_name="timeseries.csv"):
     """
     Iterates through all CSV files in the raw data folder and aggregates 
     their metadata and stats into a single summary CSV file.
     """
+    if history == True:
+        raw = DATA_RAW_HIST
+    else:    raw = DATA_RAW
     # 1. Select all CSV files in the raw folder
-    summary_csv_path = config.DATA_TIMESERIES / "timeseries.csv"
+    summary_csv_path = config.DATA_TIMESERIES / output_name
     
     # Load existing summary data if it exists
     existing_df = pd.DataFrame()
@@ -171,10 +173,10 @@ def main():
             existing_df = pd.DataFrame()
 
     # Get all raw CSV files
-    all_raw_files = sorted(list(config.DATA_RAW_HIST.glob("*.csv")))
+    all_raw_files = sorted(list(raw.glob("*.csv")))
     
     if not all_raw_files and existing_df.empty:
-        print(f"No files found in {config.DATA_RAW_HIST} and no existing summary. Nothing to do.")
+        print(f"No files found in {raw} and no existing summary. Nothing to do.")
         return
     
     # Identify new files that haven't been processed yet
@@ -216,4 +218,5 @@ def main():
     print(f"Location: {summary_csv_path}")
 
 if __name__ == "__main__":
-    main()
+    main(history=False)
+    main(history=True, output_name="timeseries_hist.csv")
