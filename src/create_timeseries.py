@@ -86,7 +86,7 @@ def extract_file_info(csv_path):
     Returns a flat dictionary for CSV row generation.
     """
     info = {"Filename": csv_path.name}  
-    info["Meas. Point No."] = get_point_name_from_filename(csv_path.name)
+    info["POINTNAME"] = get_point_name_from_filename(csv_path.name)
     info["Type"] = get_type_from_filename(csv_path.name)
     info["DATE"] = get_date_from_filename(csv_path.name)
     info["TIME"] = get_time_name_from_filename(csv_path.name)
@@ -109,7 +109,6 @@ def extract_file_info(csv_path):
                 if clean_line.startswith("#"):
                     # Remove '#' and leading/trailing whitespace
                     content = clean_line.lstrip("#").strip()
-                    
                     if "Stats ->" in content:
                         # Parse statistics lines
                         # Example: "MEASURE Stats -> Avg: 0.1 | Median: 0.1..."
@@ -217,6 +216,13 @@ def main(history=False, output_name="timeseries.csv"):
     print(f"Success! Summary report updated with {len(new_df)} new entries. Total entries: {len(final_df)}.")
     print(f"Location: {summary_csv_path}")
 
+    # Create a separate CSV with unique measurement points and the number of times they appear
+    unique_summary_df = final_df["Meas. Point No."].value_counts().reset_index()
+    unique_summary_df.columns = ["Meas. Point No.", "Occurrences"]
+
+    unique_summary_csv_path = config.DATA_TIMESERIES / "unique_timeseries_summary.csv"
+    unique_summary_df.to_csv(unique_summary_csv_path, index=False, sep=";")
+    print(f"Unique timeseries summary saved to: {unique_summary_csv_path}")
+
 if __name__ == "__main__":
-    main(history=False)
-    main(history=True, output_name="timeseries_hist.csv")
+    main(history=True, output_name="timeseries_8.csv")
