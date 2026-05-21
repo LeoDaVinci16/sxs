@@ -1,3 +1,9 @@
+# MEASURE 
+# Avg: 48.4388
+# Median: 2.4400
+# Mode: 2.1900
+# Max: 223.0200
+# Min: 1.8300
 # \DEVICE          : G 608ST-60802901
 # \MODE            : STORED
 # DATE             : 24.03.2026
@@ -17,12 +23,9 @@
 # Damping          :        10 s
 # Full-Scale Val.  :           m3/h
 # Current Loop     :           mA
-# Storage Rate     :  00:01:00 AVERAGE
 # Physic. Quant.   : Volume flow
 # Unit Of Measure  : [m3/h]/[m3]
 # Numb.Of Meas.Val :      1692
-# Average MEASURE: 48.43878698224852
-# Average SSPEED: 675.0454491725768
 
 TIME,CHANNEL,MEASURE,SSPEED,AMP,SCNR,TIME
 12:16:10,A,???,692.6,37.0,12:16:10

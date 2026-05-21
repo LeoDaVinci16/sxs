@@ -1,3 +1,10 @@
+# A Mass flow rate [kg/h] 
+# Avg: 223.7082
+# Median: 224.5332
+# Mode: 225.1604
+# Max: 230.5343
+# Min: 214.9125
+
 Index	Date	Trigger	A Flow velocity [m/s]	A Mass flow rate [kg/h]	A Sound speed [m/s]	A Transducer temp. (->) [°C]	A Transducer temp. (>-) [°C]	A Amplitude [%]	A Gain [dB]	A Quality [%]	A Volumetric flow rate [m³/h]	A SCNR [dB]	A SNR [dB]	A VariAmp [%]	A VariTime [%]	A Diag.: error bits	A Event trigger R1	A Event trigger R2	A Event trigger R3	A Event trigger R4	A NoiseTrek activated	A Gain  > limit	A Flow vel. > limit	A Flow vel. < cut-off flow	A Pig detected	A FastFood activated	A Transducer temp. violation	A Last value is held	A Fluid temp. (Calculated) [°C]
 295	12/4/2025 2:14:33 PM		NaN	NaN	507.25	56	55	34	98.3399963378906	22	NaN	34	20	10	19	3	0	0	0	0	0	0	0	0	0	0	0	0	55.8585858585859
 296	12/4/2025 2:14:34 PM		NaN	NaN	507.25	56	55	34	98.3399963378906	22	NaN	34	20	10	19	3	0	0	0	0	0	0	0	0	0	0	0	0	55.8585858585859

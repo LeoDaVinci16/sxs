@@ -1,3 +1,9 @@
+# MEASURE 
+# Avg: nan
+# Median: nan
+# Mode: nan
+# Max: nan
+# Min: nan
 # \DEVICE          : G 608ST-60802901
 # \MODE            : STORED
 # DATE             : 20.04.2026
@@ -22,12 +28,9 @@
 # Damping          :        10 s
 # Full-Scale Val.  :           m3/h
 # Current Loop     :           mA
-# Storage Rate     :  00:01:00 AVERAGE
 # Physic. Quant.   : Volume flow
 # Unit Of Measure  : [m3/h]/[m3]
 # Numb.Of Meas.Val :         1
-# Average MEASURE: N/A
-# Average SSPEED: N/A
 
 TIME,CHANNEL,MEASURE,AMP,SCNR,TIME
 11:00:23,A,???,15.0,11:00:23

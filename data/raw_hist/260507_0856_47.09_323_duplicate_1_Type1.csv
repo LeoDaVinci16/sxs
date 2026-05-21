@@ -1,3 +1,9 @@
+# MEASURE 
+# Avg: 610.6868
+# Median: 611.1500
+# Mode: 615.9500
+# Max: 637.4000
+# Min: 574.6700
 # \DEVICE          : G 608ST-60802901
 # \MODE            : STORED
 # DATE             : 07.05.2026
@@ -21,8 +27,6 @@
 # Physic. Quant.   : Volume flow
 # Unit Of Measure  : [m3/h]/[m3]
 # Numb.Of Meas.Val :       133
-# MEASURE Stats -> Avg: 610.6868 | Median: 611.1500 | Mode: 615.9500 | Max: 637.4000 | Min: 574.6700
-# SSPEED Stats -> Avg: 1451.1353 | Median: 1496.1000 | Mode: 1494.4000 | Max: 1500.6000 | Min: 19.0000
 
 TIME;CHANNEL;MEASURE;SSPEED;AMP;SCNR;
 08:56:04;B;574.67;1487.1;24.0;

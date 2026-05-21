@@ -1,4 +1,11 @@
-Index,Date,Trigger,A Flow velocity [m/s],A Mass flow rate [kg/h],A Sound speed [m/s],A Transducer temp. (->) [°C],A Transducer temp. (>-) [°C]
+# A Mass flow rate [kg/h] 
+# Avg: 76032.6316
+# Median: 72854.0634
+# Mode: 0.0000
+# Max: 218864.7400
+# Min: -9986.9362
+
+Index,Date,Trigger,A Flow velocity [m/s],A Mass flow rate [kg/h],A Sound speed [m/s],A Transducer temp. (->) [ï¿½C],A Transducer temp. (>-) [ï¿½C]
 1,12/2/2025 11:01:44 AM,0,1.00599992275238,76814.689636231,1584.30505371094,16,17
 2,12/2/2025 11:01:45 AM,0,0.95600008964538,72938.850402832,1584.26904296875,16,17
 3,12/2/2025 11:01:46 AM,0,0.95700001716614,73025.422668457,1584.26904296875,16,17
