@@ -49,10 +49,11 @@ def node_style(tipus):
     """Helper function to define node visual styles based on type."""
     tipus = str(tipus).lower().strip()
     styles = {
-        "bomba": {"background": "#00f128", "border": "#00991a", "size": 20},
+        "ramificació": {"background": "#00f128", "border": "#00991a", "size": 20},
         "intercambiador": {"background": "#2b7ce9", "border": "#1a5aba", "size": 25},
-        "diposit": {"background": "#ff9900", "border": "#cc7a00", "size": 30},
-        "valve": {"background": "#ff2f00", "border": "#b32100", "size": 15},
+        "chiller": {"background": "#2b7ce9", "border": "#1a5aba", "size": 25},
+        "bomba": {"background": "#ff9900", "border": "#cc7a00", "size": 30},
+        "dipòsit": {"background": "#ff2f00", "border": "#b32100", "size": 15},
         "desconegut": {"background": "#97c2fc", "border": "#2b7ce9", "size": 10}
     }
     res = styles.get(tipus, styles["desconegut"])
@@ -143,25 +144,29 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
     # -----------------------------
     # NODES
     # -----------------------------
-    tipus = {}
-    for i in range(len(nodes_df)):
-        print(nodes_df["node"][i], nodes_df["tipus"][i])
-        tipus
+    # Create a mapping from node ID to its type for quick lookup
+    type_map = dict(zip(nodes_df["node"], nodes_df["tipus"]))
+    name_map = dict(zip(nodes_df["node"], nodes_df["nom"]))
+
     for n in G.nodes():
         n_str = normalize_id(n)
+        n_type = type_map.get(n_str, "desconegut")
+        n_name = name_map.get(n_str, "desconegut")
+        styles = node_style(n_type)
+
         px, py = None, None
         fixed = False
         physics = True
-        print(n)
 
         net.add_node(
             n_str,
             label="",
-            title=f"Node: {n_str}\nType: {n_str}",
+            title=f"Node: {n_str} ({n_name})\nType: {n_type}",
             x=px,
             y=py,
             fixed=fixed,
             physics=physics,
+            **styles
         )
 
     # -----------------------------
