@@ -53,7 +53,7 @@ def node_style(tipus):
         "intercambiador": {"background": "#2b7ce9", "border": "#1a5aba", "size": 25},
         "chiller": {"background": "#2b7ce9", "border": "#1a5aba", "size": 25},
         "bomba": {"background": "#ff9900", "border": "#cc7a00", "size": 30},
-        "dipòsit": {"background": "#ff2f00", "border": "#b32100", "size": 15},
+        "reactor": {"background": "#ff2f00", "border": "#b32100", "size": 15},
         "desconegut": {"background": "#97c2fc", "border": "#2b7ce9", "size": 10}
     }
     res = styles.get(tipus, styles["desconegut"])
@@ -66,7 +66,7 @@ def node_style(tipus):
         "size": res["size"]
     }
 
-def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="cabal"):
+def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN"):
     # -----------------------------
     # LOAD
     # -----------------------------
@@ -79,13 +79,12 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
     edges_df["source"] = edges_df["source"].apply(normalize_id)
     edges_df["target"] = edges_df["target"].apply(normalize_id)
 
-    edges_df["cabal"] = pd.to_numeric(edges_df[magnitude_col], errors="coerce").fillna(0)
-
+    edges_df[magnitude_col] = pd.to_numeric(edges_df[magnitude_col], errors="coerce").fillna(0)
 
     # -----------------------------
     # FLOW RANGE
     # -----------------------------
-    flows = edges_df["cabal"].values
+    flows = edges_df[magnitude_col].values
     fmin, fmax = flows.min(), flows.max()
 
     nodes_df["node"] = nodes_df["node"].astype(str)
@@ -111,29 +110,17 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
         # nonlinear boost so differences are visible
         t = np.sqrt(t)
         g = 60 + int(195 * t)   # 60 → 255
-        return f"rgb(0,{g},0)"
+        return f"#00{g:02x}00"
 
-    def scale_width_false(val):
-        if val <= 0:
-            return 0.5
-
-        v = np.log10(val + 1)
-        vmin = np.log10(fmin + 1)
-        vmax = np.log10(fmax + 1)
-
-        t = (v - vmin) / (vmax - vmin + 1e-9)
-
-        return 0.5 + 18 * (t ** 2)
-    
     def scale_width(val):
-        return val/20
-    
-
+        # Normalize relative to the maximum flow to keep widths within a reasonable range (1 to 10)
+        t = (val - fmin) / (fmax - fmin + 1e-9)
+        return 1.0 + 9.0 * np.sqrt(t)
 
     # -----------------------------
     # GRAPH
     # -----------------------------
-    G = nx.from_pandas_edgelist(edges_df, "source", "target", edge_attr="cabal", create_using=nx.DiGraph())
+    G = nx.from_pandas_edgelist(edges_df, "source", "target", edge_attr=magnitude_col, create_using=nx.DiGraph())
 
     # -----------------------------
     # PYVIS
@@ -173,11 +160,11 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
     # EDGES
     # -----------------------------
     for u, v, data in G.edges(data=True):
-        val = data.get("cabal", 0)
+        val = data.get(magnitude_col, 0)
         net.add_edge(
             str(u), str(v),
             label=str(round(val, 1)) if val else "",
-            title=f"{u} → {v}\nFlow: {val:.2f} m³/h",
+            title=f"{u} → {v}\n{magnitude_col}: {val:.2f}",
             width=scale_width(val),
             color=flow_color(val),
             arrows={}   
