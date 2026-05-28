@@ -4,7 +4,7 @@ from pandas import to_datetime
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import re
-from config import DATA_RAW, OUTPUT_PLOTS
+from config import AT_RAW, STE_RAW, OUTPUT_PLOTS
 
 # =========================
 # UTIL
@@ -228,7 +228,7 @@ def main(variables=None, filter_str=None):
         variables = ["MEASURE"]
 
     batch_plot(
-        DATA_RAW,
+        AT_RAW, # o STE_RAW
         OUTPUT_PLOTS,
         variables,
         filter_str=filter_str

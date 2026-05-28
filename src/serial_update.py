@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime, timedelta
 import statistics
-from config import DATA_RAW, DATA_RAW_HIST
+from config import DATA_RAW, DATA_RAW_HIST, AT_RAW, STE_RAW
 
 def calculate_stats(vals):
     """Computes basic statistics for a list of numeric values."""
@@ -152,10 +152,10 @@ def post_process_file(filepath):
 # --- Main Execution ---
 if __name__ == "__main__":
     # Find all CSV files in the current folder
-    csv_files = [os.path.join(DATA_RAW_HIST, f) for f in os.listdir(DATA_RAW_HIST) if f.endswith(".csv")]
+    csv_files = [os.path.join(DATA_RAW, f) for f in os.listdir(DATA_RAW) if f.endswith(".csv")]
     
     if not csv_files:
-        print(f"No CSV files found in {DATA_RAW_HIST} to process.")
+        print(f"No CSV files found in {DATA_RAW} to process.")
     else:
         for filepath in csv_files:
             post_process_file(filepath)

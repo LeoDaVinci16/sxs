@@ -1,6 +1,6 @@
 import re
 import config
-from config import DATA_RAW_HIST, DATA_RAW, DATA_RAW_HIST_NORMALIZED, ROOT
+from config import DATA_RAW_HIST, DATA_RAW, DATA_RAW_HIST_NORMALIZED, ROOT, AT_RAW, STE_RAW
 import pandas as pd
 from pathlib import Path
 
@@ -145,7 +145,7 @@ def main(history=False, output_name="timeseries.csv"):
     """
     if history == True:
         raw = ROOT / "data" / "raw_hist_normalized"
-    else:    raw = DATA_RAW
+    else:    raw = AT_RAW
     # 1. Select all CSV files in the raw folder
     summary_csv_path = config.DATA_TIMESERIES / output_name
     

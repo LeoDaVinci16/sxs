@@ -5,8 +5,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Data
 DATA_RAW = ROOT / "data" / "raw"
+AT_RAW = ROOT / "data" / "at" / "at_raw" 
+STE_RAW = ROOT / "data" / "ste" / "ste_raw"
 DATA_RAW_HIST = ROOT / "data" / "raw_hist" 
 DATA_RAW_HIST_NORMALIZED = ROOT / "data" / "raw_hist_normalized"
+OTHER_RAW = ROOT / "data" / "other_raw"
+AT_NODES = ROOT / "data" / "at" / "at_network" / "nodes.csv"
+STE_NODES = ROOT / "data" / "ste" / "ste_network" / "nodes.csv"
 DATA_PUNTS = ROOT / "data" / "punts" # Legacy
 DATA_SANKEY = ROOT / "data" / "sankey" # Legacy
 DATA_PLANOL = ROOT /    "data" / "planol" 
@@ -17,7 +22,7 @@ DATA_NETWORK = ROOT / "data" / "network"
 # Outputs
 OUTPUT_PLOTS = ROOT / "outputs" / "plots"
 OUTPUT_BOXPLOTS = ROOT / "outputs" / "boxplots"
-OUTPUT_REPORT = ROOT / "outputs" / "report"
+OUTPUT_REPORT = ROOT / "outputs" / "informe"
 OUTPUT_SANKEY = ROOT / "outputs" / "sankey" # Legacy
 OUTPUT_MAPA_AT = ROOT / "outputs" / "mapa-at" # Legacy
 OUTPUT_MAPA_STE = ROOT / "outputs" / "mapa-ste" # Legacy

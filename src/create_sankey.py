@@ -45,11 +45,16 @@ def choose_magnitude_column(df, default="cabal"):
 # 2️⃣ SANKEY PROCESSING
 # ==============================
 def validate_sankey_df(df, source_col, target_col, colors_col, magnitude_col):
-    required_cols = {source_col, target_col, colors_col, magnitude_col}
-    missing = required_cols - set(df.columns)
-    if missing:
-        raise ValueError(f"Falta aquesta dada: {missing}")
-    
+    # Check for mandatory columns required to build the graph structure
+    for col in [source_col, target_col, magnitude_col]:
+        if col not in df.columns:
+            print(f"Error: Falta la columna essencial '{col}'")
+
+    # If the color column is missing, we create it with a default value
+    # so that the rest of the code (like build_sankey_figure) doesn't crash.
+    if colors_col not in df.columns:
+        df[colors_col] = "rgba(144, 144, 144, 0.5)"
+
 def build_graph(df, source_col, target_col):
     out_edges = defaultdict(list)
     in_edges = defaultdict(list)

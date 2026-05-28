@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
-from config import DATA_RAW, OUTPUT_BOXPLOTS
+from config import AT_RAW, STE_RAW, OUTPUT_BOXPLOTS
 from create_plots import load_csv, safe_filename
 
 def create_boxplot(df, variable, title=""):
@@ -117,7 +117,7 @@ def main(variables=None, filter_str=None):
         variables = ["A Flow velocity [m/s]", "MEASURE", "SSPEED"]
 
     batch_boxplot(
-        DATA_RAW,
+        AT_RAW, # o STE_RAW
         OUTPUT_BOXPLOTS,
         variables,
         filter_str=filter_str

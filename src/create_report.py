@@ -35,7 +35,7 @@ def generate_report(variables=None):
 
     # 1. Setup Output Directory
     # User requested 'outputs/informe/'
-    report_dir = config.ROOT / "outputs" / "informe"
+    report_dir = config.OUTPUT_REPORT
     assets_dir = report_dir / "assets"
     
     # Ensure directories exist and are clean for a fresh run
@@ -47,10 +47,10 @@ def generate_report(variables=None):
     # 2. Generate Plots and Boxplots
     # We redirect the output of batch functions to our new informe/assets folder
     print(f"Generating time-series plots into {assets_dir}...")
-    batch_plot(config.DATA_RAW, assets_dir, variables)
+    batch_plot(config.AT_RAW, assets_dir, variables)
     
     print(f"Generating boxplots into {assets_dir}...")
-    batch_boxplot(config.DATA_RAW, assets_dir, variables)
+    batch_boxplot(config.AT_RAW, assets_dir, variables)
 
     # 3. Create LaTeX content
     print("Generating LaTeX document...")
@@ -72,7 +72,7 @@ def generate_report(variables=None):
     ]
 
     # Iterate through CSV files to organize the report
-    csv_files = sorted(list(config.DATA_RAW.glob("*.csv")))
+    csv_files = sorted(list(config.AT_RAW.glob("*.csv")))
     
     if not csv_files:
         print("⚠️ No CSV files found in raw data folder.")
