@@ -4,7 +4,7 @@ from pandas import to_datetime
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import re
-from config import AT_RAW, STE_RAW, OUTPUT_PLOTS
+from config import at_raw as AT_RAW, ste_raw as STE_RAW, at_plots as OUTPUT_PLOTS
 
 # =========================
 # UTIL

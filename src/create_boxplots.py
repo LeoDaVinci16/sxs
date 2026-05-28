@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
-from config import AT_RAW, STE_RAW, OUTPUT_BOXPLOTS
+from config import at_raw as AT_RAW, ste_raw as STE_RAW, at_boxplots as OUTPUT_BOXPLOTS
 from create_plots import load_csv, safe_filename
 
 def create_boxplot(df, variable, title=""):

@@ -3,7 +3,8 @@
 from pathlib import Path
 import os
 import pandas as pd
-from config import DATA_PLANOL, DATA_PUNTS, DATA_RAW, DATA_SANKEY, OUTPUT_PLOTS
+from config import at_network_data as at_network
+
 
 # ==============================
 # 1️⃣ LIST FILES
@@ -56,5 +57,4 @@ def main(docs_folder_path):
 
 
 if __name__ == "__main__":
-    main(docs_folder_path=DATA_PUNTS)
-    main(docs_folder_path=DATA_SANKEY)
+    main(docs_folder_path=at_network)

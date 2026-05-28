@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime, timedelta
 import statistics
-from config import DATA_RAW, DATA_RAW_HIST, AT_RAW, STE_RAW
+from config import DATA_RAW, at_raw, ste_raw
 
 def calculate_stats(vals):
     """Computes basic statistics for a list of numeric values."""
@@ -25,14 +25,23 @@ def calculate_stats(vals):
 
 def detect_delimiter(filepath):
     """Sniffs the delimiter by checking a non-comment line."""
-    with open(filepath, "r") as f:
+    with open(filepath, "r", encoding='utf-8', errors='replace') as f:
+        sample = ""
         for line in f:
             if line.startswith("#") or not line.strip():
                 continue
-            if "\t" in line: return "\t"
-            if ";" in line: return ";"
-            return ","
-    return ","
+            sample += line
+            if sample.count('\n') >= 5:
+                break
+
+        if not sample:
+            return ";"
+
+        try:
+            dialect = csv.Sniffer().sniff(sample, delimiters=",\t; ")
+            return dialect.delimiter
+        except Exception:
+            return ";"  # Fallback to semicolon
 
 def post_process_file(filepath):
     print(f"Processing: {filepath}...")
@@ -48,7 +57,7 @@ def post_process_file(filepath):
     data_rows = []
     
     # 1. Read the raw, unfiltered CSV file
-    with open(filepath, "r", newline="") as f:
+    with open(filepath, "r", newline="", encoding='utf-8', errors='replace') as f:
         reader = csv.reader(f, delimiter=sep)
         for row in reader:
             if not row:
@@ -56,8 +65,8 @@ def post_process_file(filepath):
             
             # Identify metadata lines (they start with "#")
             if row[0].startswith("#"):
-                # Avoid doubling up averages if the script is run twice
-                if "Stats ->" not in row[0] and "Average " not in row[0]:
+                # Avoid doubling up stats if the script is run twice
+                if not any(s in row[0] for s in ["Stats", "Avg:", "Median:", "Mode:", "Max:", "Min:", "Average "]):
                     metadata_lines.append(row[0])
             # Identify column headers
             elif "CHANNEL" in row:
@@ -81,7 +90,7 @@ def post_process_file(filepath):
             m = re.search(r"(\d{2}:\d{2}:\d{2})", meta)
             if m: storage_rate_str = m.group(1)
 
-    if start_time_str and storage_rate_str: # Always attempt to generate TIME if metadata is available
+    if start_time_str and storage_rate_str and "TIME" not in headers: 
         try:
             t = datetime.strptime(start_time_str, "%H:%M:%S")
             h, m, s = map(int, storage_rate_str.split(":"))
@@ -95,16 +104,12 @@ def post_process_file(filepath):
 
     # 2. Dynamically locate the column indices
     measure_idx = None
-    sspeed_idx = None
     for idx, col in enumerate(headers):
         clean_col = col.upper()
         if "MEASURE" in clean_col:
             measure_idx = idx
-        elif "SSPEED" in clean_col:
-            sspeed_idx = idx
 
     measure_vals = []
-    sspeed_vals = []
 
     # 3. Extract values for averaging
     for row in data_rows:
@@ -113,34 +118,34 @@ def post_process_file(filepath):
                 measure_vals.append(float(row[measure_idx]))
             except ValueError:
                 pass  # Safely bypass non-numeric values like "???"
-        
-        if sspeed_idx is not None and len(row) > sspeed_idx:
-            try:
-                sspeed_vals.append(float(row[sspeed_idx]))
-            except ValueError:
-                pass
 
     m_stats = calculate_stats(measure_vals)
-    s_stats = calculate_stats(sspeed_vals)
 
     # 4. Overwrite the file with the final polished format
-    with open(filepath, "w", newline="") as f:
+    with open(filepath, "w", newline="", encoding='utf-8') as f:
         w = csv.writer(f, delimiter=sep)
-        
+
         # Write clean metadata
         for meta in metadata_lines:
             w.writerow([meta])
+        # Write headers and data rows
+        w.writerow(headers)
+        w.writerows(data_rows)
             
         # Write computed stats
-        for label, stats in [("MEASURE", m_stats), ("SSPEED", s_stats)]:
-            if stats["avg"] != "N/A":
-                # Helper to format float or N/A
-                fmt = lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x)
-                stat_line = f"# {label} Stats -> Avg: {fmt(stats['avg'])} | Median: {fmt(stats['median'])} | Mode: {fmt(stats['mode'])} | Max: {fmt(stats['max'])} | Min: {fmt(stats['min'])}"
-                w.writerow([stat_line])
-
+        if m_stats["avg"] != "N/A":
+            fmt = lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x)
+            w.writerow(["# MEASURE Stats"])
+            w.writerow([f"# Avg: {fmt(m_stats['avg'])}"])
+            w.writerow([f"# Median: {fmt(m_stats['median'])}"])
+            w.writerow([f"# Mode: {fmt(m_stats['mode'])}"])
+            w.writerow([f"# Max: {fmt(m_stats['max'])}"])
+            w.writerow([f"# Min: {fmt(m_stats['min'])}"])
         w.writerow([])  # Blank spacer
-        
+
+        # Write clean metadata
+        for meta in metadata_lines:
+            w.writerow([meta])
         # Write headers and data rows
         w.writerow(headers)
         w.writerows(data_rows)

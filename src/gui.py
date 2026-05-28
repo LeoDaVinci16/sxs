@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
-import selection_layer as controller
+import controller
 
 class SimpleGUI(QMainWindow):
     def __init__(self):
@@ -71,7 +71,7 @@ class SimpleGUI(QMainWindow):
         preview_btn.clicked.connect(lambda: controller.run_preview_plot(self))
         layout.addWidget(preview_btn)
 
-        batch_btn = QPushButton("📉 Gràfics de tots els arxius")
+        batch_btn = QPushButton("📉📉📉 Gràfics de tots els arxius")
         batch_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         batch_btn.setStyleSheet(BTN_STYLE)
         batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))

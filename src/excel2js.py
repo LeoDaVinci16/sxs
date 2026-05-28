@@ -4,7 +4,7 @@ import pandas as pd
 from pathlib import Path
 import json 
 from PIL import Image
-from config import DATA_PUNTS, DATA_PLANOL, OUTPUT_MAPA_AT, OUTPUT_MAPA_STE
+from config import at_punts_data, at_planol_data, OUTPUT_MAPA_AT, ste_punts_data, ste_planol_data, OUTPUT_MAPA_STE
 
 def generate_points_js(excel_input_path: Path, image_input_path: Path, output_js_folder: Path):
     """
@@ -81,13 +81,13 @@ def main(map_type: str):
     Funció principal per generar points.js per a un tipus de mapa específic (AT o STE).
     """
     if map_type == "AT":
-        excel_path = DATA_PUNTS / "punts-mesura-at.xlsx"
-        image_path = DATA_PLANOL / "planol-at.png"
+        excel_path = at_punts_data / "punts-mesura-at.xlsx"
+        image_path = at_planol_data / "planol-at.png"
         output_folder = OUTPUT_MAPA_AT
         print("📂 Generant points.js per a Aigua de Torres (AT)...")
     elif map_type == "STE":
-        excel_path = DATA_PUNTS / "punts-mesura-ste.xlsx"
-        image_path = DATA_PLANOL / "planol-ste.png"
+        excel_path = ste_punts_data / "punts-mesura-ste.xlsx"
+        image_path = ste_planol_data / "planol-ste.png"
         output_folder = OUTPUT_MAPA_STE
         print("📂 Generant points.js per a Vapor (STE)...")
     else:

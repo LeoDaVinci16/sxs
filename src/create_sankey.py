@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 import sys
-from config import OUTPUT_SANKEY, sankey_at, sankey_ste
+from config import at_sankey_output as OUTPUT_SANKEY, at_edges_csv as sankey_at, ste_edges_csv as sankey_ste
 from collections import defaultdict
 
 # ==============================

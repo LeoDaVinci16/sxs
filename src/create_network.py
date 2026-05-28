@@ -5,7 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-from config import DATA_NETWORK, OUTPUT_NETWORK, nodes_csv, edges_csv
+from config import at_network_output, ste_network_output, at_network_html, ste_network_html, at_edges_csv, ste_edges_csv, at_nodes_csv, ste_edges_csv, ste_nodes_csv
+
+nodes_csv = at_nodes_csv
+edges_csv = at_edges_csv
 
 
 # optional manual layout (only some nodes)
@@ -170,8 +173,8 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN")
             arrows={}   
         )
 
-    output_path = OUTPUT_NETWORK / "network_auto_layout.html"
-    os.makedirs(OUTPUT_NETWORK, exist_ok=True)
+    output_path = at_network_html / "network_auto_layout.html"
+    os.makedirs(at_network_html, exist_ok=True)
     net.write_html(str(output_path), notebook=False)
     print(f"Saved: {output_path}")
     return output_path
@@ -179,7 +182,9 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN")
 if __name__ == "__main__":
     import excel2csv
     import webbrowser
+
+
     # Assegurem que els fitxers CSV estiguin actualitzats abans de carregar-los
-    excel2csv.main(DATA_NETWORK)
+    excel2csv.main(at_network_output)
     html_path = main_network()
     webbrowser.open(html_path.as_uri())

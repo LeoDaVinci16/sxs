@@ -4,7 +4,7 @@ import statistics
 import math
 import pandas as pd
 from pathlib import Path
-from config import DATA_RAW, AT_RAW, STE_RAW, OTHER_RAW, AT_NODES, STE_NODES
+from config import DATA_RAW, at_raw, ste_raw, OTHER_RAW, at_edges_csv, ste_edges_csv
 
 # Mapping of filename Type to the actual column header representing the measurement
 TYPE_COLUMN_MAP = {
@@ -39,14 +39,22 @@ def get_file_info(filename):
 def detect_delimiter(filepath):
     """Sniffs the delimiter by checking the first non-comment, non-empty line."""
     with open(filepath, "r", encoding='utf-8', errors='replace') as f:
+        sample = ""
         for line in f:
-            clean_line = line.strip()
-            if clean_line.startswith("#") or not clean_line:
+            if line.startswith("#") or not line.strip():
                 continue
-            if "\t" in line: return "\t"
-            if ";" in line: return ";"
-            return ","
-    return ","
+            sample += line
+            if sample.count('\n') >= 5:
+                break
+
+        if not sample:
+            return ";"
+
+        try:
+            dialect = csv.Sniffer().sniff(sample, delimiters=",\t; ")
+            return dialect.delimiter
+        except Exception:
+            return ";"  # Fallback to semicolon
 
 def calculate_normalized_stats(vals, unit_context=""):
     """Computes statistics for values normalized to m3/h."""
@@ -86,14 +94,13 @@ count_processed = 0
 def process_file(filepath, at_set, ste_set):
     global count_processed
     count_processed += 1
-    print(f"{count_processed}: Processing {filepath.name}...")
     point_id, file_type = get_file_info(filepath.name)
     
     # Determine Destination folder based on the node definitions
     if point_id in at_set:
-        dest_dir = AT_RAW
+        dest_dir = at_raw
     elif point_id in ste_set:
-        dest_dir = STE_RAW
+        dest_dir = ste_raw
     else:
         dest_dir = OTHER_RAW
 
@@ -102,7 +109,7 @@ def process_file(filepath, at_set, ste_set):
     
     sep = detect_delimiter(filepath)
     target_col = TYPE_COLUMN_MAP.get(file_type, "MEASURE")
-
+    
     metadata_lines, headers, data_rows = [], [], []
     with open(filepath, "r", encoding='utf-8', errors='replace', newline="") as f:
         reader = csv.reader(f, delimiter=sep)
@@ -110,40 +117,46 @@ def process_file(filepath, at_set, ste_set):
             if not row: continue
             if row[0].startswith("#"):
                 # Skip old stats to avoid doubling up
-                if any(x in row[0].upper() for x in ["STATS ->", "AVG:", "MEDIAN:", "MODE:", "MAX:", "MIN:"]): continue
+                if any(x in row[0].upper() for x in ["STATS", "FLOW RATE:", "AVG:", "MEDIAN:", "MODE:", "MAX:", "MIN:"]): continue
                 metadata_lines.append(row[0])
-            elif not headers and (target_col in row or "INDEX" in row[0].upper()):
+            elif not headers and (target_col in row or "MEASURE" in row or "INDEX" in row[0].upper()):
                 headers = row
             else:
                 data_rows.append(row)
 
-    if not headers: return
+    if not headers: 
+        print(f"{count_processed}: Skipped {filepath.name} - Header not found (expected '{target_col}' or 'MEASURE')")
+        return
+
+    print(f"{count_processed}: Saving {filepath.name} to {dest_dir.name}...")
 
     # Calculate Stats (normalized to m3/h)
     measure_idx = headers.index(target_col) if target_col in headers else None
     vals = [row[measure_idx] for row in data_rows if measure_idx is not None and len(row) > measure_idx]
     stats = calculate_normalized_stats(vals, unit_context=target_col)
 
-    # Construct Header (Inline format for consistency)
-    fmt = lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x)
-    header = f"# Flow rate: avg: {fmt(stats['avg'])} [m3/h] \n" \
-             f"# Median: {fmt(stats['median'])} [m3/h]\n" \
-             f"# Mode: {fmt(stats['mode'])} [m3/h]\n" \
-             f"# Max: {fmt(stats['max'])} [m3/h]\n" \
-             f"# Min: {fmt(stats['min'])} [m3/h]"
-
     # Write to target location
     with open(target_path, "w", encoding='utf-8', newline="") as f:
         writer = csv.writer(f, delimiter=sep)
-        writer.writerow([header])
+        
+        # Write stats as separate rows to avoid quoting
+        if stats['avg'] != "nan":
+            fmt = lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x)
+            writer.writerow([f"# {target_col} Stats"])
+            writer.writerow([f"# Avg: {fmt(stats['avg'])}"])
+            writer.writerow([f"# Median: {fmt(stats['median'])}"])
+            writer.writerow([f"# Mode: {fmt(stats['mode'])}"])
+            writer.writerow([f"# Max: {fmt(stats['max'])}"])
+            writer.writerow([f"# Min: {fmt(stats['min'])}"])
+
         for meta in metadata_lines: writer.writerow([meta])
         writer.writerow([])
         writer.writerow(headers)
         writer.writerows(data_rows)
 
 def main():
-    at_set = set(pd.read_csv(AT_NODES)["node"].apply(normalize_id)) if AT_NODES.exists() else set()
-    ste_set = set(pd.read_csv(STE_NODES)["node"].apply(normalize_id)) if STE_NODES.exists() else set()
+    at_set = set(pd.read_csv(at_edges_csv)["nom"].apply(normalize_id)) if at_edges_csv.exists() else set()
+    ste_set = set(pd.read_csv(ste_edges_csv)["nom"].apply(normalize_id)) if ste_edges_csv.exists() else set()
     for csv_file in sorted(DATA_RAW.glob("*.csv")):
         process_file(csv_file, at_set, ste_set)
 

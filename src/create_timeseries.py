@@ -1,6 +1,5 @@
 import re
-import config
-from config import DATA_RAW_HIST, DATA_RAW, DATA_RAW_HIST_NORMALIZED, ROOT, AT_RAW, STE_RAW
+from config import DATA_AT, at_raw, at_timeseries
 import pandas as pd
 from pathlib import Path
 
@@ -138,16 +137,13 @@ def extract_file_info(csv_path):
     # this fulfills the requirement of using the filename instead of Meas. Point No.
     return info
 
-def main(history=False, output_name="timeseries.csv"):
+def main(output_name="at_timeseries.csv"):
     """
     Iterates through all CSV files in the raw data folder and aggregates 
     their metadata and stats into a single summary CSV file.
     """
-    if history == True:
-        raw = ROOT / "data" / "raw_hist_normalized"
-    else:    raw = AT_RAW
-    # 1. Select all CSV files in the raw folder
-    summary_csv_path = config.DATA_TIMESERIES / output_name
+    raw = at_raw 
+    summary_csv_path = at_timeseries 
     
     # Load existing summary data if it exists
     existing_df = pd.DataFrame()
@@ -207,7 +203,7 @@ def main(history=False, output_name="timeseries.csv"):
         final_df = pd.concat([existing_df, new_df], ignore_index=True)
     
     # Ensure output directory exists
-    config.DATA_TIMESERIES.mkdir(parents=True, exist_ok=True)
+    DATA_AT.mkdir(parents=True, exist_ok=True)
     
     # Save to CSV
     final_df.to_csv(summary_csv_path, index=False, sep=";")
@@ -220,9 +216,9 @@ def main(history=False, output_name="timeseries.csv"):
     unique_summary_df = final_df["POINTNAME"].value_counts().reset_index()
     unique_summary_df.columns = ["POINTNAME", "Occurrences"]
 
-    unique_summary_csv_path = config.DATA_TIMESERIES / f"unique_points_{output_name.replace('.csv', '')}.csv"
+    unique_summary_csv_path = DATA_AT / f"unique_points_{output_name.replace('.csv', '')}.csv"
     unique_summary_df.to_csv(unique_summary_csv_path, index=False, sep=";")
     print(f"Unique timeseries summary saved to: {unique_summary_csv_path}")
 
 if __name__ == "__main__":
-    main(history=True, output_name="timeseries_normalized_1.csv")
+    main()

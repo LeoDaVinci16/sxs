@@ -35,9 +35,9 @@
 
 Aquest projecte automatitza el processament, anàlisi i visualització de les dades obtingudes amb el cabalímetre ultrasònic **Flexim (Fluxus G608)** a la planta d'Euromed. El sistema gestiona des de la captura via sèrie fins a la generació d'informes tècnics en PDF.
 
-### 📑 Informes automatitzats (report)
+### 📑 Informe
 
-[**Informe aigua torres (AT)**](https://leodavinci16.github.io/sxs/outputs/informe/report.pdf) | [**Informe vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/informe/report.pdf)
+[**Informe**](https://leodavinci16.github.io/sxs/report/report_sxs.pdf)
 
 ### 🗺️ Mapes de punts de mesura (mapa/punts)
 
@@ -46,6 +46,10 @@ Aquest projecte automatitza el processament, anàlisi i visualització de les da
 ### 📊 Diagrama Sankey: Balanç de fluxos (sankey)
 
 [**Sankey aigua de torres (AT)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-at.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/sankey/sankey_nodes-ste.html)
+
+### 🧠 Xarxa de canonades
+
+[**Xarxa aigua de torres (AT)**](https://leodavinci16.github.io/sxs/outputs/network/network-at.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/networ/network-ste.html)
 
 \---
 
@@ -58,7 +62,7 @@ sxs/
 ├── requirements.txt          # Paquets de Python necessaris pel projecte.
 ├── .gitignore
 ├── src/                      # Codi font del projecte (Python).
-│   ├── selection_layer.py    # Lògica de selecció de fitxers i columnes per a la GUI.
+│   ├── controller.py         # Orquestra les accions de la GUI i la lògica de selecció.
 │   ├── config.py             # Configuració centralitzada de rutes i fitxers constants.
 │   ├── serial_import.py      # Gestió de la importació de dades des del port sèrie.
 │   ├── serial_update.py      # Post-processament de dades de sèrie (afegir columna de temps, càlcul d'estadístiques).
@@ -91,7 +95,7 @@ sxs/
 └── outputs/                  # Actius Generats
     ├── plots/                # Gràfics de sèries temporals PNG.
     ├── sankey/               # Diagrames Sankey HTML.
-│   ├── mapa-at/              # Mapa web per a Aigua de Torres.
+    ├── mapa-at/              # Mapa web per a Aigua de Torres.
     ├── mapa-ste/             # Mapa web per a Vapor.
     └── informe/              # Informes PDF generats mitjançant LaTeX.
 ```
@@ -115,7 +119,7 @@ El sistema s'ha dissenyat com una **suite modular de processament de dades** que
 * **`gui.py`**: El panell de control principal basat en PyQt que permet executar totes les tasques sense línia de comandes.
 * **`add\_date.py`**: Crucial per a l'organització; llegeix el contingut dels CSV bruts, extreu la data d'inici i canvia el nom dels fitxers a un format ordenable: `AAAAMMDD\_HHMMSS\_Punt.csv`.
 * **`create\_sankey.py`**: Utilitza `plotly.graph\_objects` per calcular balanços de cabal entre nodes d'origen i destí definits en la configuració.
-* **`create\_tkinter.py` \& `selection\_layer.py`**: Visualitzador de mapes interactiu que superposa punts de mesura sobre els plànols `.png`, permetent veure velocitats de cabal de forma espacial.
+* **`controller.py`**: Orquestra les accions de la interfície i gestiona les finestres de selecció de fitxers i columnes.
 * **`config.py`**: Centralitza totes les rutes del projecte utilitzant `pathlib` per garantir la portabilitat entre sistemes.
 
 * **`gui.py`**: Interfície gràfica moderna basada en PyQt5.
