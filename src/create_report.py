@@ -87,8 +87,8 @@ def generate_report(variables=None):
         # Gather generated images for this specific file
         produced_items = []
         for var in variables:
-            ts_plot = assets_dir / f"{stem}_{safe_fn_plots(var)}.png"
-            bx_plot = assets_dir / f"{stem}_boxplot_{safe_fn_plots(var)}.png"
+            ts_plot = assets_dir / f"{csv_file.stem}_{safe_fn_plots(var)}.png"
+            bx_plot = assets_dir / f"{csv_file.stem}_boxplot_{safe_fn_plots(var)}.png"
             if ts_plot.exists() or bx_plot.exists():
                 produced_items.append((var, ts_plot, bx_plot))
         

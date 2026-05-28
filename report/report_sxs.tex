@@ -178,9 +178,12 @@ Un treball previ a la presa de mesures va consistir en representar el circuit d'
     \label{fig:network}
 \end{figure}
 
-A partir del planol del cicruit d'aigua de torres Figura~\ref{fig:network} s'ha definit una xarxa anàloga definida a partir de nodes i branques. Cada node representa un punt d'origen (bombes), destí (consumidors) o una ramificació. Les branques son les unions entre els diferents nodes i representen les pròpies canonades del circuit. Els punts de mesura situats a les canonades es defineixen pel nom de la branca.
+A partir del planol del cicruit d'aigua de torres Figura~\ref{fig:network} s'ha definit una representació nodal de la xarxa hidràulica basada en nodes i branques. Cada node representa un punt d'origen (bombes), de consum (consumidors) o una ramificació del circuit. Les branques corresponen a les canonades que connecten els diferents nodes. Els punts de mesura situats a les canonades s'identifiquen mitjançant el nom de la branca corresponent.
 
-Aquests punts es van codificar amb un codi numèric. Als diferents punts se'ls atribueix un node d'origen un de destí i un valor de cabal.
+
+Cada node es va codificar amb un codi numèric únic, i les branques es van etiquetar amb el nom del node d'origen en el cas de les bombes, amb els dos nodes en cas de les ramificacions del circuit de distribució i amb el nom del node de destinació en la resta de casos.
+
+Per emmagatzemar les mesures úniques la base de dades conté la branca i la data i hora de la mesura.
 
 Com que no tots els punts de mesura són accessibles, s'han seleccionat els punts més representatius amb l'objectiu de repetir les mesures diariament durant un període de 3-4 setmanes.
 

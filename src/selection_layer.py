@@ -10,7 +10,7 @@ import sys
 import time
 import subprocess # Added for running create_report.py
 import webbrowser
-import network
+import create_network
 import create_sankey # Mantenim aquest, és per als diagrames Sankey
 import excel2js # Importem el nou script excel2js
 import create_map
