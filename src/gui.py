@@ -47,12 +47,6 @@ class SimpleGUI(QMainWindow):
         html_map_btn.clicked.connect(lambda: controller.run_html_map(self))
         layout.addWidget(html_map_btn)
 
-        report_btn = QPushButton("📄 Generar Informe PDF")
-        report_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        report_btn.setStyleSheet(BTN_STYLE + "background-color: #e1f5fe;")
-        report_btn.clicked.connect(lambda: controller.run_create_report(self))
-        layout.addWidget(report_btn)
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = SimpleGUI()

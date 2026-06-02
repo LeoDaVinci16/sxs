@@ -157,8 +157,7 @@ def run_sankey(root):
     
     create_sankey.main_sankey(
         file_path=file_path, 
-        magnitude_col=cols[0],
-        output_dir=config.at_sankey_output if sys_type == "AT" else config.ste_sankey_output
+        magnitude_col=cols[0]
     )
 
 # =========================================================
@@ -181,9 +180,10 @@ def run_network(root):
         QMessageBox.warning(None, "Atenció", "No s'ha seleccionat cap columna de dades")
         return
         
-    nodes_file = os.path.join(os.path.dirname(edges_file), "nodes.csv")
+    suffix = "at" if sys_type == "AT" else "ste"
+    nodes_file = os.path.join(os.path.dirname(edges_file), f"nodes-{suffix}.csv")
     if not os.path.exists(nodes_file):
-        nodes_file = ask_file(data_dir, f"Nodes de {sys_type}", [("CSV files", "*.csv")])
+        nodes_file = ask_file(data_dir, f"Nodes de {sys_type} (nodes-{suffix}.csv)", [("CSV files", "*.csv")])
         if not nodes_file:
             return
 

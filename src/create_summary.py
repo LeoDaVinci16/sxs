@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 from pathlib import Path
-from config import DATA_TIMESERIES, OUTPUT_SUMMARY
+from config import DATA_TIMESERIES, OUTPUT_SUMMARY, timeseries_normalized
 
 # 1. Load your data
-timeseries_csv_path = DATA_TIMESERIES / "timeseries_normalized_1.csv"
+timeseries_csv_path = timeseries_normalized
 df = pd.read_csv(timeseries_csv_path, sep=";")
 count = 0
 

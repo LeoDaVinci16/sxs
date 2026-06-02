@@ -130,7 +130,7 @@ def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
     # Use the explicit output_format parameter
     dot = Digraph(name=title, comment="SXS Flow Network", format=output_format, engine=engine)
     dot.attr(rankdir="LR", overlap="false", splines="true", nodesep="0.5") # These are layout attributes, not visual size
-    dot.attr("node", fontname="Arial", fontsize="10") # Revert to original font size
+    dot.attr("node", fontname="Arial", fontsize="7") # Revert to original font size
     dot.attr("edge", fontname="Arial", fontsize="9")  # Revert to original font size
 
     # -----------------------------
@@ -168,11 +168,11 @@ def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
     return Path(output_file)
 
 if __name__ == "__main__":
-    magnitude_col = "DN"  # cabal, DN, OD_mm	WT_mm	d_m	area_m2	vel_ms	cabal_m3s	cabal_kgs	cabal_m3h	cabal_teo-real
+    input_file = r"data/at_edges.csv"
+    magnitude_col = "cabal"  # cabal, DN, OD_mm	WT_mm	d_m	area_m2	vel_ms	cabal_m3s	cabal_kgs	cabal_m3h	cabal_teo-real
     output_format = "svg"
-    title = "diagram_1"
+    title = "network_1"
 
     import excel2csv
     excel2csv.main(DATA_NETWORK)
     main_diagram(magnitude_col=magnitude_col, output_format=output_format, title=title)
-    main_diagram(magnitude_col=magnitude_col, output_format=output_format, title="diagram_2")

@@ -1,0 +1,98 @@
+node,nom,tipus,x,y,planta
+0.0,0,ramificació,0.226,0.055124,distribució
+1.0,1,ramificació,0.221,0.144876,distribució
+2.0,2,ramificació,0.2585,0.149823,distribució
+3.0,3,ramificació,0.284,0.154064,distribució
+4.0,4,ramificació,0.335,0.161837,distribució
+5.0,5,ramificació,0.38600000000000007,0.162,distribució
+6.0,6,ramificació,0.447,0.373145,distribució
+7.0,7,ramificació,0.4455,0.396466,distribució
+8.0,8,ramificació,0.4435,0.419788,distribució
+9.0,9,ramificació,0.4415,0.446643,distribució
+10.0,10,ramificació,0.4405,0.478445,distribució
+11.0,11,ramificació,0.4385,0.498233,distribució
+12.0,12,ramificació,0.4235,0.498233,distribució
+13.0,13,ramificació,0.3975,0.499647,distribució
+14.0,14,ramificació,0.3775,0.568198,distribució
+15.0,15,ramificació,0.3775,0.595053,distribució
+16.0,16,ramificació,0.376,0.711661,distribució
+17.0,17,ramificació,0.4565,0.74629,distribució
+18.0,18,ramificació,0.5115,0.744876,distribució
+19.0,19,ramificació,0.5785,0.495406,distribució
+20.0,20,ramificació,0.669,0.491166,distribució
+21.0,21,ramificació,0.726,0.491873,distribució
+22.0,22,ramificació,0.3265,0.358304,distribució
+23.0,23,ramificació,0.189,0.396466,distribució
+24.0,24,ramificació,0.172,0.686219,distribució
+1120.0,Y-120,chiller,0.4115,0.416254,grups fred
+1160.0,Y-160,chiller,0.4375,0.881979,grups fred
+1160.01,1160.01,ramificació,0.398,0.882,grups fred
+1170.0,Y-170,chiller,0.437,0.924382,grups fred
+1180.01,1180.01,ramificació,0.0905,0.168198,grups fred
+1180.02,1180.02,ramificació,0.0895,0.187279,grups fred
+1180.03,1180.03,ramificació,0.0885,0.207067,grups fred
+1181.0,Y-180 (a),chiller,0.121,0.170318,grups fred
+1182.0,Y-180 (b),chiller,0.1225,0.189399,grups fred
+1191.0,Y-190 (a),chiller,0.122,0.210601,grups fred
+1192.0,Y-190 (b),chiller,0.1235,0.230389,grups fred
+3100.01,3100.01,ramificació,0.5975,0.183746,PEC
+3100.02,3100.02,ramificació,0.6145,0.25583,PEC
+3100.03,3100.03,ramificació,0.596,0.238163,PEC
+3101.0,EI-101,intercambiador,0.5745,0.234629,PEC
+3102.0,EI-102,intercambiador,0.5735,0.308127,PEC
+3150.0,EI-150,intercambiador,0.647,0.269965,PEC
+3700.01,3700.01,ramificació,0.411,0.397173,E-700
+3800.01,3800.01,ramificació,0.579,0.54841,E-800
+3801.0,EI-801,intercambiador,0.5475,0.561837,E-800
+3806.0,EI-806,intercambiador,0.6115,0.54629,E-800
+3900.01,3900.01,ramificació,0.5045,0.538516,E-900/E-1000
+3900.02,3900.02,ramificació,0.505,0.583746,E-900/E-1000
+3900.03,3900.03,ramificació,0.5095,0.668551,E-900/E-1000
+3901.0,EI-901,intercambiador,0.5235,0.582332,E-900/E-1000
+3906.0,EI-906,intercambiador,0.4915,0.698233,E-900/E-1000
+4200.01,4200.01,ramificació,0.6715,0.533569,SIL-PEL
+4201.0,PK-201,intercambiador,0.6675,0.580212,SIL-PEL
+4202.0,PK-202A,intercambiador,0.6635,0.553357,SIL-PEL
+4300.01,4300.01,ramificació,0.726,0.530035,SIL-PEL
+4303.0,PI-303,intercambiador,0.717,0.563251,SIL-PEL
+4304.0,PI-304,intercambiador,0.716,0.530035,SIL-PEL
+4501.0,PI-601,intercambiador,0.4365,0.664311,P-600
+4600.02,4600.02,ramificació,0.454,0.7053,P-600
+4651.0,LI-651,intercambiador,0.352,0.75265,LIQ-LIQ
+4600.01,4600.01,ramificació,0.366,0.657951,LIQ-LIQ
+4671.0,LI-671,intercambiador,0.35,0.688339,LIQ-LIQ
+4670.0,LR-670,reactor,0.3245,0.660071,LIQ-LIQ
+4700.01,4700.01,ramificació,0.417,0.569611,V-700/V-800
+4700.02,4700.02,ramificació,0.4285,0.571731,V-700/V-800
+4710.0,VI-710,intercambiador,0.4475,0.575265,V-700/V-800
+4740.0,VI-740,intercambiador,0.4435,0.542049,V-700/V-800
+4810.0,VI-810,intercambiador,0.452,0.615548,V-700/V-800
+4711.0,VR-710,reactor,0.4495,0.598587,V-700/V-800
+4811.0,VR-810,reactor,0.4455,0.565371,V-700/V-800
+5600.01,5600.01,ramificació,0.1545,0.392933,SS-600
+5603.0,SI-603,intercambiador,0.1095,0.378092,SS-600
+5601.0,SR-601,reactor,0.089,0.373145,SS-600
+5700.01,5700.01,ramificació,0.5135,0.403534,SS-700B
+5701.0,EI-701,intercambiador,0.471,0.419788,SS-700B
+5800.01,5800.01,ramificació,0.3975,0.482686,SS-800
+5801.0,SS-801,intercambiador,0.3675,0.481272,SS-800
+5802.0,SS-802,intercambiador,0.37,0.464311,SS-800
+8104.0,BV-104,bomba,0.3095,0.022615,distribució
+8105.0,BV-105,bomba,0.165,0.021201,distribució
+8106.0,BV-106,bomba,0.3095,0.072085,distribució
+8107.0,BV-107,bomba,0.1615,0.071378,distribució
+8108.0,BV-108,bomba,0.3085,0.042403,distribució
+8109.0,BV-109,bomba,0.398,0.797173,distribució
+31001.0,EI-1001,intercambiador,0.521,0.535689,E-900/E-1000
+31006.0,EI-1006,intercambiador,0.4875,0.674912,E-900/E-1000
+51000.0,SS-1000,intercambiador,0.284,0.187986,Nautas
+52100.01,52100.01,ramificació,0.1415,0.675618,Ekatos
+52100.0,SS-2100,reactor,0.1115,0.477032,Ekatos
+52200.0,SS-2200,reactor,0.107,0.522968,Ekatos
+52100.02,52100.02,ramificació,0.1215,0.670671,Ekatos
+52100.03,52100.03,ramificació,0.146,0.533569,Ekatos
+52107.0,SI-2107,intercambiador,0.1025,0.630389,Ekatos
+52207.0,SI-2207,intercambiador,0.1195,0.632509,Ekatos
+53000.0,SS-3000,intercambiador,0.257,0.177385,Nautas
+56000.01,56000.01,ramificació,0.168,0.763251,SS-6000
+56002.0,SI-6002,intercambiador,0.119,0.767491,SS-6000

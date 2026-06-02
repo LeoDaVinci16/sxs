@@ -5,39 +5,55 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # --- Data Folders ---
 DATA = ROOT / "data"
-DATA_RAW = DATA / "raw"
-OTHER_RAW = DATA / "other_raw"
+DATA_RAW = DATA
+OTHER_RAW = DATA
 
-DATA_AT = DATA / "at"
-at_raw = DATA_AT / "at_raw"
-at_network_data = DATA_AT / "at_network"
-at_timeseries = DATA_AT / "at_timeseries.csv"
-at_punts_data = DATA_AT / "punts"
-at_sankey_data = DATA_AT / "sankey"
-at_planol_data = DATA_AT / "planol"
+at_network_data = DATA
+at_punts_data = DATA
+at_sankey_data = DATA
+at_planol_data = DATA
+DATA_TIMESERIES = DATA
+DATA_NETWORK = DATA
 
-DATA_STE = DATA / "ste"
-ste_raw = DATA_STE / "ste_raw"
-ste_network_data = DATA_STE / "ste_network"
-ste_timeseries = DATA_STE / "ste_timeseries.csv"
-ste_punts_data = DATA_STE / "punts"
-ste_sankey_data = DATA_STE / "sankey"
-ste_planol_data = DATA_STE / "planol"
+ste_network_data = DATA
+ste_punts_data = DATA
+ste_sankey_data = DATA
+ste_planol_data = DATA
 
 # --- Specific Files ---
-at_edges_csv = at_network_data / "edges.csv"
-at_nodes_csv = at_network_data / "nodes.csv"
-ste_edges_csv = ste_network_data / "edges.csv"
-ste_nodes_csv = ste_network_data / "nodes.csv"
+at_edges_csv = DATA / "at_edges.csv"
+at_nodes_csv = DATA / "at_nodes.csv"
+ste_edges_csv = DATA / "ste_edges.csv"
+ste_nodes_csv = DATA / "ste_nodes.csv"
+
+nodes_csv = at_nodes_csv
+edges_csv = at_edges_csv
+
+at_timeseries = DATA / "at_timeseries.csv"
+ste_timeseries = DATA / "ste_timeseries.csv"
+timeseries_normalized = DATA / "timeseries_normalized_1.csv"
+
+planol_at = DATA / "planol-at.png"
+punts_at = DATA / "punts-mesura-at.csv"
+punts_at_xlsx = DATA / "punts-mesura-at.xlsx"
+
+planol_ste = DATA / "planol-ste.png"
+punts_ste = DATA / "punts-mesura-ste.csv"
+punts_ste_xlsx = DATA / "punts-mesura-ste.xlsx"
+
+sankey_at = at_edges_csv
+sankey_ste = ste_edges_csv
 
 # --- Output Folders ---
 OUTPUTS = ROOT / "outputs"
 OUTPUT_REPORT = ROOT / "outputs" / "informe"
+OUTPUT_SUMMARY = ROOT / "outputs" / "summary"
 
 OUTPUT_AT = OUTPUTS / "at"
 at_sankey_output = OUTPUT_AT / "sankey"
 at_network_output = OUTPUT_AT / "network"
 at_mapa_output = OUTPUT_AT / "map"
+OUTPUT_MAPA_AT = at_mapa_output
 at_plots = OUTPUT_AT / "plots"
 at_boxplots = OUTPUT_AT / "boxplots"
 
@@ -45,6 +61,7 @@ OUTPUT_STE = OUTPUTS / "ste"
 ste_sankey_output = OUTPUT_STE / "sankey"
 ste_network_output = OUTPUT_STE / "network"
 ste_mapa_output = OUTPUT_STE / "map"
+OUTPUT_MAPA_STE = ste_mapa_output
 ste_plots = OUTPUT_STE / "plots"
 ste_boxplots = OUTPUT_STE / "boxplots"
 

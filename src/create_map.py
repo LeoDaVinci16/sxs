@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen, QFont
 from PyQt5.QtCore import Qt, QPointF
 
-from config import at_punts_data as DATA_PUNTS, at_planol_data as planol_at, at_punts_data as punts_at
+from config import DATA as DATA_PUNTS, planol_at, punts_at
 
 
 

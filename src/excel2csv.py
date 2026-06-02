@@ -10,17 +10,21 @@ from config import at_network_data as at_network
 # 1️⃣ LIST FILES
 # ==============================
 def list_excel_files(folder):
-    files = [f for f in os.listdir(folder) if f.lower().endswith((".xls", ".xlsx"))]
+    files = [f for f in os.listdir(folder) if f.lower().endswith((".xls", ".xlsx")) and not f.startswith("~$")]
     return files
 
 # ==============================
 # 2️⃣ LOAD AND CLEAN EXCEL
 # ==============================
 def load_excel(file_path):
-    df = pd.read_excel(file_path)
-    df = df.dropna(how="all")           # Optional: drop completely empty rows
-    df = df.dropna(axis=1, how="all")   # Optional: drop completely empty columns
-    return df
+    try:
+        df = pd.read_excel(file_path)
+        df = df.dropna(how="all")           # Optional: drop completely empty rows
+        df = df.dropna(axis=1, how="all")   # Optional: drop completely empty columns
+        return df
+    except Exception as e:
+        print(f"⚠️ Error llegint {file_path}: {e}")
+        return None
 
 # ==============================
 # 3️⃣ SAVE AS CSV
@@ -41,6 +45,8 @@ def update_docs(docs_folder):
     for excel_file in excel_files:
         excel_path = os.path.join(docs_folder, excel_file)
         df = load_excel(excel_path)
+        if df is None:
+            continue
         csv_name = os.path.splitext(excel_file)[0] + ".csv"
         csv_path = os.path.join(docs_folder, csv_name)
         save_csv(df, csv_path)

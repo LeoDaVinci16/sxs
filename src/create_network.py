@@ -173,8 +173,8 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN")
             arrows={}   
         )
 
-    output_path = at_network_html / "network_auto_layout.html"
-    os.makedirs(at_network_html, exist_ok=True)
+    output_path = at_network_output / "network_auto_layout.html"
+    os.makedirs(at_network_output, exist_ok=True)
     net.write_html(str(output_path), notebook=False)
     print(f"Saved: {output_path}")
     return output_path
