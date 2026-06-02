@@ -6,7 +6,7 @@ from graphviz import Digraph, backend
 from pathlib import Path
 import shutil
 
-from config import DATA_NETWORK, OUTPUT_NETWORK, nodes_csv, edges_csv
+from config import at_network_data as DATA_NETWORK, at_network_output as OUTPUT_NETWORK, at_nodes_csv as nodes_csv, at_edges_csv as edges_csv
 
 # -----------------------------
 # GRAPHVIZ PATH FIX (Windows)
@@ -54,6 +54,16 @@ def node_style_gv(tipus):
     tipus = str(tipus).lower().strip()
     # Graphviz uses different attribute names and shapes than pyvis
     styles = {
+        "ramificació": {"fillcolor": "#ffffff", "color": "#00991a", "width": "0.4", "shape": "circle"},
+        "intercambiador": {"fillcolor": "#ffffff", "color": "#1a5aba", "width": "0.7", "shape": "box"},
+        "chiller": {"fillcolor": "#ffffff", "color": "#ba1aad", "width": "0.7", "shape": "box"},
+        "bomba": {"fillcolor": "#ffffff", "color": "#cc7a00", "width": "0.8", "shape": "box"},
+        "reactor": {"fillcolor": "#ffffff", "color": "#b32100", "width": "0.6", "shape": "cylinder"},
+        "desconegut": {"fillcolor": "#ffffff", "color": "#2b7ce9", "width": "0.3", "shape": "ellipse"}
+    }
+
+    """
+        styles = {
         "ramificació": {"fillcolor": "#00f128", "color": "#00991a", "width": "0.4", "shape": "circle"},
         "intercambiador": {"fillcolor": "#2b7ce9", "color": "#1a5aba", "width": "0.7", "shape": "box"},
         "chiller": {"fillcolor": "#e92be0", "color": "#ba1aad", "width": "0.7", "shape": "box"},
@@ -61,6 +71,8 @@ def node_style_gv(tipus):
         "reactor": {"fillcolor": "#ff2f00", "color": "#b32100", "width": "0.6", "shape": "cylinder"},
         "desconegut": {"fillcolor": "#97c2fc", "color": "#2b7ce9", "width": "0.3", "shape": "ellipse"}
     }
+    """
+
     res = styles.get(tipus, styles["desconegut"])
     return {
         "fillcolor": res["fillcolor"],

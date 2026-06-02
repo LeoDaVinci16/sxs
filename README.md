@@ -51,109 +51,63 @@ Aquest projecte automatitza el processament, anàlisi i visualització de les da
 
 [**Xarxa aigua de torres (AT)**](https://leodavinci16.github.io/sxs/outputs/network/network-at.html) | [**Sankey vapor (STE)**](https://leodavinci16.github.io/sxs/outputs/networ/network-ste.html)
 
-\---
 
-## 📂 Estructura del repositori
 
-```bash
+## 🚀 Key Features
+
+*   **Topology Diagrams**: Generate industrial network graphs using Graphviz, with specific styling for equipment like chillers, pumps, and reactors.
+*   **Sankey Flow Balance**: Interactive Plotly-based Sankey diagrams with optimized node coordinate calculations to reduce visual clutter.
+*   **Statistical Summaries**: Automatic generation of chronologically sorted bar charts for median flow measurements at any point.
+*   **Integrated GUI**: A user-friendly Tkinter interface to manage the visualization pipeline and data conversion.
+*   **Data Normalization**: Seamless conversion of complex field logs (Excel) into standardized analysis formats (CSV).
+
+## 📂 Repository Structure
+
+```text
 sxs/
-├── run_sxs.bat               # Script d'execució ràpida per llançar la interfície (GUI).
-├── README.md                 # Aquest document.
-├── requirements.txt          # Paquets de Python necessaris pel projecte.
-├── .gitignore
-├── src/                      # Codi font del projecte (Python).
-│   ├── controller.py         # Orquestra les accions de la GUI i la lògica de selecció.
-│   ├── config.py             # Configuració centralitzada de rutes i fitxers constants.
-│   ├── serial_import.py      # Gestió de la importació de dades des del port sèrie.
-│   ├── serial_update.py      # Post-processament de dades de sèrie (afegir columna de temps, càlcul d'estadístiques).
-│   ├── serial_read.py        # Monitorització del port sèrie.
-│   ├── raw_hist_process.py   # Processament i normalització a m3/h i classificació per zones.
-│   ├── create_timeseries.py  # Creació d'un resum de metadades i estadístiques de tots els fitxers.
-│   ├── excel2csv.py          # Utilitat per convertir fulls d'Excel a format CSV.
-│   ├── excel2js.py           # Utilitat per convertir fulls d'Excel a format JavaScript per a mapes web.
-│   ├── create_plots.py       # Generació de gràfics de sèries temporals.
-│   ├── create_boxplots.py    # Generació de boxplots per anàlisi estadístic.
-│   ├── create_summary.py     # Creació de gràfics resum per a cada punt de mesura.
-│   ├── create_map.py         # Visualitzador interactiu de punts sobre el plànol de la planta (PyQt5).
-│   ├── create_network.py     # Generació de diagrames de xarxa interactius (Pyvis).
-│   ├── create_network_coord.py # Generació de diagrames de xarxa amb coordenades fixes (Pyvis).
-│   ├── create_diagram.py     # Generació de diagrames de xarxa estàtics (Graphviz).
-│   ├── create_sankey.py      # Generació de diagrames de flux (Sankey) en HTML.
-│   ├── create_report.py      # Generador d'informes en format PDF (LaTeX).
-│   └── gui.py                # Interfície gràfica del projecte (PyQt5).
-├── data/                     # Dades d'Entrada
-│   ├── raw/                  # Fitxers CSV bruts de Flexim.
-│   ├── punts/                # Definicions de punts de mesura.
-│   ├── sankey/               # Fitxers de configuració de nodes/fluxos.
-│   ├── planol/               # Plànols de la fàbrica (PNG).
-│   └── configurations.zip    # Fitxers del programa FluxDiag
-├── report/                   # Report fet manualment (no amb l'script create report)
-│   ├── report figures/       # Imatges per l'informe.
-│   ├── referencies.bib       # Referències.
-│   ├── report_sxs.tex        # Fitxer de l'informe latex.
-│   └── report_sxs.pdf        # Fitxer en pdf (no inclòs a github, es crea a partir de l'anterior!!).
-└── outputs/                  # Actius Generats
-    ├── plots/                # Gràfics de sèries temporals PNG.
-    ├── sankey/               # Diagrames Sankey HTML.
-    ├── mapa-at/              # Mapa web per a Aigua de Torres.
-    ├── mapa-ste/             # Mapa web per a Vapor.
-    └── informe/              # Informes PDF generats mitjançant LaTeX.
+├── run_sxs.bat                # Windows launcher for the GUI
+├── data/                      # Input logs and measurement files (CSV/XLSX)
+├── src/                       # Application logic
+│   ├── gui.py                 # Tkinter graphical interface
+│   ├── config.py              # Path and measurement configurations
+│   ├── create_diagram.py      # Network topology generator
+│   ├── create_sankey.py       # Interactive balance generator
+│   ├── create_summary.py      # Statistical plotting engine
+│   └── excel2csv.py           # Data normalization utility
+├── outputs/                   # Generated reports and visuals
+│   ├── network/               # Topology SVG/PNG files
+│   ├── sankey/                # Interactive HTML balances
+│   └── summary/               # PNG statistics charts
+└── lib/                       # Web visualization libraries (vis.js, etc.)
 ```
 
-\---
+## 🛠️ Technical Details
 
-## 🛠️ Implementació Tècnica i Arquitectura
+The project is designed as a modular processing suite:
 
-El sistema s'ha dissenyat com una **suite modular de processament de dades** que segueix una arquitectura de pipeline lineal:
+1.  **Ingestion**: Measurement data is pulled from the `data/` directory. If raw Excel files are present, they are converted via `excel2csv.py`.
+2.  **Logic**:
+    *   **Graphviz Engine**: Uses `create_diagram.py` to map the physical connection of pipes. Line colors and widths are dynamically scaled based on flow values.
+    *   **Plotly Engine**: Uses `create_sankey.py` with a barycenter heuristic to minimize link crossings in industrial balances.
+    *   **Matplotlib Engine**: Uses `create_summary.py` to generate audit-ready time-series plots for specific measurement points.
 
-### 1\. Arquitectura d'Alt Nivell
+## ⚙️ Requirements
 
-1. **Ingesta:** Captura via sèrie (serial_import) o càrrega de fitxers bruts a `data/raw`
-2. **Normalització:** Processament i extracció de metadades i dates per a l'organització automàtica.
-3. **Transformació:** Creació d'una base de dades de resum (`create_timeseries`) per a consultes ràpides.
-4. **Visualització:** Creació de gràfics de sèries temporals, diagrames Sankey i mapes interactius.
-5. **Generació d'Informes:** Compilació final del document tècnic utilitzant **LaTeX**.
+*   **Python 3.10+**
+*   **Graphviz**: Must be installed on the system and added to your environment `PATH`.
+*   **Python Libraries**:
+    ```bash
+    pip install pandas plotly matplotlib numpy graphviz
+    ```
 
-### 2\. Detall dels Mòduls Principal (`src/`)
+## 🏃 Execution
 
-* **`gui.py`**: El panell de control principal basat en PyQt que permet executar totes les tasques sense línia de comandes.
-* **`add\_date.py`**: Crucial per a l'organització; llegeix el contingut dels CSV bruts, extreu la data d'inici i canvia el nom dels fitxers a un format ordenable: `AAAAMMDD\_HHMMSS\_Punt.csv`.
-* **`create\_sankey.py`**: Utilitza `plotly.graph\_objects` per calcular balanços de cabal entre nodes d'origen i destí definits en la configuració.
-* **`controller.py`**: Orquestra les accions de la interfície i gestiona les finestres de selecció de fitxers i columnes.
-* **`config.py`**: Centralitza totes les rutes del projecte utilitzant `pathlib` per garantir la portabilitat entre sistemes.
+Simply run the launcher in the root folder:
 
-* **`gui.py`**: Interfície gràfica moderna basada en PyQt5.
-* **`raw_hist_process.py: Gestiona la lògica de negoci: sap si un punt és de Vapor o Aigua i aplica els factors de conversió segons el "Type" de fitxer.
-* **`serial_import.py / serial_update.py`**: Gestionen l'entrada de dades "en viu", generant automàticament marques de temps i estadístiques.
-* **`create_timeseries.py`**: Construeix un resum global (timeseries.csv) amb totes les mesures per a anàlisis històriques.
-* **`create_report.py`**: Orquestra la generació d'actius i crida a pdflatex per generar el PDF final.
-* **`create_map.py`**: Proporciona una visualització interactiva sobre el plànol de la fàbrica.
-* **`create_network.py / create_diagram.py`**: Generació de la topologia de la xarxa de canonades (interactiva i estàtica).
-* **`create_sankey.py`**: Utilitza plotly.graph_objects per calcular balanços de cabal entre nodes d'origen i destí, generant diagrames Sankey en HTML.
-* **`config.py`**: Centralitza rutes i paràmetres del port sèrie.
+```bash
+run_sxs.bat
+```
 
-### 3\. Flux de Treball i Processament
-
-El flux recomanat per a l'usuari és:
-
-1. Importar: Mitjançant Serial o copiant fitxers CSV a la carpeta data/raw/.
-2. Processar: Executar el processament de dades brutes per classificar-les i normalitzar-les.
-3. Actualitzar: Si s'han actualitzat els nodes o branques a l'Excel, prémer "Excel → CSV".
-4. Analitzar: Generar plots i boxplots per validar les dades.
-5. Documentar: Generar l'informe PDF final.
-
-### 4\. Requisits Tècnics
-
-* **Python 3.10+**
-* **Biblioteques clau:**
-
-  * `pandas`: Processament de dades.
-  * `plotly` \& `matplotlib`: Visualització interactiva i estàtica.
-  * `PyQt5`: Interfície gràfica i mapes.
-  * `pyserial`: Per al comunicació amb el Flexim
-  * `graphviz` i `pyvis` per la representacio´amb diagrames i xarxes
-
-\---
-
-**Autor:** Arnau Coronado Nadal  
-**Localització:** Mollet del Vallès, maig 2026
+---
+**Author**: Arnau Coronado Nadal
+**Location**: Mollet del Vallès

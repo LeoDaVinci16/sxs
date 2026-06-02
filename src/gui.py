@@ -7,7 +7,7 @@ class SimpleGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("SXS Tools")
-        self.setFixedSize(350, 700) # Increased height for new network button
+        self.setFixedSize(350, 420)
 
         self._build_ui()
 
@@ -29,18 +29,6 @@ class SimpleGUI(QMainWindow):
         BTN_HEIGHT = 40
         BTN_STYLE = "font-size: 14px;"
 
-        import_btn = QPushButton("📥 Importar dades (Serial)")
-        import_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        import_btn.setStyleSheet(BTN_STYLE) # Removed special background/font-weight
-        import_btn.clicked.connect(lambda: controller.run_serial_import(self))
-        layout.addWidget(import_btn)
-
-        monitor_btn = QPushButton("🔍 Monitoritzar Port (Consola)")
-        monitor_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        monitor_btn.setStyleSheet(BTN_STYLE)
-        monitor_btn.clicked.connect(lambda: controller.run_serial_monitor(self))
-        layout.addWidget(monitor_btn)
-
         sankey_btn = QPushButton("📊 Diagrama Sankey")
         sankey_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         sankey_btn.setStyleSheet(BTN_STYLE)
@@ -53,59 +41,17 @@ class SimpleGUI(QMainWindow):
         network_btn.clicked.connect(lambda: controller.run_network(self))
         layout.addWidget(network_btn)
 
-        map_btn = QPushButton("🗺️ Mapa dels punts de mesura")
-        map_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        map_btn.setStyleSheet(BTN_STYLE)
-        map_btn.clicked.connect(lambda: controller.run_map(self))
-        #layout.addWidget(map_btn)
-
         html_map_btn = QPushButton("🌐 Mapa interactiu (HTML)")
         html_map_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
         html_map_btn.setStyleSheet(BTN_STYLE)
         html_map_btn.clicked.connect(lambda: controller.run_html_map(self))
         layout.addWidget(html_map_btn)
 
-        preview_btn = QPushButton("📈 Veure un gràfic")
-        preview_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        preview_btn.setStyleSheet(BTN_STYLE)
-        preview_btn.clicked.connect(lambda: controller.run_preview_plot(self))
-        layout.addWidget(preview_btn)
-
-        batch_btn = QPushButton("📉📉📉 Gràfics de tots els arxius")
-        batch_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        batch_btn.setStyleSheet(BTN_STYLE)
-        batch_btn.clicked.connect(lambda: controller.run_batch_plots_folder(self))
-        layout.addWidget(batch_btn)
-
-        preview_box_btn = QPushButton("📦 Veure un boxplot")
-        preview_box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        preview_box_btn.setStyleSheet(BTN_STYLE)
-        preview_box_btn.clicked.connect(lambda: controller.run_preview_boxplot(self))
-        layout.addWidget(preview_box_btn)
-
-        box_btn = QPushButton("📦📦📦 Boxplots de tots els arxius")
-        box_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        box_btn.setStyleSheet(BTN_STYLE)
-        box_btn.clicked.connect(lambda: controller.run_batch_boxplots_folder(self))
-        layout.addWidget(box_btn)
-
-        create_report_btn = QPushButton("📄 Crear Informe PDF", self)
-        create_report_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        create_report_btn.setStyleSheet(BTN_STYLE)
-        create_report_btn.clicked.connect(lambda: controller.run_create_report(self))
-        layout.addWidget(create_report_btn)
-
-        csv_btn = QPushButton("📝 Excel2csv")
-        csv_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        csv_btn.setStyleSheet(BTN_STYLE)
-        csv_btn.clicked.connect(lambda: controller.run_excel2csv_button(self))
-        layout.addWidget(csv_btn) # Assegurem que el botó Excel2csv s'afegeix
-
-        excel2js_btn = QPushButton("📜 Excel2js")
-        excel2js_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
-        excel2js_btn.setStyleSheet(BTN_STYLE)
-        excel2js_btn.clicked.connect(lambda: controller.run_excel2js_button(self))
-        layout.addWidget(excel2js_btn)
+        report_btn = QPushButton("📄 Generar Informe PDF")
+        report_btn.setFixedSize(BTN_WIDTH, BTN_HEIGHT)
+        report_btn.setStyleSheet(BTN_STYLE + "background-color: #e1f5fe;")
+        report_btn.clicked.connect(lambda: controller.run_create_report(self))
+        layout.addWidget(report_btn)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
