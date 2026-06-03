@@ -4,10 +4,8 @@ import sys
 from pyvis.network import Network
 from pathlib import Path
 
-from config import DATA_NETWORK, OUTPUT_NETWORK, nodes_csv, edges_csv
-
 def normalize_id(id_val):
-    """Ensures IDs are treated as strings consistently."""
+    """Ensures node IDs are compared consistently (e.g., '1.0' vs '1')."""
     try:
         f = float(id_val)
         if f == int(f):
@@ -16,7 +14,7 @@ def normalize_id(id_val):
     except (ValueError, TypeError):
         return str(id_val).strip()
 
-def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, title="coordinate_network_pyvis", scaling_factor=1000):
+def main(nodes_path, edges_path, output_folder, title="coordinate_network_pyvis", scaling_factor=1000):
     # Load data
     nodes_df = pd.read_csv(nodes_path)
     edges_df = pd.read_csv(edges_path)
@@ -45,7 +43,7 @@ def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, title="coordinate_n
             # Pyvis nodes with shape "dot" are scaled circles.
             # x and y are multiplied by scaling_factor to map relative coords to pixel space.
             net.add_node(
-                n_str, 
+                str(n_str), 
                 label=label, 
                 x=float(x) * 2 * scaling_factor, 
                 y=float(y) * scaling_factor, 
@@ -59,17 +57,20 @@ def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, title="coordinate_n
     # Add Connections
     for _, row in edges_df.iterrows():
         e_name = str(row.get("DN", ""))
-        label=f"{e_name}"
-        net.add_edge(str(row["source"]), str(row["target"]), label=label, color="black", width=1, arrows={'to': {'enabled': True, 'scaleFactor': 0.4}})
+        #label=f"{e_name}"
+        net.add_edge(str(row["source"]), str(row["target"]), label="", color="gray", width=1, arrows={'to': {'enabled': True, 'scaleFactor': 0.4}})
 
-    os.makedirs(OUTPUT_NETWORK, exist_ok=True)
-    output_path = OUTPUT_NETWORK / f"{Path(title).stem}.html"
+    os.makedirs(output_folder, exist_ok=True)
+    output_path = Path(output_folder) / f"{Path(title).stem}.html"
     
     net.write_html(str(output_path))
     print(f"Network diagram saved to: {output_path}")
+    #net.show(str(output_path))
     return output_path
 
 if __name__ == "__main__":
-    import excel2csv
-    excel2csv.main(DATA_NETWORK)
-    main_diagram(title="diagram_fixed_pyvis", scaling_factor=2000)
+    base_dir = Path(__file__).resolve().parents[1]
+    nodes = base_dir / "data" / "at_nodes.csv"
+    edges = base_dir / "data" / "at_edges.csv"
+    out = base_dir / "outputs" / "at" / "at_network_coord"
+    main(str(nodes), str(edges), str(out), title="diagram_fixed_pyvis", scaling_factor=2000)

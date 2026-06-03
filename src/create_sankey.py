@@ -8,7 +8,6 @@ import os
 from datetime import datetime
 from pathlib import Path
 import sys
-from config import at_sankey_output as OUTPUT_SANKEY, at_edges_csv as sankey_at, ste_edges_csv as sankey_ste
 from collections import defaultdict
 
 # ==============================
@@ -105,8 +104,6 @@ def propagate_order(nodes, out_edges, in_edges):
         layer_nodes = sorted(layers_map[l], key=get_sort_val)
         for i, n in enumerate(layer_nodes):
             node_order[n] = i
-    print("Node layers:", node_layer)
-    print("Node order within layers:", node_order)
     return node_layer, node_order
 
 def build_sankey_output(df, source_col, target_col, magnitude_col, node_layer, node_order, nodes):
@@ -231,7 +228,6 @@ def compute_coordinates(node_layer, node_order):
             y = 0.1 + 0.8 * y_norm
             
             layers[node] = (layer_idx, x, y)
-    print("Computed node coordinates (node: [layer, x, y]):", layers)        
     return layers
 
 def build_node_xy(all_nodes, coords):
@@ -260,7 +256,7 @@ def generate_sankey_title(file_path, magnitude_col):
     title_prefix = f" {display_suffix}" if display_suffix else ""
     return f"Diagrama Sankey - {title_prefix}"
 
-def main_sankey(file_path=None, magnitude_col=None, title=None):
+def main(file_path, output_folder, magnitude_col, title=None):
     title = title or generate_sankey_title(file_path, magnitude_col)
     df = load_file(file_path)
     validate_sankey_df(df, "source", "target", "color", magnitude_col)
@@ -277,32 +273,25 @@ def main_sankey(file_path=None, magnitude_col=None, title=None):
         magnitude_col=magnitude_col
     )
 
-    # 1️⃣ Guardar el sankey com a fitxer HTML
-    from os.path import join
-    output_dir = OUTPUT_SANKEY
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(output_folder, exist_ok=True)
 
-    # nom del fitxer: p.ex. sankey_at_20241001.html
     base_name = os.path.splitext(os.path.basename(file_path))[0]
-    now = datetime.now().strftime("%Y%m%d_%H%M")
-    html_path = join(output_dir, f"{base_name}_local.html")
+    html_path = os.path.join(output_folder, f"{base_name}_sankey.html")
 
-    fig.write_html(html_path, auto_open=False)  # no obre el navegador, només guarda
+    fig.write_html(html_path, auto_open=False)
     print(f"Sankey guardat a: {html_path}")
-
-    fig.show()
+    fig.show()  
+    return html_path
 
 def columnes_disponibles(df):
     print("Columnes disponibles:", ", ".join(df.columns))
     return df.columns
 
-def main():
-    main_sankey(file_path= sankey_at, 
-                magnitude_col="cabal m3h", 
-    )
-
 # ==============================
 # 4️⃣ ENTRY POINT
 # ==============================
 if __name__ == "__main__":
-    main()
+    base_dir = Path(__file__).resolve().parents[1]
+    file_in = base_dir / "data" / "at_edges.csv"
+    folder_out = base_dir / "outputs" / "at" / "at_sankey"
+    main(str(file_in), str(folder_out), magnitude_col="cabal")

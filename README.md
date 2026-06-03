@@ -65,7 +65,9 @@ Aquest projecte automatitza el processament, anàlisi i visualització de les da
 
 ```text
 sxs/
+├── README.md                  # This file
 ├── run_sxs.bat                # Windows launcher for the GUI
+├── requirements.yml           # Python dependencies
 ├── data/                      # Input logs and measurement files (CSV/XLSX)
 ├── src/                       # Application logic
 │   ├── gui.py                 # Tkinter graphical interface

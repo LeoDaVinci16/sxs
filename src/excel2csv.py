@@ -3,7 +3,6 @@
 from pathlib import Path
 import os
 import pandas as pd
-from config import at_network_data as at_network
 
 
 # ==============================
@@ -63,4 +62,6 @@ def main(docs_folder_path):
 
 
 if __name__ == "__main__":
-    main(docs_folder_path=at_network)
+    # Default behavior if run directly
+    base_path = Path(__file__).resolve().parents[1] / "data"
+    main(docs_folder_path=str(base_path))

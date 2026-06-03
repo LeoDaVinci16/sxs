@@ -1,0 +1,247 @@
+// SXS Flow Network
+digraph network_diagram {
+	nodesep=0.5 overlap=false rankdir=LR splines=true
+	node [fontname=Arial fontsize=7]
+	edge [fontname=Arial fontsize=9]
+	1160.01 [label=1160.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	53000 [label="53000
+(SS-3000)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	18 [label=18 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	1192 [label="1192
+(Y-190 (b))" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1182 [label="1182
+(Y-180 (b))" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1191 [label="1191
+(Y-190 (a))" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	5600.01 [label=5600.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	19 [label=19 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4 [label=4 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4501 [label="4501
+(PI-601)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4300.01 [label=4300.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	51000 [label="51000
+(SS-1000)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4202 [label="4202
+(PK-202A)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1170 [label="1170
+(Y-170)" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	3150 [label="3150
+(EI-150)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	22 [label=22 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	52100 [label="52100
+(SS-2100)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	3101 [label="3101
+(EI-101)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	8108 [label="8108
+(BV-108)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	31001 [label="31001
+(EI-1001)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1180.02 [label=1180.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4671 [label="4671
+(LI-671)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	5603 [label="5603
+(SI-603)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	13 [label=13 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	52100.02 [label=52100.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	11 [label=11 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	20 [label=20 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	10 [label=10 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	8109 [label="8109
+(BV-109)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	4740 [label="4740
+(VI-740)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	52100.01 [label=52100.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	23 [label=23 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3102 [label="3102
+(EI-102)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	3806 [label="3806
+(EI-806)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4304 [label="4304
+(PI-304)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	8105 [label="8105
+(BV-105)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	3900.01 [label=3900.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4670 [label="4670
+(LR-670)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	56002 [label="56002
+(SI-6002)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	6 [label=6 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	14 [label=14 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	24 [label=24 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3 [label=3 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3100.02 [label=3100.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	21 [label=21 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	8107 [label="8107
+(BV-107)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	52207 [label="52207
+(SI-2207)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	3906 [label="3906
+(EI-906)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1180.03 [label=1180.03 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	52107 [label="52107
+(SI-2107)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	5 [label=5 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4201 [label="4201
+(PK-201)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	52100.03 [label=52100.03 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	1160 [label="1160
+(Y-160)" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	5601 [label="5601
+(SR-601)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	4700.02 [label=4700.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	5700.01 [label=5700.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	8106 [label="8106
+(BV-106)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	4810 [label="4810
+(VI-810)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1 [label=1 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	52200 [label="52200
+(SS-2200)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	4303 [label="4303
+(PI-303)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4710 [label="4710
+(VI-710)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	3901 [label="3901
+(EI-901)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4651 [label="4651
+(LI-651)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4711 [label="4711
+(VR-710)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	3900.03 [label=3900.03 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	5802 [label="5802
+(SS-802)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	16 [label=16 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	31006 [label="31006
+(EI-1006)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	3900.02 [label=3900.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	5701 [label="5701
+(EI-701)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4700.01 [label=4700.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	7 [label=7 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3700.01 [label=3700.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	8 [label=8 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	2 [label=2 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	9 [label=9 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	1120 [label="1120
+(Y-120)" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	4811 [label="4811
+(VR-810)" color="#b32100" fillcolor="#ffffff" fixedsize=true height=0.6 shape=cylinder style=filled width=0.6]
+	3800.01 [label=3800.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	17 [label=17 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	12 [label=12 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3100.03 [label=3100.03 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4200.01 [label=4200.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4600.01 [label=4600.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3801 [label="3801
+(EI-801)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	8104 [label="8104
+(BV-104)" color="#cc7a00" fillcolor="#ffffff" fixedsize=true height=0.8 shape=box style=filled width=0.8]
+	1181 [label="1181
+(Y-180 (a))" color="#ba1aad" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	1180.01 [label=1180.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	15 [label=15 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	0 [label=0 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	3100.01 [label=3100.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	4600.02 [label=4600.02 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	5800.01 [label=5800.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	56000.01 [label=56000.01 color="#00991a" fillcolor="#ffffff" fixedsize=true height=0.4 shape=circle style=filled width=0.4]
+	5801 [label="5801
+(SS-801)" color="#1a5aba" fillcolor="#ffffff" fixedsize=true height=0.7 shape=box style=filled width=0.7]
+	8105 -> 0 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	8107 -> 0 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	8106 -> 0 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	8108 -> 0 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	8104 -> 0 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	0 -> 1 [label=1000.0 color="#00fe00" penwidth=6.999999999997]
+	1 -> 2 [label=900.0 color="#00f400" penwidth=6.692099788300236]
+	2 -> 3 [label=890.0 color="#00f300" penwidth=6.660388679231133]
+	3 -> 4 [label=880.0 color="#00f200" penwidth=6.628498911785301]
+	4 -> 5 [label=880.0 color="#00f200" penwidth=6.628498911785301]
+	4 -> 22 [label=0.0 color="#003c00" penwidth=1.0]
+	5 -> 6 [label=780.0 color="#00e800" penwidth=6.299056519794059]
+	6 -> 22 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	6 -> 7 [label=760.0 color="#00e500" penwidth=6.230678732246194]
+	7 -> 8 [label=660.0 color="#00da00" penwidth=5.874423042779139]
+	8 -> 9 [label=650.0 color="#00d900" penwidth=5.837354648976711]
+	9 -> 10 [label=600.0 color="#00d300" penwidth=5.647580015446576]
+	10 -> 11 [label=300.0 color="#00a600" penwidth=4.286335345029354]
+	11 -> 12 [label=150.0 color="#008700" penwidth=3.323790007723288]
+	12 -> 13 [label=125.0 color="#008000" penwidth=3.121320343558582]
+	13 -> 14 [label=25.0 color="#005a00" penwidth=1.9486832980500395]
+	14 -> 15 [label=25.0 color="#005a00" penwidth=1.9486832980500395]
+	15 -> 16 [label=25.0 color="#005a00" penwidth=1.9486832980500395]
+	16 -> 17 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	17 -> 18 [label=0.0 color="#003c00" penwidth=1.0]
+	18 -> 21 [label=0.0 color="#003c00" penwidth=1.0]
+	11 -> 19 [label=150.0 color="#008700" penwidth=3.323790007723288]
+	19 -> 20 [label=30.0 color="#005d00" penwidth=2.039230484540807]
+	20 -> 21 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	22 -> 23 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	23 -> 24 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	3 -> 51000 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	2 -> 53000 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	1 -> 1180.01 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	1180.01 -> 1181 [label=0.0 color="#003c00" penwidth=1.0]
+	1180.01 -> 1180.02 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	1180.02 -> 1182 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	1180.02 -> 1180.03 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	1180.03 -> 1191 [label=0.0 color="#003c00" penwidth=1.0]
+	1180.03 -> 1192 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	8109 -> 1160.01 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	1160.01 -> 1160 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	1160.01 -> 1170 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	5 -> 3100.01 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	3100.01 -> 3100.02 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	3100.01 -> 3100.03 [label=80.0 color="#007300" penwidth=2.697056274846865]
+	3100.02 -> 3150 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	3100.03 -> 3101 [label=40.0 color="#006200" penwidth=2.1999999999993998]
+	3100.03 -> 3102 [label=40.0 color="#006200" penwidth=2.1999999999993998]
+	23 -> 5600.01 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	5600.01 -> 5603 [label=8.0 color="#004d00" penwidth=1.5366563145996812]
+	5600.01 -> 5601 [label=2.0 color="#004400" penwidth=1.2683281572998406]
+	24 -> 56000.01 [label=5.0 color="#004900" penwidth=1.4242640687117163]
+	56000.01 -> 56002 [label=5.0 color="#004900" penwidth=1.4242640687117163]
+	24 -> 52100.01 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.01 -> 52100.02 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.01 -> 52100.03 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.02 -> 52107 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.02 -> 52207 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.03 -> 52100 [label=0.0 color="#003c00" penwidth=1.0]
+	52100.03 -> 52200 [label=0.0 color="#003c00" penwidth=1.0]
+	7 -> 3700.01 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	3700.01 -> 1120 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	13 -> 5800.01 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	5800.01 -> 5802 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	5800.01 -> 5801 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	8 -> 5700.01 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	5700.01 -> 5701 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	12 -> 4600.01 [label=15.0 color="#005300" penwidth=1.734846922834586]
+	4600.01 -> 4671 [label=15.0 color="#005300" penwidth=1.734846922834586]
+	4600.01 -> 4670 [label=0.0 color="#003c00" penwidth=1.0]
+	16 -> 4600.02 [label=25.0 color="#005a00" penwidth=1.9486832980500395]
+	4600.02 -> 4651 [label=25.0 color="#005a00" penwidth=1.9486832980500395]
+	17 -> 4501 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	9 -> 4700.01 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	4700.01 -> 4700.02 [label=40.0 color="#006200" penwidth=2.1999999999993998]
+	4700.02 -> 4810 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	4700.02 -> 4710 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	4700.01 -> 4740 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	4700.02 -> 4711 [label=0.0 color="#003c00" penwidth=1.0]
+	4700.02 -> 4811 [label=0.0 color="#003c00" penwidth=1.0]
+	10 -> 3900.01 [label=300.0 color="#00a600" penwidth=4.286335345029354]
+	3900.01 -> 3900.02 [label=200.0 color="#009300" penwidth=3.683281572998406]
+	3900.02 -> 3900.03 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	3900.01 -> 31001 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	3900.02 -> 3901 [label=100.0 color="#007900" penwidth=2.897366596100079]
+	3900.03 -> 31006 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	3900.03 -> 3906 [label=50.0 color="#006700" penwidth=2.341640786499203]
+	19 -> 3800.01 [label=120.0 color="#007f00" penwidth=3.078460969081614]
+	3800.01 -> 3801 [label=90.0 color="#007600" penwidth=2.7999999999991]
+	3800.01 -> 3806 [label=30.0 color="#005d00" penwidth=2.039230484540807]
+	20 -> 4200.01 [label=20.0 color="#005700" penwidth=1.8485281374234326]
+	4200.01 -> 4202 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	4200.01 -> 4201 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	21 -> 4300.01 [label=10.0 color="#004f00" penwidth=1.5999999999996999]
+	4300.01 -> 4303 [label=5.0 color="#004900" penwidth=1.4242640687117163]
+	4300.01 -> 4304 [label=5.0 color="#004900" penwidth=1.4242640687117163]
+}

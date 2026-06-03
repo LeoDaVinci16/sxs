@@ -6,8 +6,6 @@ from graphviz import Digraph, backend
 from pathlib import Path
 import shutil
 
-from config import at_network_data as DATA_NETWORK, at_network_output as OUTPUT_NETWORK, at_nodes_csv as nodes_csv, at_edges_csv as edges_csv
-
 # -----------------------------
 # GRAPHVIZ PATH FIX (Windows)
 # -----------------------------
@@ -62,17 +60,6 @@ def node_style_gv(tipus):
         "desconegut": {"fillcolor": "#ffffff", "color": "#2b7ce9", "width": "0.3", "shape": "ellipse"}
     }
 
-    """
-        styles = {
-        "ramificació": {"fillcolor": "#00f128", "color": "#00991a", "width": "0.4", "shape": "circle"},
-        "intercambiador": {"fillcolor": "#2b7ce9", "color": "#1a5aba", "width": "0.7", "shape": "box"},
-        "chiller": {"fillcolor": "#e92be0", "color": "#ba1aad", "width": "0.7", "shape": "box"},
-        "bomba": {"fillcolor": "#ff9900", "color": "#cc7a00", "width": "0.8", "shape": "box"},
-        "reactor": {"fillcolor": "#ff2f00", "color": "#b32100", "width": "0.6", "shape": "cylinder"},
-        "desconegut": {"fillcolor": "#97c2fc", "color": "#2b7ce9", "width": "0.3", "shape": "ellipse"}
-    }
-    """
-
     res = styles.get(tipus, styles["desconegut"])
     return {
         "fillcolor": res["fillcolor"],
@@ -84,7 +71,7 @@ def node_style_gv(tipus):
         "fixedsize": "true"
     }
 
-def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="cabal", output_format="svg", title="network_diagram"):
+def main(nodes_path, edges_path, output_folder, magnitude_col="cabal", output_format="svg", title="network_diagram"):
     check_graphviz()
     # -----------------------------
     # LOAD
@@ -161,18 +148,16 @@ def main_diagram(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="caba
             color=flow_color(row[magnitude_col])
         )
 
-    os.makedirs(OUTPUT_NETWORK, exist_ok=True)
-    base_filename = Path(title).stem # Define base_filename from the title
-    output_file = dot.render(filename=str(OUTPUT_NETWORK / base_filename), cleanup=True)
+    os.makedirs(output_folder, exist_ok=True)
+    base_filename = Path(title).stem
+    output_file = dot.render(filename=str(Path(output_folder) / base_filename), cleanup=True)
     print(f"Diagram rendered to: {output_file}")
+    dot.view(filename=str(Path(output_folder) / base_filename))
     return Path(output_file)
 
 if __name__ == "__main__":
-    input_file = r"data/at_edges.csv"
-    magnitude_col = "cabal"  # cabal, DN, OD_mm	WT_mm	d_m	area_m2	vel_ms	cabal_m3s	cabal_kgs	cabal_m3h	cabal_teo-real
-    output_format = "svg"
-    title = "network_1"
-
-    import excel2csv
-    excel2csv.main(DATA_NETWORK)
-    main_diagram(magnitude_col=magnitude_col, output_format=output_format, title=title)
+    base_dir = Path(__file__).resolve().parents[1]
+    nodes = base_dir / "data" / "at_nodes.csv"
+    edges = base_dir / "data" / "at_edges.csv"
+    out = base_dir / "outputs" / "at" / "at_diagram"
+    main(str(nodes), str(edges), str(out), "cabal")

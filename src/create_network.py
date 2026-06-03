@@ -4,12 +4,7 @@ from pyvis.network import Network
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-
-from config import at_network_output, ste_network_output, at_network_html, ste_network_html, at_edges_csv, ste_edges_csv, at_nodes_csv, ste_edges_csv, ste_nodes_csv
-
-nodes_csv = at_nodes_csv
-edges_csv = at_edges_csv
-
+from pathlib import Path
 
 # optional manual layout (only some nodes)
 NODE_POS = {
@@ -69,7 +64,7 @@ def node_style(tipus):
         "size": res["size"]
     }
 
-def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN"):
+def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="network"):
     # -----------------------------
     # LOAD
     # -----------------------------
@@ -148,6 +143,12 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN")
         fixed = False
         physics = True
 
+        if n_str in punts:
+            px = punts[n_str]["x"] * 2000
+            py = punts[n_str]["y"] * 2000
+            fixed = True
+            physics = False
+
         net.add_node(
             n_str,
             label="",
@@ -173,18 +174,17 @@ def main_network(nodes_path=nodes_csv, edges_path=edges_csv, magnitude_col="DN")
             arrows={}   
         )
 
-    output_path = at_network_output / "network_auto_layout.html"
-    os.makedirs(at_network_output, exist_ok=True)
-    net.write_html(str(output_path), notebook=False)
-    print(f"Saved: {output_path}")
+    os.makedirs(output_folder, exist_ok=True)
+    output_path = Path(output_folder) / f"{title}.html"
+    net.write_html(str(output_path))
+    print(f"Network saved to: {output_path}")
     return output_path
 
+
 if __name__ == "__main__":
-    import excel2csv
-    import webbrowser
-
-
-    # Assegurem que els fitxers CSV estiguin actualitzats abans de carregar-los
-    excel2csv.main(at_network_output)
-    html_path = main_network()
-    webbrowser.open(html_path.as_uri())
+    # Internal defaults for standalone testing
+    base_dir = Path(__file__).resolve().parents[1]
+    nodes = base_dir / "data" / "at_nodes.csv"
+    edges = base_dir / "data" / "at_edges.csv"
+    out = base_dir / "outputs" / "at" / "at_network"
+    main(str(nodes), str(edges), str(out), "DN")

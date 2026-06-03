@@ -31,7 +31,7 @@ __pycache__/
 *.pdf
 
 # Excel files
-#*.xlsx
+*.xlsx
 
 # Images
 *.png
