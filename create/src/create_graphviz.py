@@ -153,6 +153,8 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="cabal", output_fo
     output_file = dot.render(filename=str(Path(output_folder) / base_filename), cleanup=True)
     print(f"Diagram rendered to: {output_file}")
     dot.view(filename=str(Path(output_folder) / base_filename))
+    if show:
+        dot.view(filename=str(Path(output_folder) / base_filename))
     return Path(output_file)
 
 if __name__ == "__main__":

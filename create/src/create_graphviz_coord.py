@@ -69,6 +69,7 @@ def main(nodes_path, edges_path, output_folder, title="coordinate_network_graphv
 
     # Initialize Graphviz Digraph with neato engine for fixed positioning
     dot = Digraph(name=title, format="svg", engine="neato")
+    dot = Digraph(name=title, format=output_format, engine="neato")
     dot.attr(bgcolor="transparent", overlap="false", splines="true", rankdir="TB", dpi="300")
     dot.attr("node", fontname="Arial", fontsize="7")
     dot.attr("edge", fontname="Arial", fontsize="7")
@@ -112,3 +113,6 @@ if __name__ == "__main__":
     edges = base_dir / "data" / "at_edges.csv"
     out = base_dir / "outputs" / "at" / "at_network_graphviz_coord"
     main(str(nodes), str(edges), str(out), scaling_factor=5000)
+    # Output directly to the LaTeX report figures folder as PDF
+    out = base_dir / "memoria" / "report_figures"
+    main(str(nodes), str(edges), str(out), title="network", scaling_factor=5000, output_format="pdf")
