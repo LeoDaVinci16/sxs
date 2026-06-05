@@ -1,0 +1,299 @@
+% !TEX root = main.tex
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,
+            left=2.5cm,
+            right=2.5cm,
+            top=3.5cm,
+            bottom=2.5cm]{geometry}
+
+\usepackage{inter}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage[verbose=silent]{microtype}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage[catalan]{babel}
+\DeclareQuoteAlias{spanish}{catalan}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{referencies.bib}
+\usepackage{xurl}
+\usepackage{graphicx}
+\usepackage{csvsimple}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\addto\captionscatalan{%
+  \renewcommand{\tablename}{Taula}%
+  \renewcommand{\figurename}{Figura}%
+}
+
+% hyperref last
+\usepackage{hyperref}
+\urlstyle{same}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=black,
+    citecolor=black,
+    linkcolor=black
+}
+
+% ==========================================
+%          Page style configuration
+% ==========================================
+
+\fancypagestyle{body}{%
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \fancyhead[R]{\textcolor{gray}{\textit{Projecte SuperSònic}}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \setlength{\headheight}{16pt}
+  \setlength{\headsep}{26pt}
+}
+
+\fancypagestyle{emptystyle}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\fancypagestyle{firstpage}{%
+  \fancyhf{}
+  \fancyfoot[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\pagestyle{body}
+
+% ==========================================
+%          Custom commands
+% ==========================================
+\newcommand{\sectionstartlow}{\vspace*{0.25\textheight}}
+
+% ==========================================
+%          Document metadata
+% ==========================================
+\title{Projecte SuperSònic}
+\author{Arnau Coronado Nadal}
+\date{Abril 2026}
+
+\begin{document}
+
+% ---------------- Title page ----------------
+\pagenumbering{roman}
+\begin{center}
+    \vspace*{3cm}
+
+    {\Huge Projecte SuperSònic}
+
+    \vspace{1cm}
+    {\Large Estudi dels cabals a la fàbrica d'Euromed}
+
+    \vspace{2cm}
+    {\large Arnau Coronado Nadal}
+
+    \vspace{1cm}
+    {\normalsize Abril 2026}
+\end{center}
+\thispagestyle{emptystyle}
+\newpage
+
+% ---------------- TOC ----------------
+\thispagestyle{emptystyle}
+\renewcommand{\contentsname}{Taula de continguts}
+\tableofcontents
+\newpage
+
+% ---------------- Body ----------------
+\pagenumbering{arabic}
+
+% ===== Section 1 =====
+\section{Introducció}
+
+Euromed, S.A. és una empresa industrial amb seu a Mollet del Vallès (Barcelona), especialitzada en el desenvolupament i producció d'extractes botànics per a la indústria farmacèutica, nutracèutica i alimentària. L'empresa forma part del grup Euromed \cite{Euromed2024}, amb presència internacional i orientació a mercats europeus, americans i asiàtics.
+
+Segons informació corporativa disponible a la seva pàgina web oficial \cite{Euromed2024}, la companyia disposa d'instal·lacions industrials avançades amb processos d'extracció, purificació i assecat, que impliquen l'ús intensiu de fluids tèrmics, aigua de procés i sistemes auxiliars. Aquestes instal·lacions requereixen un control rigorós dels paràmetres operatius per garantir tant la qualitat del producte com l'eficiència energètica.
+
+Des del punt de vista operatiu, la planta integra múltiples circuits de fluids (aigua calenta, aigua freda, vapor, etc.) que intervenen directament en els processos productius. El control dels cabals en aquests circuits és un factor crític per a l'optimització del consum energètic i la detecció de possibles desviacions operatives.
+
+El projecte estudia els cabals dels circuits d'aigua de torres i vapor.
+
+% ===== Section 2 =====
+\section{Objectiu}
+
+En el context actual d'emergència climàtica global, reconeguda per organismes internacionals com el Panell Intergovernamental sobre el Canvi Climàtic \cite{IPCC2023}, la reducció del consum energètic i de les emissions de gasos amb efecte d'hivernacle s'ha convertit en una prioritat estratègica per al sector industrial.
+
+La indústria representa aproximadament un 25--30\,\% del consum energètic final a nivell europeu \cite{EU2023}, fet que posa de manifest la importància d'implementar mesures d'eficiència energètica basades en dades reals d'operació.
+
+En aquest marc, el present projecte té com a objectiu principal la caracterització dels cabals en diferents punts de la planta d'Euromed, amb la finalitat de:
+
+\begin{itemize}
+    \item Quantificar el comportament real dels fluxos de fluids.
+    \item Detectar possibles ineficiències o desviacions respecte als valors esperats.
+    \item Proporcionar una base de dades fiable per a futures accions d'optimització energètica.
+\end{itemize}
+
+L'obtenció de dades experimentals és un requisit imprescindible per a la correcta presa de decisions en entorns industrials, especialment en processos amb elevada dependència energètica.
+
+% ===== Section 3 =====
+\section{Material i mètode}
+
+Per a la realització de les mesures s'ha utilitzat el cabalímetre ultrasònic portàtil Flexim Fluxus G608 (Emerson), equip específic per a la determinació no invasiva de cabals en conduccions industrials.
+
+Aquest dispositiu opera mitjançant la tecnologia d'ultrasons per temps de trànsit (\textit{transit-time}), basada en la diferència de temps que experimenten dos senyals ultrasònics en propagar-se a favor i en contra del flux del fluid. Aquesta diferència temporal ($\Delta t$) és directament proporcional a la velocitat mitjana del fluid, i permet calcular el cabal volumètric amb elevada precisió \cite{Emerson2024}.
+
+Els sensors s'instal·len externament a la canonada (\textit{clamp-on}), evitant qualsevol intervenció mecànica sobre el sistema. Aquesta característica presenta avantatges rellevants en entorns industrials:
+\begin{itemize}
+    \item Eliminació de parades de producció per instal·lació.
+    \item Absència de pèrdues de càrrega.
+    \item Aplicabilitat a múltiples materials i diàmetres de canonada.
+\end{itemize}
+
+Durant el desenvolupament del projecte, el cabalímetre s'ha utilitzat en diferents punts representatius dels circuits de fluids de la planta, seguint criteris d'accessibilitat, rellevància energètica i representativitat del procés. Les mesures s'han realitzat en condicions operatives normals per garantir la validesa dels resultats obtinguts.
+
+\section{Aigua de torres (AT)}
+
+Per fer les mesures d'aigua de torres s'ha utilitzat el sensor CDP2NH1.
+
+\subsection{Representació del circuit d'aigua de torres}
+
+Un treball previ a la presa de mesures va consistir a representar el circuit d'aigua de torres i identificar els punts de mesura. Per fer-ho es van localitzar les diferents bombes, consumidors --majoritàriament intercanviadors-- i les diferents ramificacions.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report_figures/punts_at.png}
+    \caption{Imatge de la planta de la fabrica d'Euromed amb els punts de mesura identificats.}
+    \label{fig:punts_vapor}
+\end{figure}
+
+
+A partir del plànol del circuit d'aigua de torres a la Figura tal s'ha definit una representació nodal de la xarxa hidràulica basada en nodes i branques. Cada node representa un punt d'origen (bombes), de consum (consumidors) o una ramificació del circuit. Les branques corresponen a les canonades que connecten els diferents nodes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report_figures/graphviz_local.svg.pdf}
+    \caption{Representació de la xarxa hidràulica del circuit d'aigua de torres.}
+    \label{fig:punts_vapor}
+\end{figure}
+
+Cada node i branca s'ha codificat amb un codi numèric únic. Les dades de la campanya de mesura s'han codificat a partir de la data, hora i la branca on s'ha realitzat la mesura.
+
+\subsection{Representació dels cabals}
+
+Durant una primera campanya de mesures es van fer mesusures en els diferents punts de la fàbrica per obtenir una visió dels cabals.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{report_figures/at_edges_sankey.png}
+    \caption{Representació de sankey dels cabals del circuit d'aigua de torres.}
+    \label{fig:punts_vapor}
+\end{figure}
+
+\subsection{Mesures simplificades del cabal}
+
+Com que no tots els punts de mesura són accessibles, s'han seleccionat els punts més representatius amb l'objectiu de repetir les mesures diàriament durant un període de 3--4 setmanes.
+
+Els punts de mesura seleccionats es detallen a la Taula~\ref{tab:taula_punts_at}. El cabal teòric s'ha calculat mitjançant les equacions~\eqref{eq:area} i~\eqref{eq:cabal_teoric} suposant que la velocitat de l'aigua és d'$1\,\mathrm{m/s}$. El cabal esperat s'ha estimat a partir de les mesures prèvies fetes amb el cabalímetre ultrasònic. Combinant ambdues equacions, obtenim:
+
+\begin{gather}
+    A = \frac{\pi \cdot D^2}{4} \label{eq:area} \\
+    Q = A \cdot v = \frac{\pi \cdot D^2}{4} \cdot v \quad [\mathrm{m^3/s}]
+    \label{eq:cabal_teoric}
+\end{gather}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Punts de mesura del circuit d'aigua de torres (AT).}
+    \label{tab:taula_punts_at}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{llllrr}
+            \toprule
+            \textbf{Origen} & \textbf{Destinació} & \textbf{Codi} & \textbf{Diàmetre} & \textbf{Cabal calc. [$\text{m}^3/\text{h}$]} & \textbf{Cabal esp. [$\text{m}^3/\text{h}$]} \\
+            \midrule
+            05              & 06                  & 05.06         & 323 mm            & 275                                          & 660                                         \\
+            05              & 3100.01             & 3100.01       & 220 mm            & 124                                          & 100                                         \\
+            06              & 22                  & 06.22         & 114 mm            & 31                                           & 20                                          \\
+            06              & 07                  & 06.07         & 323 mm            & 275                                          & 600                                         \\
+            07              & 3700.01             & 3700.01       & 220 mm            & 124                                          & 100                                         \\
+            09              & 4700.01             & 4700.01       & 168 mm            & 70,5                                         & 50                                          \\
+            10              & 3900.01             & 3900.01       & 204 mm (inox)     & 113                                          & 250                                         \\
+            10              & 11                  & 10.11         & 273 mm            & 194                                          & 200                                         \\
+            11              & 12                  & 11.12         & 220 mm            & 124                                          & 100                                         \\
+            3900.03         & 31006               & 31006         & 139 mm (inox)     & 51,5                                         & 51,5                                        \\
+            3900.03         & 3906                & 3906          & 139 mm (inox)     & 51,5                                         & 51,5                                        \\
+            3800.01         & 3801                & 3801          & 88,9 mm (inox)    & 20                                           & 20                                          \\
+            3800.01         & 3806                & 3806          & 139 mm (inox)     & 51,5                                         & 51,5                                        \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
+
+\subsection{Evolució dels cabals}
+
+Durant uns dies es van començar a fer mesures fins que el sensor va deixar de funcionar. Els resultats son els següents:
+
+La qual cosa indica una gran variabilitat en els cabals en funció de les bombes engegades i la necessitat de fer un seguiment de l'evolució del cabal en aquests punts.
+
+% ===== Section 4 =====
+
+\section{Vapor (STE)}
+
+Per fer les mesures de vapor s'ha fet servir el sensor GRM1SH3.
+
+El circuit de vapor està recobert per un aïllament tèrmic, i per tal de realitzar mesures amb el sensor ultrasònic és necessari aplicar una capa de pintura superficial que evita possibles interferències mecàniques a la canonada. Per aquest motiu, els punts de mesura en el circuit de vapor són més limitats en comparació amb altres serveis del procés. Addicionalment, el consum de vapor presenta una variabilitat significativa en funció de les condicions operatives, fet que requereix campanyes de mesura prolongades (superiors a 24 hores) per obtenir valors representatius.
+
+Els punts de mesura del circuit de vapor es detallen a la Taula~\ref{tab:taula_punts_vapor} i es representen a la Figura~\ref{fig:punts_vapor}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Punts de mesura del circuit de vapor.}
+    \label{tab:taula_punts_vapor}
+    \begin{tabular}{lll}
+        \toprule
+        \textbf{Punt de mesura} & \textbf{Nom inicial} & \textbf{Codi} \\
+        \midrule
+        E800                    & PM-V-1               & STE-1         \\
+        Secadores               & PM-V-2               & STE-2         \\
+        PEC                     & PM-V-3               & STE-3         \\
+        Nautas                  & PM-V-4               & STE-4         \\
+        V800                    & PM-V-5               & STE-5         \\
+        V700                    & PM-V-6               & STE-6         \\
+        P400                    & PM-V-7               & STE-7         \\
+        Atomizador 1a planta    & PM-V-8               & STE-8         \\
+        Atomizador 2a planta    & PM-V-9               & STE-9         \\
+        S600                    & PM-V-10              & STE-10        \\
+        S6000                   & PM-V-11              & STE-11        \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.50\textwidth]{report_figures/punts_ste.png}
+    \caption{Punts de mesura del circuit de vapor.}
+    \label{fig:punts_vapor}
+\end{figure}
+
+% ===== Section 5 =====
+\section{Conclusions}
+
+Una correcta adquisició de dades dels cabals permet identificar les distribucions del cabal per poder implementar una millora de l'eficiencia energètica i una reducció del consum.
+
+\subsection{Aigua de torres}
+
+\begin{itemize}
+    \item Distribució
+    \item Consumidors principals
+    \item Pèrdues de cabal
+    \item Diferència entre impulsió i retorn
+    \item Seccionament dels consums.
+\end{itemize}
+
+
+% ===== Bibliografia =====
+\newpage
+\renewcommand{\refname}{Referències}
+\printbibliography
+
+\end{document}
