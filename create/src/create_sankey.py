@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 import sys
 from collections import defaultdict
+from html2image import Html2Image
 
 collector_map = {
     0: "MAIN",
@@ -293,11 +294,11 @@ def build_sankey_figure(
 
     fig.update_layout(
         title=dict(
-            text=f"<b>{title}</b><br><span style='font-size:{5}px;color:gray;'>{subtitle}</span>",
+            text=f"<b>{title}</b><br><span style='font-size:{15}px;color:gray;'>{subtitle}</span>",
             x=0.5,
             xanchor='center'
         ),
-        font=dict(size=12),
+        font=dict(size=20),
         margin=dict(l=50, r=50, t=100, b=80),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -396,23 +397,22 @@ def main(nodes_path, edges_path, output_folder, magnitude_col, title=None, outpu
 
     base_name = os.path.splitext(os.path.basename(edges_path))[0]
     
+    html_filename = f"{base_name}_sankey.html"
+    html_full_path = os.path.join(output_folder, html_filename)
+    fig.write_html(html_full_path, auto_open=False)
+    print(f"Sankey guardat a: {html_full_path}")
+
     if output_format.lower() == "png":
-        png_path = os.path.join(output_folder, f"{base_name}_sankey.png")
-        # Reduce font size specifically for the high-scale PNG export
-        fig.update_layout(
-            font=dict(size=6),
-            title=dict(
-                text=fig.layout.title.text.replace('font-size:200px', 'font-size:120px')
-            )
-        )
-        fig.write_image(png_path, scale=10) # Higher scale makes thin edges clearer
-        print(f"Sankey guardat a: {png_path}")
-        return png_path
-    else:
-        html_path = os.path.join(output_folder, f"{base_name}_sankey.html")
-        fig.write_html(html_path, auto_open=False)
-        print(f"Sankey guardat a: {html_path}")
-        return html_path
+        png_filename = f"{base_name}_sankey.png"
+        png_full_path = os.path.join(output_folder, png_filename)
+        
+        # Instantiate Html2Image to take a screenshot of the generated HTML
+        hti = Html2Image(output_path=output_folder, size=(1920, 1080)) 
+        hti.screenshot(html_file=html_full_path, save_as=png_filename)
+        print(f"Sankey PNG generat amb html2image a: {png_full_path}")
+        return png_full_path
+    
+    return html_full_path
 
 def columnes_disponibles(df):
     print("Columnes disponibles:", ", ".join(df.columns))
@@ -426,4 +426,4 @@ if __name__ == "__main__":
     nodes_in = base_dir / "data" / "at_nodes.csv"
     edges_in = base_dir / "data" / "at_edges.csv"
     folder_out = base_dir / "outputs" / "at" / "at_sankey"
-    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="cabal", output_format="html")
+    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="cabal", output_format="png")

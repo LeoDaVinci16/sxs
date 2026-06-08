@@ -136,6 +136,63 @@ En aquest marc, el present projecte té com a objectiu principal la caracteritza
 
 L'obtenció de dades experimentals és un requisit imprescindible per a la correcta presa de decisions en entorns industrials, especialment en processos amb elevada dependència energètica.
 
+\section{Abast}
+
+El projecte supersònic no només preten quantificar el valor dels cabals en els diferents punts de mesura sino també tenir una visió global del circuit de fred a euromed. Per això com a resultat del treball s'entrega la seguent documentació:
+
+\begin{itemize}
+    \item Informe: El document que teniu entre mans, i que resumeix el procés i els resultats del projecte.
+    \item Base de dades: els arxius de les mesures amb el cabalimetre i records.csv que resumeix els valors de totes les mesures.
+    \item Figures: Les diferents representacions gràfiques que s'han generat al llarg del projecte per representar els cabals i també els excels i codis de python per generar-les.
+\end{itemize}
+
+\begin{verbatim}
+\sxs
++-- memoria/
+    +-- projecte_supersonic.tex
+    +-- projecte_supersonic.pdf
+    +-- report_figures/
+        +-- graphviz.pdf
+        +-- mapa_ma.pdf
+        +-- sankey.png
++-- database/
+    +-- records.csv
+    +-- raw/
+    +-- database.ipynb
++-- create/                       # Carpeta amb les figures generades
+    +-- README.md                  
+    +-- requirements.yml          # paquets de python necessaris
+    +-- data/                     # Excels amb l'estructura del circuit de fred
+        +-- at_edges_simp.csv
+        +-- at_edges_simp.xlsx
+        +-- at_edges.csv
+        +-- at_edges.xlsx
+        +-- ste_nodes.csv
+        +-- ste_nodes.xlsx
+        +-- ste_edges.csv
+        +-- ste_edges.xlsx
+        +-- at_timeseries.csv
+        +-- at_timeseries.xlsx
+        +-- ste_timeseries.csv
+        +-- ste_timeseries.xlsx
+    +-- src/                      # Codis de python per generar les figures a partir de les dades
+        +-- create_graphviz.py    
+        +-- create_sankey.py     
+        +-- create_network.py    
+        +-- excel2csv.py           # Per convertitr els excels de la carpeta data/ a .csv
+    +-- outputs/                  # Figures generades
+        +-- at/                    # Aigua de torres
+            +-- at_graphviz
+            +-- at_mapa
+            +-- at_network
+            +-- at_sankey
+        +-- ste/                   # Vapor
+            +-- ste_graphviz
+            +-- ste_mapa
+            +-- ste_network
+            +-- ste_sankey
+\end{verbatim}
+
 % ===== Section 3 =====
 \section{Material i mètode}
 
@@ -158,21 +215,21 @@ Per fer les mesures d'aigua de torres s'ha utilitzat el sensor CDP2NH1.
 
 \subsection{Representació del circuit d'aigua de torres}
 
-Un treball previ a la presa de mesures va consistir a representar el circuit d'aigua de torres i identificar els punts de mesura. Per fer-ho es van localitzar les diferents bombes, consumidors --majoritàriament intercanviadors-- i les diferents ramificacions.
+Un treball previ a la presa de mesures va consistir a representar el circuit d'aigua de torres i identificar els punts de mesura (figura~\ref{fig:mapaama}). Per fer-ho es van localitzar les diferents bombes, consumidors --majoritàriament intercanviadors-- i les diferents ramificacions.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{report_figures/planol_at.png}
-    \caption{Imatge de la planta de la fabrica d'Euromed amb els punts de mesura identificats.}
-    \label{fig:planol_at}
+    \includegraphics[width=0.85\textwidth]{report_figures/mapa_ma.pdf}
+    \caption{Imatge de la planta de la fabrica d'Euromed amb tots els nodes del circuit d'aigua de torres representats.}
+    \label{fig:mapaama}
 \end{figure}
 
 
-A partir del plànol del circuit d'aigua de torres a la Figura tal s'ha definit una representació nodal de la xarxa hidràulica basada en nodes i branques. Cada node representa un punt d'origen (bombes), de consum (consumidors) o una ramificació del circuit. Les branques corresponen a les canonades que connecten els diferents nodes.
+A partir del plànol del circuit d'aigua de torres a la Figura tal s'ha definit una representació nodal de la xarxa hidràulica basada en nodes i branques. Cada node representa un punt d'origen, de consum o una ramificació del circuit. Les branques corresponen a les canonades que connecten els diferents nodes.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{report_figures/graphviz.pdf}
+    \includegraphics[width=0.85\textwidth]{report_figures/graphviz.png}
     \caption{Representació de la xarxa hidràulica del circuit d'aigua de torres.}
     \label{fig:graphviz}
 \end{figure}
@@ -181,7 +238,7 @@ Cada node i branca s'ha codificat amb un codi numèric únic. Les dades de la ca
 
 \subsection{Representació dels cabals}
 
-Durant una primera campanya de mesures es van fer mesusures en els diferents punts de la fàbrica per obtenir una visió dels cabals.
+Durant una primera campanya de mesures es van fer mesusures en els diferents punts de la fàbrica per obtenir una visió general dels cabals a tota la fabrica. Aquests resultats s'expressen al diagrama de sankey de la figura~\ref{fig:sankey}.
 
 \begin{figure}[htbp]
     \centering
@@ -192,7 +249,7 @@ Durant una primera campanya de mesures es van fer mesusures en els diferents pun
 
 \subsection{Mesures simplificades del cabal}
 
-Com que no tots els punts de mesura són accessibles, s'han seleccionat els punts més representatius amb l'objectiu de repetir les mesures diàriament durant un període de 3--4 setmanes.
+No tots els punts de mesura tenen el mateix pes i a més alguns son una mica inaccessibles o difícils de mesurar. Per fer una segona campanya de mesures més intensiva s'han seleccionat els punts més representatius amb l'objectiu de repetir les mesures diàriament durant un període de 3--4 setmanes, i així poder tenir una evolució del cabal, determinar les zones on no hi arriba fred suficient i les causes de les variacions en els cabals.
 
 Els punts de mesura seleccionats es detallen a la Taula~\ref{tab:taula_punts_at}. El cabal teòric s'ha calculat mitjançant les equacions~\eqref{eq:area} i~\eqref{eq:cabal_teoric} suposant que la velocitat de l'aigua és d'$1\,\mathrm{m/s}$. El cabal esperat s'ha estimat a partir de les mesures prèvies fetes amb el cabalímetre ultrasònic. Combinant ambdues equacions, obtenim:
 

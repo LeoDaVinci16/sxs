@@ -98,6 +98,7 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="cabal", output_fo
     def flow_color(val):
         t = (val - fmin) / (fmax - fmin + 1e-9)
         t = np.sqrt(t)
+        t = 1-t
         g = 60 + int(195 * t)
         return f"#00{g:02x}00" # Graphviz prefers hex strings
 
@@ -107,7 +108,8 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="cabal", output_fo
         # This prevents thick lines from looking like squares.
         t = (val - fmin) / (fmax - fmin + 1e-9)
         v_scale = 1
-        return str((1.0 + 6.0 * np.sqrt(t)) * v_scale)
+        return str(1)
+        #return str((1.0 + 6.0 * np.sqrt(t)) * v_scale)
 
     # -----------------------------
     # GRAPHVIZ INITIALIZATION
@@ -162,4 +164,4 @@ if __name__ == "__main__":
     nodes = base_dir / "data" / "at_nodes.csv"
     edges = base_dir / "data" / "at_edges.csv"
     out = base_dir / "outputs" / "at" / "at_graphviz"
-    main(str(nodes), str(edges), str(out), "DN")
+    main(str(nodes), str(edges), str(out), "cabal")
