@@ -3,8 +3,10 @@ import networkx as nx
 from pyvis.network import Network
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 import os
 from pathlib import Path
+from html2image import Html2Image
 
 # optional manual layout (only some nodes)
 NODE_POS = {}
@@ -66,7 +68,7 @@ def node_style(tipus):
         "size": res["size"]
     }
 
-def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="network"):
+def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="network", output_format="html"):
     # -----------------------------
     # LOAD
     # -----------------------------
@@ -108,14 +110,14 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="netwo
     def flow_color(val):
         t = (val - fmin) / (fmax - fmin + 1e-9)
         # nonlinear boost so differences are visible
-        t = np.sqrt(t)
+        t = 1-np.sqrt(t)
         g = 60 + int(195 * t)   # 60 → 255
         return f"#00{g:02x}00"
 
     def scale_width(val):
         # Normalize relative to the maximum flow to keep widths within a reasonable range (1 to 10)
         t = (val - fmin) / (fmax - fmin + 1e-9)
-        return 1.0 + 9.0 * np.sqrt(t)
+        return 1.0 + 39.0 * np.sqrt(t)
 
     # -----------------------------
     # GRAPH
@@ -124,8 +126,9 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="netwo
 
     # -----------------------------
     # PYVIS
+    # Set fixed dimensions for reliable PNG export
     # -----------------------------
-    net = Network(height="800px", width="100%", directed=True)
+    net = Network(height="1440px", width="2560px", directed=True) # Using 2560x1440 resolution
     net.toggle_physics(True)
 
     # -----------------------------
@@ -178,9 +181,22 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="DN", title="netwo
 
     os.makedirs(output_folder, exist_ok=True)
     output_path = Path(output_folder) / f"{title}.html"
+    
     net.write_html(str(output_path))
     print(f"Network saved to: {output_path}")
-    return output_path
+
+    if output_format.lower() == "png":
+        png_filename = f"{title}.png"
+        png_full_path = Path(output_folder) / png_filename
+        
+        # Instantiate Html2Image to take a screenshot of the generated HTML
+        hti = Html2Image(output_path=str(output_folder), size=(3840, 2716)) # Use pyvis dimensions
+        time.sleep(2) # Give browser time to render
+        hti.screenshot(html_file=str(output_path), save_as=png_filename)
+        print(f"Network PNG generat amb html2image a: {png_full_path}")
+        return png_full_path
+    
+    return str(output_path)
 
 
 if __name__ == "__main__":
@@ -188,5 +204,5 @@ if __name__ == "__main__":
     base_dir = Path(__file__).resolve().parents[1]
     nodes = base_dir / "data" / "at_nodes.csv"
     edges = base_dir / "data" / "at_edges.csv"
-    out = base_dir / "outputs" / "at" / "at_network"
-    main(str(nodes), str(edges), str(out), "DN")
+    out = base_dir / "outputs" / "at" / "at_network" # Changed output folder name for clarity
+    main(str(nodes), str(edges), str(out), "cabal", output_format="png")

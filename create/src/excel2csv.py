@@ -23,7 +23,7 @@ def load_excel(file_path):
         return df
     except Exception as e:
         print(f"⚠️ Error llegint {file_path}: {e}")
-        return None
+        return None 
 
 # ==============================
 # 3️⃣ SAVE AS CSV

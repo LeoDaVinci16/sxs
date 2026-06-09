@@ -6,9 +6,9 @@ import plotly.express as px
 import itertools
 import os
 from datetime import datetime
-from pathlib import Path
 import sys
 from collections import defaultdict
+from pathlib import Path
 from html2image import Html2Image
 
 collector_map = {
@@ -34,14 +34,14 @@ collector_map = {
     19: "MAIN", 
 }
     
-def collapse_graph(df):
+def collapse_graph(df, magnitude_col=None):
     df = df.copy()
 
     def collapse(node):
         try:
             n = int(float(node))
 
-            if 0 <= n <= 24:
+            if 0 <= n <= 9: # 24 -> tot
                 return "MAIN"
 
             return str(node)
@@ -58,15 +58,24 @@ def collapse_graph(df):
     # remove MAIN -> MAIN links
     df = df[df["source"] != df["target"]]
 
+    # Define aggregation rules dynamically
+    agg_map = {
+        "DN": "mean",
+        "planta": "first"
+    }
+    
+    # Columns that should be summed if present
+    sum_cols = ["cabal", "area_m2", "cabal_m3h"]
+    if magnitude_col and magnitude_col not in sum_cols and magnitude_col not in agg_map:
+        sum_cols.append(magnitude_col)
+
+    for col in sum_cols:
+        if col in df.columns:
+            agg_map[col] = "sum"
+
     df = (
         df.groupby(["source", "target"], as_index=False)
-        .agg({
-            "cabal": "sum",
-            "DN": "mean",
-            "area_m2": "sum",
-            "cabal_m3h": "sum",
-            "planta": "first"
-            })
+        .agg(agg_map)
     )
 
     return df
@@ -298,7 +307,9 @@ def build_sankey_figure(
             x=0.5,
             xanchor='center'
         ),
-        font=dict(size=20),
+        width=2560/2.5,
+        height=1440/2.5,
+        font=dict(size=12),
         margin=dict(l=50, r=50, t=100, b=80),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -364,7 +375,7 @@ def main(nodes_path, edges_path, output_folder, magnitude_col, title=None, outpu
     nodes_df = load_file(nodes_path)
     edges_df = load_file(edges_path)
 
-    edges_df = collapse_graph(edges_df)
+    edges_df = collapse_graph(edges_df, magnitude_col)
 
     print("\nNodes after collapse:")
     print(sorted(set(edges_df["source"]) | set(edges_df["target"])))
@@ -406,10 +417,12 @@ def main(nodes_path, edges_path, output_folder, magnitude_col, title=None, outpu
         png_filename = f"{base_name}_sankey.png"
         png_full_path = os.path.join(output_folder, png_filename)
         
-        # Instantiate Html2Image to take a screenshot of the generated HTML
-        hti = Html2Image(output_path=output_folder, size=(1920, 1080)) 
-        hti.screenshot(html_file=html_full_path, save_as=png_filename)
-        print(f"Sankey PNG generat amb html2image a: {png_full_path}")
+        # Use Plotly's built-in image export for precise figure sizing.
+        # This requires the 'kaleido' package (pip install kaleido).
+        # The width and height are already set in fig.update_layout.
+        # scale=1 means 1:1 pixel ratio, higher values increase resolution.
+        fig.write_image(png_full_path, scale=1) 
+        print(f"Sankey PNG generat amb Plotly a: {png_full_path}")
         return png_full_path
     
     return html_full_path
@@ -422,8 +435,15 @@ def columnes_disponibles(df):
 # 4️⃣ ENTRY POINT
 # ==============================
 if __name__ == "__main__":
+    at = True
+    if at:
+        circuit = "at"
+    else:
+        circuit = "ste"
+
+    
     base_dir = Path(__file__).resolve().parents[1]
-    nodes_in = base_dir / "data" / "at_nodes.csv"
-    edges_in = base_dir / "data" / "at_edges.csv"
-    folder_out = base_dir / "outputs" / "at" / "at_sankey"
+    nodes_in = base_dir / "data" / f"{circuit}_nodes.csv"
+    edges_in = base_dir / "data" / f"{circuit}_edges_simp.csv"
+    folder_out = base_dir / "outputs" / circuit / f"{circuit}_sankey"
     main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="cabal", output_format="png")
