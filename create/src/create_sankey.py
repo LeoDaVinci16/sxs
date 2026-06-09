@@ -444,6 +444,6 @@ if __name__ == "__main__":
     
     base_dir = Path(__file__).resolve().parents[1]
     nodes_in = base_dir / "data" / f"{circuit}_nodes.csv"
-    edges_in = base_dir / "data" / f"{circuit}_edges_simp.csv"
+    edges_in = base_dir / "data" / f"{circuit}_edges.csv"
     folder_out = base_dir / "outputs" / circuit / f"{circuit}_sankey"
-    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="cabal", output_format="png")
+    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="error", output_format="png")
