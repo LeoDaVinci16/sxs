@@ -161,7 +161,9 @@ def main(nodes_path, edges_path, output_folder, magnitude_col="cabal", output_fo
 
 if __name__ == "__main__":
     base_dir = Path(__file__).resolve().parents[1]
+
+    
     nodes = base_dir / "data" / "at_nodes.csv"
-    edges = base_dir / "data" / "at_edges.csv"
-    out = base_dir / "outputs" / "at" / "at_graphviz"
+    edges = base_dir / "data" / "at_edges_simp.csv"
+    out = base_dir / "outputs" / "at" / "at_graphviz_simp"
     main(str(nodes), str(edges), str(out), "cabal")
