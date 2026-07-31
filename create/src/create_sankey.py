@@ -41,7 +41,7 @@ def collapse_graph(df, magnitude_col=None):
         try:
             n = int(float(node))
 
-            if 0 <= n <= 9: # 24 -> tot
+            if 0 <= n <= 24: # 24 -> tot
                 return "MAIN"
 
             return str(node)
@@ -307,8 +307,8 @@ def build_sankey_figure(
             x=0.5,
             xanchor='center'
         ),
-        width=2560/2.5,
-        height=1440/2.5,
+        width=2560/1.5,
+        height=1440/1.5,
         font=dict(size=12),
         margin=dict(l=50, r=50, t=100, b=80),
         paper_bgcolor='white',
@@ -440,10 +440,8 @@ if __name__ == "__main__":
         circuit = "at"
     else:
         circuit = "ste"
-
-    
     base_dir = Path(__file__).resolve().parents[1]
     nodes_in = base_dir / "data" / f"{circuit}_nodes.csv"
     edges_in = base_dir / "data" / f"{circuit}_edges.csv"
     folder_out = base_dir / "outputs" / circuit / f"{circuit}_sankey"
-    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="error", output_format="png")
+    main(str(nodes_in), str(edges_in), str(folder_out), magnitude_col="cabal", output_format="png")
